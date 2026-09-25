@@ -33,4 +33,4 @@
 แท็บ **Actions** → **Weekly run** → **Run workflow** (ติ๊ก dry run ถ้าแค่ต้องการทดสอบ)
 
 ## Secrets ที่ต้องมี
-`FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `TELEGRAM_BOT_TOKEN` · `TELEGRAM_CHAT_ID`
+`FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `TELEGRAM_BOT_TOKEN` · `TELEGRAM_CHAT_ID` · `SEC_USER_AGENT` (ชื่อ + อีเมล ตามที่ SEC กำหนด)

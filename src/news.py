@@ -56,15 +56,18 @@ def company_news(tickers: list[str], asof: date, lookback: int, per_ticker: int,
 
 
 def earnings_calendar(tickers: list[str], asof: date, lookahead: int, warnings: list) -> list[dict]:
-    try:
-        j = _finnhub("/calendar/earnings", {"from": asof.isoformat(),
-                                            "to": (asof + timedelta(days=lookahead)).isoformat()})
-    except Exception as e:
-        warnings.append(f"ปฏิทินงบ: {e}")
-        return []
-    wanted = set(tickers)
-    rows = [{"ticker": e["symbol"], "date": e.get("date"), "hour": e.get("hour", "")}
-            for e in (j or {}).get("earningsCalendar", []) if e.get("symbol") in wanted]
+    # Query per symbol: the unfiltered calendar on the free tier is truncated
+    rows = []
+    for t in tickers:
+        try:
+            j = _finnhub("/calendar/earnings", {"symbol": t, "from": asof.isoformat(),
+                                                "to": (asof + timedelta(days=lookahead)).isoformat()})
+        except Exception as e:
+            warnings.append(f"ปฏิทินงบ {t}: {e}")
+            continue
+        rows += [{"ticker": t, "date": e.get("date"), "hour": e.get("hour", "")}
+                 for e in (j or {}).get("earningsCalendar", []) if e.get("symbol") == t]
+        time.sleep(0.3)
     return sorted(rows, key=lambda r: r["date"] or "")
 
 
@@ -73,7 +76,10 @@ _CIK_CACHE: dict[str, str] | None = None
 
 
 def _sec_headers() -> dict:
-    ua = env("SEC_USER_AGENT") or "ai-paper-portfolio research-bot (github.com/mhamahpapa364-art)"
+    # SEC requires a User-Agent that includes a contact email, e.g. "AI Paper Portfolio you@example.com"
+    ua = env("SEC_USER_AGENT")
+    if not ua:
+        raise RuntimeError("ยังไม่ได้ตั้ง secret SEC_USER_AGENT (SEC ต้องการอีเมลติดต่อ)")
     return {"User-Agent": ua, "Accept-Encoding": "gzip, deflate"}
 
 
