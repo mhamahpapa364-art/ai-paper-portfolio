@@ -5,10 +5,15 @@ on:
     - cron: "17 1 * * 6"   # ทุกวันเสาร์ ~08:17 เวลาไทย (หลังตลาด US ปิดวันศุกร์)
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: "ทดสอบ (ไม่เรียก AI, ไม่ส่ง Telegram, ไม่บันทึก)"
-        type: boolean
-        default: false
+      mode:
+        description: "โหมด"
+        type: choice
+        default: weekly
+        options:
+          - weekly          # รันปกติ
+          - dry-run         # ทดสอบ ไม่เรียก AI ไม่ส่ง Telegram ไม่บันทึก
+          - go-live-preview # AI เสนอพอร์ตตั้งต้น (ไม่บันทึก ไม่ซื้อจริง)
+          - go-live         # AI สร้างพอร์ตตั้งต้นและเริ่มการทดลองจริง
 
 permissions:
   contents: write
@@ -20,7 +25,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
 
@@ -35,35 +40,39 @@ jobs:
       - name: Unit tests
         run: python -m unittest discover -s tests -v
 
-      - name: Weekly run
+      - name: Run
         env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          MODE: ${{ inputs.mode || 'weekly' }}
         run: |
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            python -m src.run_weekly --dry-run
-          else
-            python -m src.run_weekly
-          fi
+          case "$MODE" in
+            dry-run)         python -m src.run_weekly --dry-run ;;
+            go-live-preview) python -m src.run_weekly --go-live --preview ;;
+            go-live)         python -m src.run_weekly --go-live ;;
+            *)               python -m src.run_weekly ;;
+          esac
 
       - name: Commit results
-        if: ${{ success() && inputs.dry_run != true }}
+        if: ${{ success() && (inputs.mode == '' || inputs.mode == null || inputs.mode == 'weekly' || inputs.mode == 'go-live') }}
         run: |
           git config user.name "ai-portfolio-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs/data
+          git add data docs/data config/rules.json
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
-            git commit -m "weekly run $(date -u +%Y-%m-%d)"
+            git commit -m "${MODE:-weekly} run $(date -u +%Y-%m-%d)"
             git push
           fi
+        env:
+          MODE: ${{ inputs.mode || 'weekly' }}
 
       - name: Alert on crash
-        if: ${{ failure() && inputs.dry_run != true }}
+        if: ${{ failure() && inputs.mode != 'dry-run' }}
         env:
           TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}

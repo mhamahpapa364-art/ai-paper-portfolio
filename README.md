@@ -25,12 +25,18 @@
 | `docs/` | หน้า dashboard (GitHub Pages) |
 | `src/` | โค้ดทั้งหมด |
 
-## สถานะ
-- **Part 1** (ข้อมูล + dashboard + Telegram): เสร็จแล้ว ตอนนี้อยู่ในโหมด `pre-live` ติดตามรายชื่อหุ้นทดสอบ ยังไม่มีการลงทุน
-- **Part 2** (AI ตัดสินใจซื้อขาย + journal + lessons): ยังไม่เริ่ม → go-live หลัง Part 2 เสร็จ
+## AI ตัดสินใจยังไง (Part 2)
+- **Claude Opus 5.5** ตัดสินใจทุกสัปดาห์ ใช้เครื่องมือดึงข้อมูลหุ้น (valuation, การเติบโต, งบ) + ข่าว + web search (จำกัดไม่เกิน 8 ครั้งต่อรอบ)
+- AI แค่ **เสนอ** แผน ส่วน `src/rules_engine.py` เป็นตัวตรวจกฎเหล็ก ถ้าแผนผิดกฎแม้แต่ข้อเดียว → ทั้งแผนถูกปฏิเสธ แล้วถือเฉยๆ
+- ทุกการซื้อต้องมี thesis + เงื่อนไขขาย + ผลที่คาดไว้ ระบบนัดตรวจผลที่ 4 และ 12 สัปดาห์ แล้วเก็บคะแนนลง `data/scorecard.json`
+- `data/journal.json` = บันทึกความคิดรายสัปดาห์ · `data/lessons.md` = บทเรียนที่ AI สรุปเองทุกเดือน
+- AI ปรับกฎยืดหยุ่นได้ไม่เกินเดือนละครั้ง ภายในขอบเขตที่กำหนดใน `flexible_bounds`
+- มีเพดานค่า AI ต่อเดือน (`monthly_ai_budget_usd`) ถ้าใช้ครบ ระบบจะถือเฉยๆ
 
 ## รันด้วยมือ
-แท็บ **Actions** → **Weekly run** → **Run workflow** (ติ๊ก dry run ถ้าแค่ต้องการทดสอบ)
+แท็บ **Actions** → **Weekly run** → **Run workflow** → เลือกโหมด:
+- `weekly` รันปกติ · `dry-run` ทดสอบโดยไม่เรียก AI
+- `go-live-preview` ให้ AI เสนอพอร์ตตั้งต้น (ไม่บันทึก) · `go-live` เริ่มการทดลองจริง (ทำได้ครั้งเดียว)
 
 ## Secrets ที่ต้องมี
 `FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `TELEGRAM_BOT_TOKEN` · `TELEGRAM_CHAT_ID` · `SEC_USER_AGENT` (ชื่อ + อีเมล ตามที่ SEC กำหนด)

@@ -92,6 +92,15 @@ details[open] summary::after{content:" ▴"}
 svg text{fill:var(--muted);font:11px var(--font)}
 .warnbox{font-size:12.5px;color:var(--warn)}
 .empty{color:var(--muted);font-size:13.5px}
+.why{font-size:12.5px;color:var(--text);opacity:.85;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.why b{color:var(--accent-ink);font-weight:600}
+.dec{display:flex;gap:12px;align-items:flex-start}
+.dec .e{font-size:26px;line-height:1.1}
+.dec b{font-size:16px;display:block}
+.trade{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.trade:first-of-type{border-top:0}
+.side{font-weight:700;margin-right:6px}.side.buy{color:var(--accent-ink)}.side.sell{color:var(--neg)}
+.note{font-size:13.5px;color:var(--muted);white-space:pre-wrap}
 footer{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}
 </style>
 </head>
@@ -156,10 +165,11 @@ function chart(hist, start) {
 function stockRow(t, d, extra) {
   const p = d.prices[t] || {}, prof = (d.profiles || {})[t] || {};
   const ai = ((d.summary && d.summary.structured && d.summary.structured.tickers) || []).find(x => x.ticker === t) || {};
-  const about = (d.theses || {})[t] || ai.about || prof.industry || '';
+  const about = (d.about || {})[t] || ai.about || prof.industry || '';
+  const why = (d.theses || {})[t];
   const av = prof.logo ? `<img src="${esc(prof.logo)}" alt="" data-t="${esc(t.slice(0, 4))}" onerror="this.parentNode.textContent=this.dataset.t">` : esc(t.slice(0, 4));
   return `<div class="stock"><div class="av">${av}</div>
-    <div class="st-main"><div><span class="t">${esc(t)}</span><span class="n">${esc(prof.name || '')}</span></div><div class="a">${esc(about)}</div></div>
+    <div class="st-main"><div><span class="t">${esc(t)}</span><span class="n">${esc(prof.name || '')}</span></div><div class="a">${esc(about)}</div>${why ? `<div class="why"><b>ทำไมถือ:</b> ${esc(why)}</div>` : ''}</div>
     <div class="st-side"><div class="p">$${p.price ? p.price.toFixed(2) : '–'}</div>${chip(p.chg_1w)}${extra || ''}</div></div>`;
 }
 
@@ -188,6 +198,21 @@ function render(d) {
     h += `<section class="card"><h2>ยังไม่เริ่มลงทุน</h2><p class="hint" style="margin:0">ตอนนี้ระบบรันทดสอบอยู่ พอเปิดใช้งานจริง AI จะเลือกหุ้นชุดแรกเองโดยใช้ราคาของวันนั้น (เงินต้น ${thb(d.start_capital_thb)} บาท)</p></section>`;
     const t = Object.keys(d.prices).filter(k => !k.includes('=') && k !== 'VOO');
     h += `<section class="card"><h2>หุ้นที่ติดตามอยู่</h2><p class="hint">รายชื่อสำหรับทดสอบระบบ ยังไม่ได้ซื้อจริง · ราคาเปลี่ยนแปลง 1 สัปดาห์</p>${t.map(x => stockRow(x, d)).join('')}</section>`;
+  }
+
+  const dec = d.decision;
+  if (dec && dec.status) {
+    const D = {executed: ['🔄', 'ปรับพอร์ต'], hold: ['⏸', 'ถือเฉยๆ'], rejected: ['⛔', 'แผนผิดกฎ → ถือเฉยๆ'],
+               skipped_budget: ['💸', 'งบ AI เดือนนี้หมด → ถือเฉยๆ'], no_answer: ['⚠️', 'AI ไม่ตอบ → ถือเฉยๆ']}[dec.status] || ['🤖', dec.status];
+    const tr = d.trades || [], sells = Object.fromEntries((dec.sells || []).map(x => [x.ticker, x.reason]));
+    const sc = d.scorecard || {};
+    h += `<section class="card"><h2>AI ตัดสินใจสัปดาห์นี้</h2>
+      <div class="dec" style="margin:8px 0 6px"><div class="e">${D[0]}</div><div><b>${D[1]}</b><span class="note">${esc(dec.summary_th || '')}</span></div></div>
+      ${tr.map(t => `<div class="trade"><span><span class="side ${t.side}">${t.side === 'buy' ? 'ซื้อ' : 'ขาย'}</span>${esc(t.ticker)}</span><span class="w">${t.side === 'sell' && sells[t.ticker] ? esc(sells[t.ticker]) + ' · ' : ''}$${Math.round(t.usd).toLocaleString('en-US')}</span></div>`).join('')}
+      ${dec.errors ? `<details><summary style="color:var(--neg)">ทำไมแผนถูกปฏิเสธ</summary><ul class="note">${dec.errors.map(e => `<li>${esc(e)}</li>`).join('')}</ul></details>` : ''}
+      ${dec.market_view || dec.journal ? `<details><summary>ความคิดของ AI สัปดาห์นี้</summary><p class="note">${esc(dec.market_view || '')}</p><p class="note">${esc(dec.journal || '')}</p></details>` : ''}
+      ${sc.hit_rate != null ? `<p class="hint" style="margin:10px 0 0">ความแม่นของการคาดการณ์: ถูก ${sc.correct} / ผิด ${sc.wrong} (${Math.round(sc.hit_rate * 100)}%)</p>` : ''}
+    </section>`;
   }
 
   const rg = d.regime, m = MOOD[rg.label] || MOOD.unknown, sg = signals(rg.signals || {}, rg.sectors_4w);
@@ -224,6 +249,7 @@ function render(d) {
 
   if (d.warnings && d.warnings.length) h += `<section class="card"><details style="margin:0"><summary style="color:var(--warn)">⚠️ ระบบมีคำเตือน ${d.warnings.length} รายการ</summary><ul class="warnbox">${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul></details></section>`;
 
+  if (d.api_spend_month_usd != null) h += `<p class="hint" style="text-align:center">ค่า AI เดือนนี้ $${d.api_spend_month_usd.toFixed(2)}</p>`;
   document.getElementById('app').innerHTML = h;
 }
 
