@@ -2,42 +2,49 @@
   "run_date": "2026-09-25",
   "market_date": "2026-09-24",
   "status": "pre-live",
-  "fx": 33.36000061035156,
+  "fx": 33.34000015258789,
   "prices": {
     "ASML": {
       "price": 1722.5,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.0751
     },
     "COST": {
       "price": 896.47998046875,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.0031
     },
     "ETN": {
       "price": 440.0,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.1061
     },
     "LLY": {
       "price": 1181.8900146484375,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.0387
     },
     "MA": {
       "price": 566.0800170898438,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": -0.0029
     },
     "VOO": {
       "price": 706.989990234375,
       "date": "2026-09-24",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.0198
     },
     "USDTHB=X": {
-      "price": 33.36000061035156,
+      "price": 33.34000015258789,
       "date": "2026-09-25",
-      "source": "yfinance"
+      "source": "yfinance",
+      "chg_1w": 0.0021
     }
   },
   "performance": null,
@@ -47,7 +54,7 @@
       "market_vs_200dma": 0.0714,
       "sma50_above_sma200": true,
       "market_4w": 0.004218588421821323,
-      "vix": 15.54,
+      "vix": 15.39,
       "us10y": 5.162,
       "us10y_4w_change_pts": 0.523,
       "defensives_leading": false
@@ -311,19 +318,107 @@
       }
     ]
   },
-  "earnings": [],
+  "profiles": {
+    "ASML": {
+      "name": "ASML Holding NV",
+      "industry": "Semiconductors",
+      "country": "NL",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ASML.AS.png"
+    },
+    "COST": {
+      "name": "Costco Wholesale Corp",
+      "industry": "Retail",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COST.png"
+    },
+    "ETN": {
+      "name": "Eaton Corporation PLC",
+      "industry": "Electrical Equipment",
+      "country": "IE",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ETN.png"
+    },
+    "LLY": {
+      "name": "Eli Lilly and Co",
+      "industry": "Pharmaceuticals",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LLY.png"
+    },
+    "MA": {
+      "name": "Mastercard Inc",
+      "industry": "Financial Services",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MA.png"
+    }
+  },
+  "earnings": [
+    {
+      "ticker": "MA",
+      "date": "2026-10-22",
+      "hour": "bmo"
+    },
+    {
+      "ticker": "LLY",
+      "date": "2026-10-29",
+      "hour": ""
+    },
+    {
+      "ticker": "ETN",
+      "date": "2026-11-02",
+      "hour": "bmo"
+    }
+  ],
   "summary": {
-    "text": "ภาพรวมสัปดาห์: ตลาดอยู่ในโหมด risk-on ด้วย VIX ต่ำ 15.54 และ SMA50 อยู่เหนือ SMA200 แม้อัตราผลตอบแทนพันธบัตรสหรัฐฯ 10 ปี เพิ่มขึ้น 52.3 bps เป็น 5.162%\n\nASML: ปรับตัวลง 1.8% หลังประกาศการขยายความมาแม่นยำ High-NA tools ที่เพิ่มการยึดตลาด แม้ค่า forward P/E อยู่ที่ 31 เท่า (กลาง)\n\nCOST: ผลงานดีเด่น Q4 FY2026 - ยอดขายเพิ่ม 11.2% เป็น $93.87B และ digital comps โต 19.5% แต่นักวิเคราะห์ SeekingAlpha ให้ rating Sell เนื่องจากมูลค่าหุ้นอาจสูงเกินไป (บวก-กลาง)\n\nETN: ต่อสัญญาณผสม - ได้รับการยอมรับจากผู้บริหาร Coatue Management แต่มีข้อกังวลว่า net margin หดตัว (12.8% ในช่วง 12 เดือน) ขณะที่ P/E อยู่ในเปอร์เซนต์ไทล์สูง การลงทุนขยาย $242M ในอาร์กันซอเป็นบวก (กลาง)\n\nLLY: ปรับตัวขึ้น 3.64% หลังการอนุมัติ Onswik (basal insulin รายสัปดาห์) และ Medicare Bridge participation ชูชะตาตลาด weight-loss ที่มูลค่า $100B ขยายตัวด้วยผู้เล่นใหม่ (บวก)\n\nMA: ได้ประโยชน์จาก KYA interoperability framework ร่วมกับ Visa และ Ant International สำหรับ AI-agent transactions ฝั่งชำระเงิน (บวก)\n\nจับตา: การเพิ่มอัตราดอกเบี้ยสหรัฐฯ ที่ยังคงแรง และการแข่งขันอย่างรุนแรงในตลาด weight-loss ยา/vaccines",
+    "text": "ตลาดแนวโน้มบวก ปันโปร่งตัวกำลังแข็งขัน นักลงทุนลุยหุ้นปันผล สตาร์ทอัพ เซมิคอนดักเตอร์ และจ่ายเงินดิจิทัล\n🟢 ASML: High-NA tools ถูกนำไปใช้ที่โรงงานมากขึ้น ยืนยันการผูกขาดในตลาด\n🟢 COST: Q4 ผลประกอบการแข็งแกร่ง ยอดขายตามดิจิทัล +19.5% สมาชิก +9.4%\n🟡 ETN: ลงทุน $242 ล้านสร้างโรงงานใหม่ เพิ่มกำลังสำหรับศูนย์ข้อมูล\n🟢 LLY: FDA อนุมัติ Onswik อินซูลินรายสัปดาห์ Medicare มี Lilly เข้าชิง\n🟢 MA: ร่วมมาตรฐาน AI-Agent KYA ยืนยันบทบาทในพาณิชย์อัตโนมัติ\nจับตา: LLY ประเมูลสูง อาจสะท้อนความคาดหวังยาลดน้ำหนัก Medicare แล่นเร็ว · COST ราคาสูงแม้ผลงานแข็ง นักวิเคราะห์วิตกเรื่องค่อยๆปรับตัว",
+    "structured": {
+      "overview": "ตลาดแนวโน้มบวก ปันโปร่งตัวกำลังแข็งขัน นักลงทุนลุยหุ้นปันผล สตาร์ทอัพ เซมิคอนดักเตอร์ และจ่ายเงินดิจิทัล",
+      "tickers": [
+        {
+          "ticker": "ASML",
+          "about": "ผู้ผลิตเครื่องมืออุตสาหกรรมซิลิคอนชั้นนำโลก",
+          "sentiment": "pos",
+          "line": "High-NA tools ถูกนำไปใช้ที่โรงงานมากขึ้น ยืนยันการผูกขาดในตลาด"
+        },
+        {
+          "ticker": "COST",
+          "about": "ร้านสมาชิกจำหน่ายสินค้าคุณภาพราคาถูก",
+          "sentiment": "pos",
+          "line": "Q4 ผลประกอบการแข็งแกร่ง ยอดขายตามดิจิทัล +19.5% สมาชิก +9.4%"
+        },
+        {
+          "ticker": "ETN",
+          "about": "ผู้ผลิตอุปกรณ์ไฟฟ้าและจัดการพลังงาน",
+          "sentiment": "neu",
+          "line": "ลงทุน $242 ล้านสร้างโรงงานใหม่ เพิ่มกำลังสำหรับศูนย์ข้อมูล"
+        },
+        {
+          "ticker": "LLY",
+          "about": "บริษัทยาชั้นนำเน้นยารักษาเบาหวานและลดน้ำหนัก",
+          "sentiment": "pos",
+          "line": "FDA อนุมัติ Onswik อินซูลินรายสัปดาห์ Medicare มี Lilly เข้าชิง"
+        },
+        {
+          "ticker": "MA",
+          "about": "เครือข่ายสถาบันการจ่ายเงินดิจิทัลระดับโลก",
+          "sentiment": "pos",
+          "line": "ร่วมมาตรฐาน AI-Agent KYA ยืนยันบทบาทในพาณิชย์อัตโนมัติ"
+        }
+      ],
+      "watch": [
+        "LLY ประเมูลสูง อาจสะท้อนความคาดหวังยาลดน้ำหนัก Medicare แล่นเร็ว",
+        "COST ราคาสูงแม้ผลงานแข็ง นักวิเคราะห์วิตกเรื่องค่อยๆปรับตัว"
+      ],
+      "flags": []
+    },
     "model": "claude-haiku-4-5-20251001",
     "usage": {
-      "input_tokens": 3001,
+      "input_tokens": 3575,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 767,
+      "output_tokens": 866,
       "service_tier": "standard",
       "inference_geo": "not_available"
     }
