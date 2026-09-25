@@ -92,6 +92,12 @@ details[open] summary::after{content:" ▴"}
 svg text{fill:var(--muted);font:11px var(--font)}
 .warnbox{font-size:12.5px;color:var(--warn)}
 .empty{color:var(--muted);font-size:13.5px}
+.sec{margin:10px 0}
+.sec-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
+.sec-bar{position:relative;height:10px;background:var(--card-2);border-radius:5px}
+.sec-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--accent)}
+.sec-bar i.over{background:var(--warn)}
+.sec-bar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--muted);text-decoration:none}
 .why{font-size:12.5px;color:var(--text);opacity:.85;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .why b{color:var(--accent-ink);font-weight:600}
 .dec{display:flex;gap:12px;align-items:flex-start}
@@ -118,6 +124,8 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const pct = (x, d = 1) => x == null ? '–' : (x > 0 ? '+' : '') + (x * 100).toFixed(d) + '%';
 const chip = (x, d = 1) => `<span class="chip ${x == null ? 'flat' : x > 0.0005 ? 'up' : x < -0.0005 ? 'down' : 'flat'}">${pct(x, d)}</span>`;
 const thb = x => Math.round(x).toLocaleString('en-US');
+const GICS_TH = {'Technology':'เทคโนโลยี','Communication Services':'สื่อสาร','Consumer Cyclical':'สินค้าฟุ่มเฟือย','Consumer Defensive':'สินค้าจำเป็น','Healthcare':'สุขภาพ','Financial Services':'การเงิน','Industrials':'อุตสาหกรรม','Energy':'พลังงาน','Basic Materials':'วัตถุดิบ','Utilities':'สาธารณูปโภค','Real Estate':'อสังหาฯ'};
+const secName = s => !s ? 'ไม่ระบุ' : s.startsWith('ETF:') ? 'ETF ' + s.slice(4) : (GICS_TH[s] || s);
 const SECTOR_TH = {XLK:'เทคโนโลยี',XLC:'สื่อสาร',XLY:'สินค้าฟุ่มเฟือย',XLP:'สินค้าจำเป็น',XLV:'สุขภาพ',XLF:'การเงิน',XLI:'อุตสาหกรรม',XLE:'พลังงาน',XLB:'วัตถุดิบ',XLU:'สาธารณูปโภค',XLRE:'อสังหาฯ'};
 const MOOD = {
   'risk-on':  {e:'🟢', th:'ตลาดกล้าเสี่ยง', en:'Risk-on',  d:'สัญญาณส่วนใหญ่ดี นักลงทุนกล้าซื้อหุ้น', cash:'ถือเงินสดน้อย 0–10%'},
@@ -194,6 +202,12 @@ function render(d) {
     h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">สัดส่วนในพอร์ต · ราคาเปลี่ยนแปลง 1 สัปดาห์</p>
       ${rows.map(t => stockRow(t, d, `<div class="w">${((d.weights[t] || 0) * 100).toFixed(0)}% ของพอร์ต</div>`)).join('')}
       <div class="stock"><div class="av">฿</div><div class="st-main"><span class="t">เงินสด</span></div><div class="st-side"><div class="w">${((d.weights.CASH || 0) * 100).toFixed(0)}% ของพอร์ต</div></div></div></section>`;
+    const bySec = {};
+    rows.forEach(t => { const k = secName((d.sectors || {})[t]); bySec[k] = (bySec[k] || 0) + (d.weights[t] || 0); });
+    const cap = d.max_sector_weight || 0.4, secs = Object.entries(bySec).sort((a, b) => b[1] - a[1]);
+    if (secs.length) h += `<section class="card"><h2>กระจายตามกลุ่มอุตสาหกรรม</h2><p class="hint">กฎเหล็ก: กลุ่มเดียวกันรวมกันไม่เกิน ${Math.round(cap * 100)}% (เส้นเทา)</p>
+      ${secs.map(([k, w]) => `<div class="sec"><div class="sec-top"><span>${esc(k)}</span><b>${(w * 100).toFixed(0)}%</b></div>
+        <div class="sec-bar"><i class="${w > cap * 0.95 ? 'over' : ''}" style="width:${Math.min(100, w * 100 / 0.5 * 1)}%"></i><u style="left:${cap / 0.5 * 100}%"></u></div></div>`).join('')}</section>`;
   } else {
     h += `<section class="card"><h2>ยังไม่เริ่มลงทุน</h2><p class="hint" style="margin:0">ตอนนี้ระบบรันทดสอบอยู่ พอเปิดใช้งานจริง AI จะเลือกหุ้นชุดแรกเองโดยใช้ราคาของวันนั้น (เงินต้น ${thb(d.start_capital_thb)} บาท)</p></section>`;
     const t = Object.keys(d.prices).filter(k => !k.includes('=') && k !== 'VOO');
@@ -204,6 +218,7 @@ function render(d) {
   if (dec && dec.status) {
     const D = {executed: ['🔄', 'ปรับพอร์ต'], hold: ['⏸', 'ถือเฉยๆ'], rejected: ['⛔', 'แผนผิดกฎ → ถือเฉยๆ'],
                skipped_budget: ['💸', 'งบ AI เดือนนี้หมด → ถือเฉยๆ'], no_answer: ['⚠️', 'AI ไม่ตอบ → ถือเฉยๆ']}[dec.status] || ['🤖', dec.status];
+    if (dec.mode === 'initial' && dec.status === 'executed') D.splice(0, 2, '🚀', 'เปิดพอร์ตครั้งแรก');
     const tr = d.trades || [], sells = Object.fromEntries((dec.sells || []).map(x => [x.ticker, x.reason]));
     const sc = d.scorecard || {};
     h += `<section class="card"><h2>AI ตัดสินใจสัปดาห์นี้</h2>

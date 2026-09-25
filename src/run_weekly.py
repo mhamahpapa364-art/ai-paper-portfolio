@@ -102,16 +102,8 @@ def main(argv=None) -> int:
     regime = read_regime(hist, cfg)
     warnings += [f"regime: {n}" for n in regime["notes"]]
     news_tickers = [t for t in tickers if t != cfg["benchmark"]] or tickers
-    news = nw.company_news(news_tickers, asof, cfg["news_lookback_days"], cfg["max_news_per_ticker"], warnings)
-    filings = nw.edgar_filings(news_tickers, asof, cfg["news_lookback_days"], cfg["edgar_forms"], warnings)
-    for rows in filings.values():
-        for f in rows:
-            f["label"] = nw.label_items(f.get("items", ""))
-    earnings = nw.earnings_calendar(news_tickers, asof, cfg["earnings_lookahead_days"], warnings)
-    profiles = nw.company_profiles(news_tickers, warnings)
-    summary = summarize(news, filings, regime, earnings, cfg, warnings, dry, profiles)
-    if summary and summary.get("usage"):
-        add_spend(state, month, _cost(summary["usage"], cfg["summary_model"], cfg))
+    news, filings, earnings, profiles, summary = gather_news(news_tickers, regime, cfg, asof, month, state,
+                                                             warnings, dry)
 
     # 4) AI decision ---------------------------------------------------------
     mode = "initial" if go_live else ("weekly" if state["status"] == "live" else None)
@@ -130,6 +122,12 @@ def main(argv=None) -> int:
     if preview:
         report_preview(decision_out, prices, profiles, cfg, dry)
         return 0
+    held_now = set(state["books"]["portfolio"]["holdings"])
+    if trades and held_now - set(news_tickers):
+        log("Portfolio changed — refreshing news for current holdings")
+        news_tickers = sorted(held_now)
+        news, filings, earnings, profiles, summary = gather_news(news_tickers, regime, cfg, asof, month, state,
+                                                                 warnings, dry)
 
     # 5) Performance (after trades) ------------------------------------------
     perf, flags = None, []
@@ -156,6 +154,7 @@ def main(argv=None) -> int:
     book = state["books"]["portfolio"]
     theses = {t: (h.get("thesis") or {}).get("thesis", "") for t, h in book["holdings"].items()}
     about = {t: (h.get("thesis") or {}).get("about", "") for t, h in book["holdings"].items()}
+    sectors = {t: h.get("sector") for t, h in book["holdings"].items()}
     weekly = {
         "run_date": asof.isoformat(), "market_date": market_date, "status": state["status"],
         "fx": fx, "prices": prices, "performance": perf, "events": events, "regime": regime,
@@ -165,7 +164,8 @@ def main(argv=None) -> int:
     dashboard = {
         **weekly,
         "inception_date": state["inception_date"], "start_capital_thb": state["start_capital_thb"],
-        "books": state["books"], "theses": theses, "about": about,
+        "books": state["books"], "theses": theses, "about": about, "sectors": sectors,
+        "max_sector_weight": rules["iron"].get("max_sector_weight"),
         "weights": pf.weights(book, prices) if state["status"] == "live" else {},
         "totals": state["totals"], "history": history_log,
         "scorecard": mg.hit_rate(card), "api_spend_month_usd": round(month_spend(state, month), 3),
@@ -178,6 +178,20 @@ def main(argv=None) -> int:
     log("Files written")
     telegram(format_message(dashboard, cfg), dry)
     return 0
+
+
+def gather_news(news_tickers, regime, cfg, asof, month, state, warnings, dry):
+    news = nw.company_news(news_tickers, asof, cfg["news_lookback_days"], cfg["max_news_per_ticker"], warnings)
+    filings = nw.edgar_filings(news_tickers, asof, cfg["news_lookback_days"], cfg["edgar_forms"], warnings)
+    for rows in filings.values():
+        for f in rows:
+            f["label"] = nw.label_items(f.get("items", ""))
+    earnings = nw.earnings_calendar(news_tickers, asof, cfg["earnings_lookahead_days"], warnings)
+    profiles = nw.company_profiles(news_tickers, warnings)
+    summary = summarize(news, filings, regime, earnings, cfg, warnings, dry, profiles)
+    if summary and summary.get("usage"):
+        add_spend(state, month, _cost(summary["usage"], cfg["summary_model"], cfg))
+    return news, filings, earnings, profiles, summary
 
 
 def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, news, filings, earnings,
@@ -215,6 +229,10 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
             tools.stock_data(t)
         if new:
             extra, _ = md.latest_prices(new, tools.history, cfg["price_max_age_days"], asof)
+            for t, p in extra.items():
+                df = tools.history.get(t)
+                if df is not None and len(df) > 5:
+                    p["chg_1w"] = round(float(df["Close"].iloc[-1] / df["Close"].iloc[-6] - 1), 4)
             prices.update(extra)
         errs, plan = reng.validate(d, state, prices, rules, tools.eligible, asof,
                                    initial=(mode == "initial"), sector_of=tools.sector_of)
@@ -243,9 +261,12 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
     else:
         out["status"] = "hold"
 
+    out["sectors"] = {t: tools.sector_of(t) for t in plan}
     if preview:
         out["plan"] = plan
         return out, trades
+    for t, h in state["books"]["portfolio"]["holdings"].items():
+        h["sector"] = tools.sector_of(t) or h.get("sector")
     if trades:
         mg.record_theses(state, d, trades, prices, market_date, cfg["review_after_weeks"])
     if due:
