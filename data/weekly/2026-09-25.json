@@ -1,0 +1,310 @@
+{
+  "run_date": "2026-09-25",
+  "market_date": "2026-09-24",
+  "status": "pre-live",
+  "fx": 33.349998474121094,
+  "prices": {
+    "ASML": {
+      "price": 1722.5,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "COST": {
+      "price": 896.47998046875,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "ETN": {
+      "price": 440.0,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "LLY": {
+      "price": 1181.8900146484375,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "MA": {
+      "price": 566.0800170898438,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "VOO": {
+      "price": 706.989990234375,
+      "date": "2026-09-24",
+      "source": "yfinance"
+    },
+    "USDTHB=X": {
+      "price": 33.349998474121094,
+      "date": "2026-09-25",
+      "source": "yfinance"
+    }
+  },
+  "performance": null,
+  "events": [],
+  "regime": {
+    "signals": {
+      "market_vs_200dma": 0.0714,
+      "sma50_above_sma200": true,
+      "market_4w": 0.004218588421821323,
+      "vix": 15.62,
+      "us10y": 5.162,
+      "us10y_4w_change_pts": 0.523,
+      "defensives_leading": false
+    },
+    "score": 2,
+    "label": "risk-on",
+    "notes": [],
+    "sectors_4w": [
+      {
+        "etf": "XLK",
+        "name": "Technology",
+        "ret_4w": 0.0714
+      },
+      {
+        "etf": "XLC",
+        "name": "Communication",
+        "ret_4w": 0.0072
+      },
+      {
+        "etf": "XLE",
+        "name": "Energy",
+        "ret_4w": 0.0027
+      },
+      {
+        "etf": "XLV",
+        "name": "Health Care",
+        "ret_4w": -0.0309
+      },
+      {
+        "etf": "XLI",
+        "name": "Industrials",
+        "ret_4w": -0.0536
+      },
+      {
+        "etf": "XLP",
+        "name": "Consumer Staples",
+        "ret_4w": -0.0557
+      },
+      {
+        "etf": "XLF",
+        "name": "Financials",
+        "ret_4w": -0.064
+      },
+      {
+        "etf": "XLY",
+        "name": "Consumer Disc.",
+        "ret_4w": -0.0647
+      },
+      {
+        "etf": "XLB",
+        "name": "Materials",
+        "ret_4w": -0.0728
+      },
+      {
+        "etf": "XLRE",
+        "name": "Real Estate",
+        "ret_4w": -0.0818
+      },
+      {
+        "etf": "XLU",
+        "name": "Utilities",
+        "ret_4w": -0.0912
+      }
+    ]
+  },
+  "news": {
+    "ASML": [
+      {
+        "headline": "ASML vs. Applied Materials: Which AI Chip-Equipment Stock Is the Better Buy?",
+        "summary": "ASML Holding N.V. (NASDAQ:ASML) and Applied Materials, Inc. (NASDAQ:AMAT) sell different tools, but both compete for the same investor dollar tied to semiconductor capital spending. ASML trades around 31 times forward earnings, while Applied Materials trades near 27 times. That modest premium raises a useful question: how much should investors pay for a near-monopoly? The […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=c08ff8575733bc3b1222d51293c785ab4608a01a8ca0aaecef107f8326cdb9f7",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Tracking Philippe Laffont's Coatue Management Portfolio - Q2 2026 Update",
+        "summary": "Coatueâs Q2 2026 13F jumps to $48.6B: top holdings and new buys in AI, semis, and energy. Read here for a detailed investment analysis.",
+        "source": "SeekingAlpha",
+        "url": "https://finnhub.io/api/news?id=6e9876f8563e7716d589129b891f07e0dbfcf101e3b3323e8ee2a3477ba594bf",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Is Taiwan Semiconductor (TSM) Stock a Better Bet than ASML Holding (ASML) as Advanced Chipmaking Accelerates?",
+        "summary": "On September 8, Taiwan Semiconductor Manufacturing Company Limited (NYSE:TSM) and ASML Holding N.V. (NASDAQ:ASML) announced a collaborative industry initiative to transition the semiconductor sector to a 12-inch Extreme Ultraviolet (EUV) photomask format. Currently, chipmakers use 6-inch masks for High NA EUV systems. Shifting to 12-inch photomasks aims to boost scanner productivity, eliminate sti",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=f637e6328417bd6aa823213b2da8475a3b7dd69a1577161369e1a98d58f1dfcc",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "ASML Drops 1.8% as $400 Million High-NA Tools Reach More Fabs",
+        "summary": "Customer adoption strengthens ASML's monopoly while shifting attention toward throughput, installation schedules and manufacturing returns.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=d9165d492964d4c0bd0e85929c12a3770cfd4fb5a94386e5fb6c8d98dd456390",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Don’t wait for cheaper stocks — Rebecca Walser on stocks to buy now",
+        "summary": "Rebecca Walser of Walser Wealth Management says we’re at the cheapest price entry point of the largest innovation cycle in history. She breaks down where retail investors should put money now, from ASML and Micron to energy and gold, and why “you will be a laggard if you don’t participate.”",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=81a638b66a4e6cdec948a3d00470dd38bc551990abcef6c084f666164be6d0e2",
+        "date": "2026-09-24"
+      }
+    ],
+    "COST": [
+      {
+        "headline": "Meet the 6 Categories That Drove Costco’s 19.5% Digitally Enabled Sales Comps in Its Latest Quarter.",
+        "summary": "The growth figure was high, given how little the company hypes that channel.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=3a93e7bc32ebda45d01defd308a611300e146586528544905db7214d69873aa0",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Costco Just Showed Why It's a Better Buy Than Walmart",
+        "summary": "Costco delivered another strong earnings report, even as rivals like Walmart are seeing slowing revenue growth.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=fcb429a8cf83fe0315d520f4ee6f3a9aa8ecfddff673937ae8d720b943ab9acb",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Costco Wholesale Corp (COST) (Q4 2026) Earnings Call Highlights: Double-Digit Sales Growth, ...",
+        "summary": "Costco Wholesale Corp (COST) posts 11.2% net sales growth to $93.87 billion in Q4 FY2026, with digitally enabled comps up 19.5% and executive membership climbing 9.4%.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=ccd61c036083db779cf27a50418e039d5755390e6847d73a3e14cd2b4d87712f",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Costco Confirms Its Food Court Churro Is Coming Back — COST Stock Flat Despite Q4 Beat",
+        "summary": "The menu item comeback follows a strong quarter for the warehouse retailer.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=ed985391ff12fd7ab7f6cd14f737707799ef2bbe97f13e9c9e98d00a7e14de7f",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Costco: Strong Fundamentals, But Valuation Needs To Cool; Reiterate Sell",
+        "summary": "Costco delivered a strong Q4 with 11.2% revenue growth and 15% EPS growth. Find out why COST stock is a Sell.",
+        "source": "SeekingAlpha",
+        "url": "https://finnhub.io/api/news?id=d62b51c6f560a7befc5e43d46fe09d32cdb3fef8c9dd9bdf64ff7132a996a38f",
+        "date": "2026-09-25"
+      }
+    ],
+    "ETN": [
+      {
+        "headline": "Is Eaton (ETN) Priced Beyond What Its Cash Flow Can Support?",
+        "summary": "Eaton has delivered a powerful share price run in recent years, which naturally raises a question for anyone looking at the stock today. Are investors now paying a price that is fully supported by the cash the business is expected to generate over time, or has enthusiasm moved ahead of those cash flows? Over the past 5 years, Eaton has returned 218.4%, which puts real weight on whether the current",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=fb1b9ad5f675e4a53cc2affda38be4dc6bfd33e5674d938e472377b0a2656d1c",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "What Could Go Wrong With Eaton Stock?",
+        "summary": "Eaton's net margin is the number a holder should watch now. That margin, the share of each sales dollar kept as profit, was 12.8% over the last twelve months. It has been shrinking. Yet the stock's price relative to earnings is in the top tenth of its ten-year range. At that level, the price likely assumes profits will widen. Is the squeeze on Eaton's margin a passing one.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=b3d444233e152c24259d1c1c771d1186b13b45fda25a4a71b8c3aaf0a8adf179",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Tracking Philippe Laffont's Coatue Management Portfolio - Q2 2026 Update",
+        "summary": "Coatueâs Q2 2026 13F jumps to $48.6B: top holdings and new buys in AI, semis, and energy. Read here for a detailed investment analysis.",
+        "source": "SeekingAlpha",
+        "url": "https://finnhub.io/api/news?id=6e9876f8563e7716d589129b891f07e0dbfcf101e3b3323e8ee2a3477ba594bf",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Could Eaton Corporation (ETN)’s $242 Million Expansion Power its Next Data Center Growth Phase?",
+        "summary": "On September 2, Eaton Corporation plc (NYSE:ETN) announced a $242 million investment to expand its U.S. manufacturing footprint with a 1-million-square-foot facility in North Little Rock, Arkansas. The plant is expected to double Eaton’s manufacturing capacity for customized electrical enclosures from its Fibrebond business, addressing surging demand across data center, utility, industrial, and di",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=258b1d0a9627471d10a913c5681b50f7317b85b18102f10dcb8cdaed9793fde1",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "4 Manufacturing Electronics Stocks to Watch on Promising Industry Trends",
+        "summary": "The Zacks Manufacturing - Electronics industry gains from solid momentum in the manufacturing sector and strength across major end markets. ETN, EMR, AOS and ENS are some notable stocks in the industry.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=69871ff9aa690e9cc32230fd8b4bc28a116f75f725f0e7b5b9da012a9e7ed7be",
+        "date": "2026-09-24"
+      }
+    ],
+    "LLY": [
+      {
+        "headline": "Eli Lilly (LLY) Stock Is Up, What You Need To Know",
+        "summary": "Shares of global pharmaceutical company Eli Lilly (NYSE:LLY) jumped 3.1% in the afternoon session after The U.S. Food and Drug Administration approved Eli Lilly’s once-weekly basal insulin, Onswik, for adults with type 2 diabetes, giving patients an alternative to daily long-acting insulin shots. According to Reuters, Lilly said Onswik — chemically known as insulin efsitora alfa-gobe — is intended",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=af6edfbfc1d5a155f59549b88f71efc8c8a9d10ebeb2a9ca0fb060bce6b328e0",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "AbbVie vs. Eli Lilly: Which Star Pharma Stock Is a Better Buy in 2026?",
+        "summary": "AbbVie leans on legacy income and portfolio transition, while Eli Lilly rides explosive growth in weight-loss drugs, but at vastly different valuations.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=8eb972c08a04133027eb920e3fc3b121b93a21bf2259240dd130d95008f10fd5",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Eli Lilly breaks ground on $6.5B Houston manufacturing plant",
+        "summary": "Bechtel’s manufacturing and technology business unit is supporting the project, according to a job posting from the Reston, Virginia-based general contractor.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=56bb3b3c1c6f1e7e6c9bf66d588f2dd979505eaa7567cf0603b9b3bfa13a2e9a",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Medicare just handed Eli Lilly a massive weight-loss win",
+        "summary": "As Medicare Bridge participation surges, Novo Nordisk’s share of those new patients is drawing attention.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=e82d718603bbe9936db60a78f540e5f04d0202ce52cb38ae7f3c95f1dfae5a31",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Lilly Jumps 3.64% While a $100 Billion Obesity Race Crowds In",
+        "summary": "New pills, injections and maintenance regimens broaden patient choice while raising the durability test for market leaders.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=03c3ac98688b3f5d3513cf162d9ab1a9992e4dc854d414727654095b10eb703a",
+        "date": "2026-09-24"
+      }
+    ],
+    "MA": [
+      {
+        "headline": "Mastercard’s Faster Services Growth Could Reshape its Rivalry with Visa",
+        "summary": "Ant International, Mastercard Incorporated (NYSE:MA), and Visa Inc. (NYSE:V) have announced a collaboration on a Know-Your-Agent (KYA) interoperability framework. Designed to streamline agent onboarding and identification across card networks, digital wallet ecosystems, and agent platforms, the framework relies on shared principles while allowing each network to maintain its own verification and d",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=de1d2b9f0bbac2e27ec036ab56fae7656e1a22a3ecbadc403bdc7fbe47e8f9ed",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Visa Share Rises as Payment Networks Standardize AI-Agent Identity",
+        "summary": "Common agent verification could protect Visa's role even when software--not consumers--initiates transactions.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=fca8a48c422bf719e587f375bc1d10dd843c7e4bb190c0255353eddc6aec0044",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Mastercard Gains as Banks Challenge Agentic-Commerce Guardrails",
+        "summary": "AI shopping can generate transactions, but unclear authorization and liability could make every automated checkout more expensive.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=fb301d89b6876e6bd7b784003c479d253142de624809d031036ea2ea6f5b2dd1",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Moov adds P2P competition",
+        "summary": "Using Mastercard and Visa’s digital infrastructure, the tool facilitates peer-to-peer payments without requiring both parties to have the same app.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=24f55e568fe28a71ea52d20ade0b53d2ec7a7eb2d76d4e0d8ef079ca075e6fce",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "SoFi Built a Bank, a Card Program, and a Stablecoin, but the Stock Struggles to Budge",
+        "summary": "SoFi launched a bank, a credit card empire, and a stablecoin on Mastercard's network, yet the stock sits nearly where it started five years ago. One operating metric suggests the everything-app thesis is actually working, so what keeps the chart pinned?",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=845fa3987e318a36959d7520718005bf1f711b92dc4fd9f08b4cf665bc45cc90",
+        "date": "2026-09-24"
+      }
+    ]
+  },
+  "filings": {},
+  "earnings": [],
+  "summary": null,
+  "warnings": [
+    "EDGAR: 403 Client Error: Forbidden for url: https://www.sec.gov/files/company_tickers.json",
+    "Anthropic API 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_i"
+  ]
+}

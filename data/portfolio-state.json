@@ -4,13 +4,25 @@
   "fx_inception": null,
   "start_capital_thb": 100000,
   "start_capital_usd": null,
-  "last_run": null,
+  "last_run": "2026-09-25",
   "last_events_processed": null,
   "books": {
-    "portfolio": {"cash_usd": 0.0, "holdings": {}},
-    "benchmark": {"cash_usd": 0.0, "holdings": {}},
-    "shadow": {"cash_usd": 0.0, "holdings": {}}
+    "portfolio": {
+      "cash_usd": 0.0,
+      "holdings": {}
+    },
+    "benchmark": {
+      "cash_usd": 0.0,
+      "holdings": {}
+    },
+    "shadow": {
+      "cash_usd": 0.0,
+      "holdings": {}
+    }
   },
-  "totals": {"dividends_usd": 0.0, "fees_usd": 0.0},
+  "totals": {
+    "dividends_usd": 0.0,
+    "fees_usd": 0.0
+  },
   "peak_value_thb": null
 }
