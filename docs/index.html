@@ -92,6 +92,9 @@ details[open] summary::after{content:" ▴"}
 svg text{fill:var(--muted);font:11px var(--font)}
 .warnbox{font-size:12.5px;color:var(--warn)}
 .empty{color:var(--muted);font-size:13.5px}
+.livetag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.livetag i{width:8px;height:8px;border-radius:50%;background:var(--neg);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .sec{margin:10px 0}
 .sec-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
 .sec-bar{position:relative;height:10px;background:var(--card-2);border-radius:5px}
@@ -171,7 +174,8 @@ function chart(hist, start) {
 }
 
 function stockRow(t, d, extra) {
-  const p = d.prices[t] || {}, prof = (d.profiles || {})[t] || {};
+  const lq = d.live && d.live.quotes[t];
+  const p = lq ? {price: lq.price, chg_1w: lq.chg_day} : (d.prices[t] || {}), prof = (d.profiles || {})[t] || {};
   const ai = ((d.summary && d.summary.structured && d.summary.structured.tickers) || []).find(x => x.ticker === t) || {};
   const about = (d.about || {})[t] || ai.about || prof.industry || '';
   const why = (d.theses || {})[t];
@@ -182,24 +186,28 @@ function stockRow(t, d, extra) {
 }
 
 function render(d) {
-  const live = d.status === 'live', S = (d.summary && d.summary.structured) || null;
+  const live = d.status === 'live', S = (d.summary && d.summary.structured) || null, L = d.live;
   document.getElementById('date').textContent = `ข้อมูล ${d.market_date} · 1 USD = ${d.fx.toFixed(2)} บาท`;
   const pill = document.getElementById('pill'); pill.textContent = live ? 'กำลังลงทุน' : 'ยังไม่เริ่ม'; pill.classList.toggle('live', live);
   let h = '';
 
   if (live) {
     const p = d.performance, r = p.returns;
-    h += `<section class="card"><div class="hint" style="margin:0">มูลค่าพอร์ต</div>
-      <div class="big">${thb(p.portfolio.value_thb)} <span style="font-size:18px;color:var(--muted);font-weight:600">บาท</span></div>
-      <div style="margin-top:6px">${chip(r.portfolio_thb, 2)} <span class="hint">จากเงินต้น ${thb(d.start_capital_thb)} บาท</span></div>
+    const val = L ? L.books.portfolio.value_thb : p.portfolio.value_thb, tot = L ? L.books.portfolio.return_thb : r.portfolio_thb;
+    const upd = L ? new Date(L.updated_utc).toLocaleTimeString('th-TH', {hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Bangkok'}) : '';
+    h += `<section class="card"><div style="display:flex;justify-content:space-between"><span class="hint" style="margin:0">มูลค่าพอร์ต</span>
+        ${L ? `<span class="livetag"><i></i>ราคาสด · ${upd} น.</span>` : `<span class="livetag">ราคาปิด ${d.market_date}</span>`}</div>
+      <div class="big">${thb(val)} <span style="font-size:18px;color:var(--muted);font-weight:600">บาท</span></div>
+      <div style="margin-top:6px">${chip(tot, 2)} <span class="hint">จากเงินต้น ${thb(d.start_capital_thb)} บาท</span>
+        ${L && L.books.portfolio.chg_day != null ? `<span class="hint" style="margin-left:6px">· วันนี้ ${pct(L.books.portfolio.chg_day, 2)}</span>` : ''}</div>
       <div class="row3">
-        <div class="mini"><span>เทียบ VOO</span><b>${pct(r.vs_benchmark)}</b></div>
-        <div class="mini"><span>เทียบพอร์ตเงา</span><b>${pct(r.vs_shadow)}</b></div>
+        <div class="mini"><span>เทียบ VOO</span><b>${pct(L ? L.vs_benchmark : r.vs_benchmark)}</b></div>
+        <div class="mini"><span>เทียบพอร์ตเงา</span><b>${pct(L ? L.vs_shadow : r.vs_shadow)}</b></div>
         <div class="mini"><span>ลงจากจุดสูงสุด</span><b>${pct(p.drawdown_from_peak)}</b></div>
       </div></section>`;
     const port = d.books.portfolio;
     const rows = Object.keys(port.holdings).sort((a, b) => (d.weights[b] || 0) - (d.weights[a] || 0));
-    h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">สัดส่วนในพอร์ต · ราคาเปลี่ยนแปลง 1 สัปดาห์</p>
+    h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">สัดส่วนในพอร์ต · ${L ? 'ราคาสด · เปลี่ยนแปลงวันนี้' : 'ราคาเปลี่ยนแปลง 1 สัปดาห์'}</p>
       ${rows.map(t => stockRow(t, d, `<div class="w">${((d.weights[t] || 0) * 100).toFixed(0)}% ของพอร์ต</div>`)).join('')}
       <div class="stock"><div class="av">฿</div><div class="st-main"><span class="t">เงินสด</span></div><div class="st-side"><div class="w">${((d.weights.CASH || 0) * 100).toFixed(0)}% ของพอร์ต</div></div></div></section>`;
     const bySec = {};
@@ -268,8 +276,15 @@ function render(d) {
   document.getElementById('app').innerHTML = h;
 }
 
-fetch('data/dashboard.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(render).catch(e => { document.getElementById('date').textContent = 'ยังไม่มีข้อมูล — รอการรันครั้งแรก (' + e.message + ')'; });
+const LIVE_URL = 'https://raw.githubusercontent.com/mhamahpapa364-art/ai-paper-portfolio/live/live.json';
+Promise.all([
+  fetch('data/dashboard.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+  fetch(LIVE_URL + '?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
+]).then(([d, L]) => {
+  // use the live snapshot only if it is newer than the weekly data and less than 20 hours old
+  if (L && d.status === 'live' && L.updated_utc.slice(0, 10) >= d.market_date && Date.now() - new Date(L.updated_utc) < 20 * 3600e3) d.live = L;
+  render(d);
+}).catch(e => { document.getElementById('date').textContent = 'ยังไม่มีข้อมูล — รอการรันครั้งแรก (' + e.message + ')'; });
 </script>
 </body>
 </html>

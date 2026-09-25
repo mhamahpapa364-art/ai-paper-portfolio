@@ -1,0 +1,47 @@
+name: Live prices
+
+on:
+  schedule:
+    - cron: "*/15 13-21 * * 1-5"   # ทุก 15 นาที ช่วงตลาด US (สคริปต์เช็คเวลาเปิดตลาดเองอีกชั้น)
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "อัปเดตทันทีแม้ตลาดปิด"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-prices
+  cancel-in-progress: true
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Snapshot
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        run: |
+          mkdir -p out
+          if [ "${{ inputs.force }}" = "true" ]; then F=--force; fi
+          python -m src.live_prices out/live.json $F
+      - name: Publish to the 'live' branch (single commit, keeps main history clean)
+        run: |
+          [ -f out/live.json ] || exit 0
+          cd out
+          git init -q -b live
+          git config user.name "ai-portfolio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add live.json
+          git commit -qm "live prices"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" live
