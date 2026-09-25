@@ -74,12 +74,21 @@ class Validate(unittest.TestCase):
         self.assertTrue(any("minimum" in e for e in errs))
         d["sells"] = [{"ticker": "E", "reason": "fraud found", "thesis_broken": True}]
         errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 16))
+        self.assertTrue(any("evidence" in e for e in errs))            # two-source rule
+        d["sells"][0]["evidence"] = ["reuters.com/x", "reuters.com/x"]  # same source twice is not two sources
+        errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 16))
+        self.assertTrue(any("evidence" in e for e in errs))
+        d["sells"][0]["evidence"] = ["https://www.sec.gov/Archives/edgar/data/1/8k.htm"]
+        errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 16))
+        self.assertEqual(errs, [])
+        d["sells"][0]["evidence"] = ["reuters.com/a", "wsj.com/b"]
+        errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 16))
         self.assertEqual(errs, [])
 
     def test_turnover_cap(self):
         s, p = live_state()
         d = {"action": "rebalance", "targets": [tgt("F", .25), tgt("B", .25), tgt("C", .25), tgt("D", .1), tgt("E", .05)],
-             "sells": [{"ticker": t, "reason": "r", "thesis_broken": True} for t in "ADE"]}
+             "sells": [{"ticker": t, "reason": "r", "thesis_broken": True, "evidence": ["sec.gov/x"]} for t in "ADE"]}
         errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 3, 1))
         self.assertTrue(any("turnover" in e for e in errs))
 
@@ -142,6 +151,22 @@ class RuleChanges(unittest.TestCase):
         r["flexible_last_changed"] = "2026-02-20"
         errs, ok = reng.validate_rule_changes({"min_holding_weeks": 6}, r, date(2026, 3, 1))
         self.assertEqual(ok, {})
+
+
+class Sources(unittest.TestCase):
+    def test_tiers(self):
+        from src.news import source_tier
+        self.assertEqual(source_tier("Reuters"), "major")
+        self.assertEqual(source_tier("SeekingAlpha"), "opinion")
+        self.assertEqual(source_tier("", "https://www.businesswire.com/news/x"), "company")
+        self.assertEqual(source_tier("Yahoo"), "aggregator")
+        self.assertEqual(source_tier("Some Blog"), "other")
+
+    def test_cross_check(self):
+        from src.stock_tools import cross_check
+        w = cross_check({"pe_forward": 30, "revenue_growth_yoy": 0.15}, {"forwardPE": 20, "revenueGrowthTTMYoy": 15.5})
+        self.assertEqual(len(w), 1)
+        self.assertIn("pe_forward", w[0])
 
 
 class Parse(unittest.TestCase):

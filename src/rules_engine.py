@@ -89,6 +89,10 @@ def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, a
                 if not s or not str(s.get("reason", "")).strip():
                     errors.append(f"{t}: reduced/sold without a reason in 'sells'")
                     continue
+                if s.get("thesis_broken"):
+                    ev = [str(e) for e in (s.get("evidence") or []) if str(e).strip()]
+                    if not (any("sec.gov" in e.lower() for e in ev) or len(set(ev)) >= 2):
+                        errors.append(f"{t}: thesis_broken needs evidence (an SEC filing or ≥2 independent sources)")
                 held = weeks_held(book["holdings"][t]["opened"], asof)
                 if held < flex["min_holding_weeks"] and not s.get("thesis_broken"):
                     errors.append(f"{t}: held {held:.1f} weeks < minimum {flex['min_holding_weeks']} "

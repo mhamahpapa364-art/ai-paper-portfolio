@@ -242,7 +242,7 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
                    "cash_guidance": rules["flexible"]["regime_cash_guidance"].get(regime["label"])},
         "reviews_due": due,
         "news_summary": (summary or {}).get("structured"),
-        "headlines": {t: [n["headline"] for n in v[:4]] for t, v in news.items()} if mode != "initial" else None,
+        "headlines": {t: [f"[{n.get('tier', 'other')}] {n['headline']} ({n['source']})" for n in v[:4]] for t, v in news.items()} if mode != "initial" else None,
         "sec_filings": {t: [f"{f['form']} {f['date']} {f.get('label', '')}" for f in v] for t, v in filings.items()}
         if mode != "initial" else None,
         "upcoming_earnings": earnings if mode != "initial" else None,

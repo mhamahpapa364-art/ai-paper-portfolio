@@ -27,7 +27,8 @@
     "human_review_triggers": {
       "drawdown_from_peak": 0.3,
       "underperform_voo_6m": 0.15
-    }
+    },
+    "thesis_broken_evidence": "an SEC filing, or at least two independent non-opinion sources"
   },
   "flexible": {
     "position_count_min": 5,

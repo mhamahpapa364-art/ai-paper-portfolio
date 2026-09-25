@@ -45,14 +45,37 @@ def company_news(tickers: list[str], asof: date, lookback: int, per_ticker: int,
                 "headline": head[:220],
                 "summary": (it.get("summary") or "").strip()[:400],
                 "source": it.get("source", ""),
+                "tier": source_tier(it.get("source", ""), it.get("url", "")),
                 "url": it.get("url", ""),
                 "date": datetime.fromtimestamp(it.get("datetime", 0), tz=timezone.utc).date().isoformat(),
             })
-            if len(rows) >= per_ticker:
-                break
+        # best sources first, then newest; keep the top N
+        rows = sorted(rows[:per_ticker * 4], key=lambda r: TIER_ORDER[r["tier"]])[:per_ticker]  # stable: newest within tier
         out[t] = rows
         time.sleep(0.3)
     return out
+
+
+TIER_ORDER = {"major": 0, "company": 1, "aggregator": 2, "opinion": 3, "other": 4}
+_TIERS = {
+    "major": ["reuters", "bloomberg", "wsj", "wall street journal", "cnbc", "financial times", "ft.com", "associated press",
+              "apnews", "marketwatch", "barron", "nytimes", "new york times", "the economist", "axios", "fortune"],
+    "company": ["businesswire", "business wire", "prnewswire", "pr newswire", "globenewswire", "accesswire",
+                "newsfile", "sec.gov"],
+    "opinion": ["seekingalpha", "seeking alpha", "fool.com", "motley fool", "zacks", "investorplace", "tipranks",
+                "gurufocus", "benzinga insights", "24/7 wall", "stocknews", "investing.com opinion"],
+    "aggregator": ["yahoo", "benzinga", "finnhub", "investing.com", "thefly", "tipranks news", "chartmill", "dow jones"],
+}
+
+
+def source_tier(source: str, url: str = "") -> str:
+    """major = established newsroom · company = press release (not neutral) · opinion = contributor/analysis
+    pieces · aggregator = rewrites/syndication · other = unknown."""
+    s = f"{source} {url}".lower()
+    for tier in ("company", "opinion", "major", "aggregator"):
+        if any(k in s for k in _TIERS[tier]):
+            return tier
+    return "other"
 
 
 def earnings_calendar(tickers: list[str], asof: date, lookahead: int, warnings: list) -> list[dict]:

@@ -142,6 +142,7 @@ const chip = (x, d = 1) => `<span class="chip ${x == null ? 'flat' : x > 0.0005 
 const thb = x => Math.round(x).toLocaleString('en-US');
 const GICS_TH = {'Technology':'เทคโนโลยี','Communication Services':'สื่อสาร','Consumer Cyclical':'สินค้าฟุ่มเฟือย','Consumer Defensive':'สินค้าจำเป็น','Healthcare':'สุขภาพ','Financial Services':'การเงิน','Industrials':'อุตสาหกรรม','Energy':'พลังงาน','Basic Materials':'วัตถุดิบ','Utilities':'สาธารณูปโภค','Real Estate':'อสังหาฯ'};
 const secName = s => !s ? 'ไม่ระบุ' : s.startsWith('ETF:') ? 'ETF ' + s.slice(4) : (GICS_TH[s] || s);
+const TIER = {major: 'สำนักข่าวหลัก', company: 'ข่าวจากบริษัท', opinion: 'บทความความเห็น', aggregator: 'ข่าวรวบรวม'};
 const SECTOR_TH = {XLK:'เทคโนโลยี',XLC:'สื่อสาร',XLY:'สินค้าฟุ่มเฟือย',XLP:'สินค้าจำเป็น',XLV:'สุขภาพ',XLF:'การเงิน',XLI:'อุตสาหกรรม',XLE:'พลังงาน',XLB:'วัตถุดิบ',XLU:'สาธารณูปโภค',XLRE:'อสังหาฯ'};
 const MOOD = {
   'risk-on':  {e:'🟢', th:'ตลาดกล้าเสี่ยง', en:'Risk-on',  d:'สัญญาณส่วนใหญ่ดี นักลงทุนกล้าซื้อหุ้น', cash:'ถือเงินสดน้อย 0–10%'},
@@ -305,7 +306,7 @@ function render(d) {
   } else h += '<p class="empty">ไม่มีสรุปรอบนี้</p>';
   const nt = Object.entries(d.news || {}).filter(([, v]) => v.length), ft = Object.entries(d.filings || {});
   if (nt.length || ft.length) h += `<details><summary>ดูข่าวต้นฉบับ${ft.length ? ' + เอกสาร SEC' : ''}</summary><div class="src">
-      ${nt.map(([t, v]) => `<p>${esc(t)}</p><ul>${v.slice(0, 3).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a> · ${esc(n.source)}</li>`).join('')}</ul>`).join('')}
+      ${nt.map(([t, v]) => `<p>${esc(t)}</p><ul>${v.slice(0, 3).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a> · ${esc(n.source)}${TIER[n.tier] ? ` <span class="chip flat" style="font-size:11px;padding:1px 6px">${TIER[n.tier]}</span>` : ''}</li>`).join('')}</ul>`).join('')}
       ${ft.map(([t, v]) => `<p>${esc(t)} · SEC</p><ul>${v.map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.form)} ${esc(f.date)}</a> ${esc(f.label || '')}</li>`).join('')}</ul>`).join('')}
     </div></details>`;
   h += `</section>`;

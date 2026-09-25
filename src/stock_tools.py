@@ -30,6 +30,30 @@ INFO_FIELDS = {
 }
 
 
+def _rel_diff(a, b):
+    try:
+        a, b = float(a), float(b)
+    except (TypeError, ValueError):
+        return None
+    if a <= 0 or b <= 0:
+        return None
+    return abs(a - b) / min(a, b)
+
+
+def cross_check(yf_out: dict, fm: dict, tol: float = 0.25) -> list[str]:
+    """Compare the same metric from yfinance and Finnhub; big gaps mean one source is stale or wrong."""
+    warn = []
+    pairs = [("pe_ttm", "peTTM", 1), ("pe_forward", "forwardPE", 1), ("roe", "roeTTM", 100),
+             ("revenue_growth_yoy", "revenueGrowthTTMYoy", 100), ("net_margin", "netProfitMarginTTM", 100)]
+    for yk, fk, scale in pairs:
+        if yk in yf_out and fk in fm:
+            y = yf_out[yk] * scale if isinstance(yf_out[yk], (int, float)) else yf_out[yk]
+            d = _rel_diff(y, fm[fk])
+            if d is not None and d > tol:
+                warn.append(f"{yk}: yfinance {y:.4g} vs finnhub {fm[fk]:.4g} (ต่างกัน {d:.0%}) — ยืนยันจากแหล่งอื่นก่อนใช้")
+    return warn
+
+
 class StockTools:
     def __init__(self, asof: date, max_age_days: int = 5, denylist: list[str] | None = None):
         self.asof = asof
@@ -72,6 +96,7 @@ class StockTools:
             fm = {k: j[k] for k in keep if j.get(k) is not None}
             if fm:
                 out["finnhub_metrics"] = fm
+                out["data_warnings"] = cross_check(out, fm)
         except Exception as e:  # noqa: BLE001
             log(f"finnhub metric {t}: {e}")
         try:
@@ -148,6 +173,7 @@ def run_tool(tools: StockTools, name: str, args: dict) -> dict | list:
     if name == "get_stock_data":
         return tools.stock_data(t)
     if name == "get_news":
-        return [{"h": n["headline"], "s": n["summary"][:200], "src": n["source"], "d": n["date"]}
+        return [{"h": n["headline"], "s": n["summary"][:200], "src": n["source"], "tier": n.get("tier"), "d": n["date"],
+                 "url": n.get("url")}
                 for n in tools.recent_news(t)]
     return {"error": f"unknown tool {name}"}

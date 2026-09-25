@@ -30,7 +30,10 @@ SYSTEM = """คุณสรุปข่าวหุ้นรายสัปด�
   "flags": []
 }
 ใส่ทุก ticker ที่ให้มา (ถ้าไม่มีข่าวสำคัญ line = "ไม่มีข่าวสำคัญ", sentiment = "neu")
-watch ไม่เกิน 2 ข้อ แยกข้อเท็จจริงกับความเห็นนักวิเคราะห์ ห้ามแต่งตัวเลขที่ไม่มีในข้อมูล"""
+watch ไม่เกิน 2 ข้อ แยกข้อเท็จจริงกับความเห็นนักวิเคราะห์ ห้ามแต่งตัวเลขที่ไม่มีในข้อมูล
+ระดับแหล่งข่าว (tier): major = สำนักข่าวหลัก เชื่อถือได้สุด · company = ข่าวประชาสัมพันธ์ของบริษัทเอง (ไม่เป็นกลาง)
+· opinion = บทความความเห็น (ห้ามรายงานเป็นข้อเท็จจริง ให้เขียนว่า "มีบทความมองว่า...") · aggregator/other = ใช้ระวัง
+ถ้าข่าวสำคัญมีแค่แหล่ง opinion ให้ระบุในบรรทัดนั้นว่า "(ความเห็น)" """
 
 
 def _parse(text: str) -> dict | None:
@@ -69,7 +72,7 @@ def summarize(news: dict, filings: dict, regime: dict, earnings: list, cfg: dict
                "tickers": sorted(news),
                "company_profiles": profiles or {},
                "upcoming_earnings": earnings,
-               "news": {t: [{"h": n["headline"], "s": n["summary"][:250], "src": n["source"], "d": n["date"]}
+               "news": {t: [{"h": n["headline"], "s": n["summary"][:250], "src": n["source"], "tier": n.get("tier"), "d": n["date"]}
                             for n in rows] for t, rows in news.items() if rows},
                "sec_filings": {t: [{"form": f["form"], "date": f["date"], "items": f.get("items", "")}
                                    for f in rows] for t, rows in filings.items()}}
