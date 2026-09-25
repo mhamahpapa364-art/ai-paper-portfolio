@@ -264,19 +264,26 @@ function render(d) {
 
   const dec = d.decision;
   if (dec && dec.status) {
-    const D = {executed: ['🔄', 'ปรับพอร์ต'], hold: ['⏸', 'ถือเฉยๆ'], rejected: ['⛔', 'แผนผิดกฎ → ถือเฉยๆ'],
+    const D = {executed: ['🔄', 'ปรับพอร์ต'], hold: ['⏸', 'ถือเฉยๆ'], pending: ['⏳', 'รอซื้อขายที่ราคาเปิด'], rejected: ['⛔', 'แผนผิดกฎ → ถือเฉยๆ'],
                skipped_budget: ['💸', 'งบ AI เดือนนี้หมด → ถือเฉยๆ'], no_answer: ['⚠️', 'AI ไม่ตอบ → ถือเฉยๆ']}[dec.status] || ['🤖', dec.status];
     if (dec.mode === 'initial' && dec.status === 'executed') D.splice(0, 2, '🚀', 'เปิดพอร์ตครั้งแรก');
+    if (dec.mode === 'event') D[1] = 'ประชุมฉุกเฉิน: ' + D[1];
+    const po = d.pending_orders;
     const tr = d.trades || [], sells = Object.fromEntries((dec.sells || []).map(x => [x.ticker, x.reason]));
     const sc = d.scorecard || {};
     h += `<section class="card"><h2>AI ตัดสินใจสัปดาห์นี้</h2>
       <div class="dec" style="margin:8px 0 6px"><div class="e">${D[0]}</div><div><b>${D[1]}</b><span class="note">${esc(dec.summary_th || '')}</span></div></div>
+      ${po ? Object.entries(po.changes || {}).sort((a, b) => a[1] - b[1]).map(([t, c]) => `<div class="trade"><span><span class="side ${c > 0 ? 'buy' : 'sell'}">${c > 0 ? 'เพิ่ม' : 'ลด'}</span>${esc(t)}</span><span class="w">${c > 0 ? '+' : ''}${(c * 100).toFixed(1)}% ของพอร์ต</span></div>`).join('') + `<p class="hint" style="margin:6px 0 0">จะซื้อขายที่ราคาเปิดของวันทำการถัดไป (ตัดสินใจ ${esc(po.decided)})</p>` : ''}
       ${tr.map(t => `<div class="trade"><span><span class="side ${t.side}">${t.side === 'buy' ? 'ซื้อ' : 'ขาย'}</span>${esc(t.ticker)}</span><span class="w">${t.side === 'sell' && sells[t.ticker] ? esc(sells[t.ticker]) + ' · ' : ''}$${Math.round(t.usd).toLocaleString('en-US')}</span></div>`).join('')}
       ${dec.errors ? `<details><summary style="color:var(--neg)">ทำไมแผนถูกปฏิเสธ</summary><ul class="note">${dec.errors.map(e => `<li>${esc(e)}</li>`).join('')}</ul></details>` : ''}
       ${dec.market_view || dec.journal ? `<details><summary>ความคิดของ AI สัปดาห์นี้</summary><p class="note">${esc(dec.market_view || '')}</p><p class="note">${esc(dec.journal || '')}</p></details>` : ''}
       ${sc.hit_rate != null ? `<p class="hint" style="margin:10px 0 0">ความแม่นของการคาดการณ์: ถูก ${sc.correct} / ผิด ${sc.wrong} (${Math.round(sc.hit_rate * 100)}%)</p>` : ''}
     </section>`;
   }
+
+  const dl = d.daily;
+  if (dl && dl.triggers && dl.triggers.length) h += `<section class="card" style="border-color:var(--warn)"><h2>🚨 เหตุที่ระบบจับได้ระหว่างสัปดาห์</h2><p class="hint">${esc(dl.date)} · ${dl.event_decision ? 'AI ประชุมฉุกเฉินแล้ว' : 'ส่งให้ AI พิจารณาในรอบถัดไป'}</p>
+    ${dl.triggers.map(x => `<div class="trade"><span><b>${esc(x.ticker)}</b> ${esc(x.detail)}</span></div>`).join('')}</section>`;
 
   const rg = d.regime, m = MOOD[rg.label] || MOOD.unknown, sg = signals(rg.signals || {}, rg.sectors_4w);
   h += `<section class="card"><h2>สภาพตลาดตอนนี้</h2>

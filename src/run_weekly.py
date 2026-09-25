@@ -46,6 +46,7 @@ def main(argv=None) -> int:
     ap.add_argument("--dry-run", action="store_true", help="no Anthropic/Telegram calls")
     ap.add_argument("--go-live", action="store_true", help="AI builds the starting portfolio")
     ap.add_argument("--preview", action="store_true", help="with --go-live: show the proposal, save nothing")
+    ap.add_argument("--retry", action="store_true", help="Sunday safety run: only runs if Saturday's run failed")
     args = ap.parse_args(argv)
     dry, go_live, preview = args.dry_run, args.go_live, args.preview and args.go_live
 
@@ -59,6 +60,9 @@ def main(argv=None) -> int:
     warnings: list[str] = []
     if go_live and state["status"] == "live" and not preview:
         fail("พอร์ตเริ่มลงทุนไปแล้ว — go-live ซ้ำไม่ได้", dry)
+    if args.retry and state.get("last_weekly_ok") and (asof - date.fromisoformat(state["last_weekly_ok"])).days <= 1:
+        log("Saturday run already succeeded — Sunday retry not needed")
+        return 0
 
     tickers = tracked_tickers(state, cfg)
     rt = cfg["regime_tickers"]
@@ -71,8 +75,15 @@ def main(argv=None) -> int:
     hist = md.fetch_history(syms)
     prices, errors = md.latest_prices(tickers + [fx_sym], hist, cfg["price_max_age_days"], asof)
     held = set().union(*(set(b["holdings"]) for b in state["books"].values()))
-    review_only = {r["ticker"] for r in state["pending_reviews"]} - held  # sold names: price nice-to-have
-    must = [t for t in tickers if t not in review_only] + [fx_sym]
+    prev_dash = load_json(DOCS_DATA / "dashboard.json", default={}) or {}
+    stale = md.fill_stale(held, prices, hist, prev_dash.get("prices", {}))  # halted/acquired/renamed tickers
+    for t in stale:
+        warnings.append(f"{t}: ไม่มีราคาใหม่ (อาจถูกพักซื้อขาย/ถูกซื้อกิจการ/เปลี่ยนชื่อ) — ใช้ราคาล่าสุด {prices[t]['date']}")
+    if fx_sym not in prices and prev_dash.get("fx") and prev_dash.get("run_date") and \
+            (asof - date.fromisoformat(prev_dash["run_date"])).days <= 8:
+        prices[fx_sym] = {"price": prev_dash["fx"], "date": prev_dash["run_date"], "source": "previous run"}
+        warnings.append("ดึงค่าเงินบาทไม่ได้ — ใช้ค่าจากรอบก่อน")
+    must = [t for t in held] + [cfg["benchmark"], fx_sym]
     try:
         md.require_prices(must, prices, errors)
     except DataError as e:
@@ -80,7 +91,7 @@ def main(argv=None) -> int:
     fx = prices[fx_sym]["price"]
     if not (20 < fx < 60):
         fail(f"อัตราแลกเปลี่ยนผิดปกติ: {fx}", dry)
-    market_date = max(p["date"] for t, p in prices.items() if t != fx_sym)
+    market_date = prices[cfg["benchmark"]]["date"]
     for t, p in prices.items():
         df = hist.get(t)
         if df is not None and len(df) > 5:
@@ -157,6 +168,9 @@ def main(argv=None) -> int:
 
     # 7) Save ----------------------------------------------------------------
     state["last_run"] = asof.isoformat()
+    if not dry and not go_live:
+        state["last_weekly_ok"] = asof.isoformat()
+        state["recent_triggers"] = []
     card = load_json(mg.SCORECARD_PATH, default=[])
     book = state["books"]["portfolio"]
     theses = {t: (h.get("thesis") or {}).get("thesis", "") for t, h in book["holdings"].items()}
@@ -180,6 +194,7 @@ def main(argv=None) -> int:
         "credit_left_usd": credit_left(state, cfg),
         "lessons_md": mg.lessons(),
         "scorecard_recent": card[-6:],
+        "pending_orders": state.get("pending_orders"),
     }
     save_json(STATE_PATH, state)
     save_json(HISTORY_PATH, history_log)
@@ -213,24 +228,27 @@ def gather_news(news_tickers, regime, cfg, asof, month, state, warnings, dry):
 
 
 def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, news, filings, earnings,
-                 history_log, asof, market_date, month, warnings, preview):
+                 history_log, asof, market_date, month, warnings, preview, triggers=None):
     tools = StockTools(asof, cfg["price_max_age_days"], cfg["leveraged_denylist"])
     tools.history.update(hist)
     due = mg.due_reviews(state, prices, hist, cfg["benchmark"], asof) if mode == "weekly" else []
-    perf_now = pf.snapshot(state, prices, fx) if mode == "weekly" else None
+    perf_now = pf.snapshot(state, prices, fx) if mode != "initial" else None
     ctx = {
         "asof": asof.isoformat(), "market_date": market_date, "fx": fx, "rules": rules,
         "lessons": mg.lessons(), "journal": mg.journal()[-cfg["journal_entries_in_prompt"]:],
-        "portfolio": portfolio_view(state, prices, fx, asof) if mode == "weekly" else None,
+        "portfolio": portfolio_view(state, prices, fx, asof) if mode != "initial" else None,
         "performance": perf_now and {"returns": perf_now["returns"], "drawdown": perf_now["drawdown_from_peak"]},
         "regime": {"label": regime["label"], "signals": regime["signals"], "sectors_4w": regime.get("sectors_4w"),
                    "cash_guidance": rules["flexible"]["regime_cash_guidance"].get(regime["label"])},
         "reviews_due": due,
         "news_summary": (summary or {}).get("structured"),
-        "headlines": {t: [n["headline"] for n in v[:4]] for t, v in news.items()} if mode == "weekly" else None,
+        "headlines": {t: [n["headline"] for n in v[:4]] for t, v in news.items()} if mode != "initial" else None,
         "sec_filings": {t: [f"{f['form']} {f['date']} {f.get('label', '')}" for f in v] for t, v in filings.items()}
-        if mode == "weekly" else None,
-        "upcoming_earnings": earnings if mode == "weekly" else None,
+        if mode != "initial" else None,
+        "upcoming_earnings": earnings if mode != "initial" else None,
+        "triggers": triggers,
+        "emergency_triggers_since_last_review": state.get("recent_triggers") or None,
+        "unexecuted_pending_orders": state.get("pending_orders"),
     }
     out = {"mode": mode, "cost_usd": 0.0, "tools_used": 0, "status": "no_answer"}
     d, errs, plan = None, [], {}
@@ -263,6 +281,8 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
     out.update({k: d.get(k) for k in ("market_view", "action", "summary_th", "journal", "targets", "sells")})
 
     trades: list = []
+    if mode != "initial" and not preview and not errs:
+        state["pending_orders"] = None  # a new decision always replaces unexecuted orders
     if errs:
         out.update(status="rejected", errors=errs)
         warnings.append("AI เสนอแผนที่ผิดกฎ จึงถือเฉยๆ: " + "; ".join(errs[:3]))
@@ -273,9 +293,18 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
             pf.seed_books(state, {**plan, "CASH": cash}, prices, fx, cfg["fee_rate"], cfg["benchmark"], market_date)
             trades = [{"date": market_date, "ticker": t, "side": "buy", "price": prices[t]["price"],
                        "usd": round(state["start_capital_usd"] * w, 2)} for t, w in plan.items()]
-    elif plan and d.get("action") != "hold":
-        trades = reng.execute(state, plan, prices, cfg["fee_rate"], market_date, fx)
-        out["status"] = "executed" if trades else "hold"
+    elif plan and d.get("action") != "hold" and not preview:
+        # Decided while the market is closed → fill at the next session's OPEN (run_daily executes it)
+        cur = {t: w for t, w in pf.weights(state["books"]["portfolio"], prices).items() if t != "CASH"}
+        changes = {t: round(plan.get(t, 0) - cur.get(t, 0), 4) for t in set(plan) | set(cur)
+                   if abs(plan.get(t, 0) - cur.get(t, 0)) > 1e-4}
+        if changes:
+            state["pending_orders"] = {"decided": market_date, "mode": mode, "plan": plan, "changes": changes,
+                                       "targets": d.get("targets"), "sells": d.get("sells"),
+                                       "summary": d.get("summary_th")}
+            out["status"], out["pending"] = "pending", changes
+        else:
+            out["status"] = "hold"
     else:
         out["status"] = "hold"
 
@@ -347,8 +376,12 @@ def format_message(d: dict, cfg: dict) -> str:
     elif dec and dec.get("status") == "skipped_budget":
         lines += ["", "💸 <b>AI:</b> ใช้งบเดือนนี้ครบแล้ว สัปดาห์นี้ถือเฉยๆ"]
     elif dec and dec.get("summary_th"):
-        icon = {"executed": "🔄", "hold": "⏸"}.get(dec.get("status"), "🤖")
+        icon = {"executed": "🔄", "hold": "⏸", "pending": "⏳"}.get(dec.get("status"), "🤖")
         lines += ["", f"{icon} <b>AI:</b> {esc(dec['summary_th'])}"]
+        for t, ch in (dec.get("pending") or {}).items():
+            lines.append(f"  {'เพิ่ม' if ch > 0 else 'ลด'} {t} {ch:+.1%}")
+        if dec.get("pending"):
+            lines.append("  → จะซื้อขายที่ราคาเปิดของวันทำการถัดไป")
         for t in d.get("trades") or []:
             lines.append(f"  {'ซื้อ' if t['side'] == 'buy' else 'ขาย'} {t['ticker']} ${t['usd']:,.0f}")
     if d["earnings"]:

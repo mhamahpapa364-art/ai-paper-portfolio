@@ -132,5 +132,11 @@
     "balance_usd": 3.68,
     "at_total_spend": 0.3004,
     "alert_below_usd": 1.0
+  },
+  "emergency": {
+    "_comment": "เกณฑ์ปลุก AI ระหว่างสัปดาห์ (ตรวจทุกคืนหลังตลาดปิด)",
+    "stock_move": 0.1,
+    "market_drop": 0.05,
+    "vix_level": 35
   }
 }

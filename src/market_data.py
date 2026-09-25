@@ -33,7 +33,8 @@ def fetch_history(tickers: list[str], period: str = "2y", retries: int = 3) -> d
                     for col in ("Dividends", "Stock Splits"):
                         if col not in df:
                             df[col] = 0.0
-                    out[t] = df[["Close", "Dividends", "Stock Splits"]].dropna(subset=["Close"])
+                    cols = [c for c in ("Open", "Close", "Dividends", "Stock Splits") if c in df]
+                    out[t] = df[cols].dropna(subset=["Close"])
                     break
                 log(f"yfinance: empty history for {t} (attempt {attempt})")
             except Exception as e:  # yfinance raises many types (rate limits etc.)
@@ -113,3 +114,22 @@ def corporate_actions(df: pd.DataFrame | None, after: date | None, upto: date) -
             events.append({"date": d, "type": "dividend", "amount": float(row["Dividends"])})
     order = {"split": 0, "dividend": 1}
     return sorted(events, key=lambda e: (e["date"], order[e["type"]]))
+
+
+def fill_stale(held, prices: dict, history: dict, previous: dict) -> list[str]:
+    """Held tickers without a fresh price keep their last known price (flagged stale) instead of
+    stopping the whole run. Returns the stale tickers."""
+    stale = []
+    for t in held:
+        if t in prices:
+            continue
+        df = history.get(t)
+        if df is not None and not df.empty:
+            prices[t] = {"price": float(df["Close"].iloc[-1]), "date": df.index[-1].date().isoformat(),
+                         "source": "stale-history", "stale": True}
+        elif t in previous:
+            prices[t] = {**previous[t], "source": "stale-previous", "stale": True}
+        else:
+            continue
+        stale.append(t)
+    return stale
