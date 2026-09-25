@@ -1,8 +1,8 @@
 {
   "run_date": "2026-09-25",
   "market_date": "2026-09-24",
-  "status": "pre-live",
-  "fx": 33.34000015258789,
+  "status": "live",
+  "fx": 33.349998474121094,
   "prices": {
     "ASML": {
       "price": 1722.5,
@@ -41,20 +41,81 @@
       "chg_1w": 0.0198
     },
     "USDTHB=X": {
-      "price": 33.34000015258789,
+      "price": 33.349998474121094,
       "date": "2026-09-25",
       "source": "yfinance",
-      "chg_1w": 0.0021
+      "chg_1w": 0.0024
+    },
+    "NVDA": {
+      "price": 224.5800018310547,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": 0.0239
+    },
+    "TSM": {
+      "price": 451.1499938964844,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": 0.0486
+    },
+    "MSFT": {
+      "price": 497.92999267578125,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": 0.0004
+    },
+    "GOOGL": {
+      "price": 342.3599853515625,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": -0.0143
+    },
+    "AMZN": {
+      "price": 249.3800048828125,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": -0.0072
+    },
+    "JPM": {
+      "price": 338.55999755859375,
+      "date": "2026-09-24",
+      "source": "yfinance",
+      "chg_1w": -0.0308
     }
   },
-  "performance": null,
+  "performance": {
+    "fx": 33.349998474121094,
+    "portfolio": {
+      "value_usd": 2991.53,
+      "value_thb": 99767.5
+    },
+    "benchmark": {
+      "value_usd": 2991.0,
+      "value_thb": 99750.0
+    },
+    "shadow": {
+      "value_usd": 2991.53,
+      "value_thb": 99767.5
+    },
+    "returns": {
+      "portfolio_thb": -0.0023250000000000215,
+      "portfolio_usd": -0.0023250000000000215,
+      "fx_effect": 0.0,
+      "benchmark_thb": -0.0025000000000001688,
+      "shadow_thb": -0.0023250000000000215,
+      "vs_benchmark": 0.00017500000000014726,
+      "vs_shadow": 0.0
+    },
+    "drawdown_from_peak": -0.0023250000000000215,
+    "max_drawdown": -0.0023250000000000215
+  },
   "events": [],
   "regime": {
     "signals": {
       "market_vs_200dma": 0.0714,
       "sma50_above_sma200": true,
       "market_4w": 0.004218588421821323,
-      "vix": 15.39,
+      "vix": 15.33,
       "us10y": 5.162,
       "us10y_4w_change_pts": 0.523,
       "defensives_leading": false
@@ -121,13 +182,34 @@
     ]
   },
   "news": {
-    "ASML": [
+    "AMZN": [
       {
-        "headline": "ASML vs. Applied Materials: Which AI Chip-Equipment Stock Is the Better Buy?",
-        "summary": "ASML Holding N.V. (NASDAQ:ASML) and Applied Materials, Inc. (NASDAQ:AMAT) sell different tools, but both compete for the same investor dollar tied to semiconductor capital spending. ASML trades around 31 times forward earnings, while Applied Materials trades near 27 times. That modest premium raises a useful question: how much should investors pay for a near-monopoly? The […]",
+        "headline": "AMZN, META, GOOGL, MSFT, ORCL: Michael Burry Sounds Fresh Alarm On Big Tech’s AI Spending, Warns Of Massive Write-Offs In Two Years",
+        "summary": "Burry flags rising leverage, off-balance-sheet commitments and accounting practices as AI infrastructure spending accelerates.",
         "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=c08ff8575733bc3b1222d51293c785ab4608a01a8ca0aaecef107f8326cdb9f7",
+        "url": "https://finnhub.io/api/news?id=f89acd32dcc2c1ef8bb9f33a485a41b9ffa9dd8d4a5696db1f8e025be8438861",
         "date": "2026-09-25"
+      },
+      {
+        "headline": "Tech Companies’ Cash Burn Isn’t the Problem You Might Think",
+        "summary": "The five hyperscalers are spending some $1 trillion a year to build out artificial-intelligence infrastructure, and their annual free cash flow is expected to show a decline of $440 billion.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=eacbe6e0ad9871dc46884ff9eae5a0967988e2e9c02ed8db4f6e15bf8e140bd7",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Microsoft vs. Amazon: Which AI Cloud Stock Converts Capex Into Profits Better?",
+        "summary": "Microsoft Corporation (NASDAQ:MSFT) and Amazon.com, Inc. (NASDAQ:AMZN) are spending at extraordinary scale to own the AI cloud. Their valuations are surprisingly close: Microsoft trades near 25.3 times forward earnings, while Amazon is around 27.7 times. The harder question is which company is turning those infrastructure dollars into better economics. That question has become more important […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=a472dbfca3b00ba5b8d30e0077a3fced1967311cf6f34695ced5853e3844b337",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Waymo Takes On Zoox in Las Vegas. Is Alphabet Winning the Robotaxi Race?",
+        "summary": "Waymo is planning on entering Las Vegas, but it is not alone in the market there. Amazon-backed Zoox already has a public robotaxi presence in the city, giving Waymo an established rival as it begins its Nevada rollout. Alphabet Inc.’s (NASDAQ:GOOGL) autonomous-driving unit has started offering fully autonomous rides to public passengers in Las Vegas, […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=0d2f875883cb21500af2f5eb5ac190c872a9848b563cc6d44b0120bae782aff8",
+        "date": "2026-09-24"
       },
       {
         "headline": "Tracking Philippe Laffont's Coatue Management Portfolio - Q2 2026 Update",
@@ -135,64 +217,6 @@
         "source": "SeekingAlpha",
         "url": "https://finnhub.io/api/news?id=6e9876f8563e7716d589129b891f07e0dbfcf101e3b3323e8ee2a3477ba594bf",
         "date": "2026-09-24"
-      },
-      {
-        "headline": "Is Taiwan Semiconductor (TSM) Stock a Better Bet than ASML Holding (ASML) as Advanced Chipmaking Accelerates?",
-        "summary": "On September 8, Taiwan Semiconductor Manufacturing Company Limited (NYSE:TSM) and ASML Holding N.V. (NASDAQ:ASML) announced a collaborative industry initiative to transition the semiconductor sector to a 12-inch Extreme Ultraviolet (EUV) photomask format. Currently, chipmakers use 6-inch masks for High NA EUV systems. Shifting to 12-inch photomasks aims to boost scanner productivity, eliminate sti",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=f637e6328417bd6aa823213b2da8475a3b7dd69a1577161369e1a98d58f1dfcc",
-        "date": "2026-09-24"
-      },
-      {
-        "headline": "ASML Drops 1.8% as $400 Million High-NA Tools Reach More Fabs",
-        "summary": "Customer adoption strengthens ASML's monopoly while shifting attention toward throughput, installation schedules and manufacturing returns.",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=d9165d492964d4c0bd0e85929c12a3770cfd4fb5a94386e5fb6c8d98dd456390",
-        "date": "2026-09-24"
-      },
-      {
-        "headline": "Don’t wait for cheaper stocks — Rebecca Walser on stocks to buy now",
-        "summary": "Rebecca Walser of Walser Wealth Management says we’re at the cheapest price entry point of the largest innovation cycle in history. She breaks down where retail investors should put money now, from ASML and Micron to energy and gold, and why “you will be a laggard if you don’t participate.”",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=81a638b66a4e6cdec948a3d00470dd38bc551990abcef6c084f666164be6d0e2",
-        "date": "2026-09-24"
-      }
-    ],
-    "COST": [
-      {
-        "headline": "Meet the 6 Categories That Drove Costco’s 19.5% Digitally Enabled Sales Comps in Its Latest Quarter.",
-        "summary": "The growth figure was high, given how little the company hypes that channel.",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=3a93e7bc32ebda45d01defd308a611300e146586528544905db7214d69873aa0",
-        "date": "2026-09-25"
-      },
-      {
-        "headline": "Costco Just Showed Why It's a Better Buy Than Walmart",
-        "summary": "Costco delivered another strong earnings report, even as rivals like Walmart are seeing slowing revenue growth.",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=fcb429a8cf83fe0315d520f4ee6f3a9aa8ecfddff673937ae8d720b943ab9acb",
-        "date": "2026-09-25"
-      },
-      {
-        "headline": "Costco Wholesale Corp (COST) (Q4 2026) Earnings Call Highlights: Double-Digit Sales Growth, ...",
-        "summary": "Costco Wholesale Corp (COST) posts 11.2% net sales growth to $93.87 billion in Q4 FY2026, with digitally enabled comps up 19.5% and executive membership climbing 9.4%.",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=ccd61c036083db779cf27a50418e039d5755390e6847d73a3e14cd2b4d87712f",
-        "date": "2026-09-25"
-      },
-      {
-        "headline": "Costco Confirms Its Food Court Churro Is Coming Back — COST Stock Flat Despite Q4 Beat",
-        "summary": "The menu item comeback follows a strong quarter for the warehouse retailer.",
-        "source": "Yahoo",
-        "url": "https://finnhub.io/api/news?id=ed985391ff12fd7ab7f6cd14f737707799ef2bbe97f13e9c9e98d00a7e14de7f",
-        "date": "2026-09-25"
-      },
-      {
-        "headline": "Costco: Strong Fundamentals, But Valuation Needs To Cool; Reiterate Sell",
-        "summary": "Costco delivered a strong Q4 with 11.2% revenue growth and 15% EPS growth. Find out why COST stock is a Sell.",
-        "source": "SeekingAlpha",
-        "url": "https://finnhub.io/api/news?id=d62b51c6f560a7befc5e43d46fe09d32cdb3fef8c9dd9bdf64ff7132a996a38f",
-        "date": "2026-09-25"
       }
     ],
     "ETN": [
@@ -229,6 +253,80 @@
         "summary": "The Zacks Manufacturing - Electronics industry gains from solid momentum in the manufacturing sector and strength across major end markets. ETN, EMR, AOS and ENS are some notable stocks in the industry.",
         "source": "Yahoo",
         "url": "https://finnhub.io/api/news?id=69871ff9aa690e9cc32230fd8b4bc28a116f75f725f0e7b5b9da012a9e7ed7be",
+        "date": "2026-09-24"
+      }
+    ],
+    "GOOGL": [
+      {
+        "headline": "Do Cloudflare’s (NET) New AI Crawler Controls Quietly Strengthen Its Data-Moat Narrative?",
+        "summary": "In September 2026, Cloudflare, Inc. launched new AI crawling controls, including a “Disallow AI Training” setting and an Accountable designation for AI crawlers, giving website owners granular control over search, AI training, and AI agents while keeping them visible in search results. A key innovation is Cloudflare’s Bot Preference Sync and accountability criteria, which standardize how websites ",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=cd2c4d10920a5ed7a5a104b8aa0251941ad181d80aee3a990a5f5198c55e8254",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "AMZN, META, GOOGL, MSFT, ORCL: Michael Burry Sounds Fresh Alarm On Big Tech’s AI Spending, Warns Of Massive Write-Offs In Two Years",
+        "summary": "Burry flags rising leverage, off-balance-sheet commitments and accounting practices as AI infrastructure spending accelerates.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=f89acd32dcc2c1ef8bb9f33a485a41b9ffa9dd8d4a5696db1f8e025be8438861",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Tech Companies’ Cash Burn Isn’t the Problem You Might Think",
+        "summary": "The five hyperscalers are spending some $1 trillion a year to build out artificial-intelligence infrastructure, and their annual free cash flow is expected to show a decline of $440 billion.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=eacbe6e0ad9871dc46884ff9eae5a0967988e2e9c02ed8db4f6e15bf8e140bd7",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Alphabet vs. Meta: Which AI Advertising Giant Is the Better Stock to Buy?",
+        "summary": "Alphabet Inc. (NASDAQ:GOOGL) and Meta Platforms, Inc. (NASDAQ:META) are both using AI to make advertising more valuable while spending tens of billions of dollars on the models and infrastructure underneath it. Their valuations now make the portfolio choice unusually close. Alphabet trades at roughly 25 times forward earnings, while Meta is near 23 times. The […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=0f47e03a26ec294f07f10250b4b9f86133b664baa622155c82204e00ad2f6016",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Broadcom vs. Marvell: Which Custom AI Chip Stock Has the Better Risk-Reward?",
+        "summary": "Broadcom Inc. (NASDAQ:AVGO) and Marvell Technology, Inc. (NASDAQ:MRVL) are two of the clearest ways to bet that hyperscalers will keep replacing some merchant AI chips with custom silicon. The stocks now ask very different prices for that opportunity. Broadcom trades at about 20.5 times forward earnings, while Marvell trades near 47.8 times. That gap matters […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=8a9a303cb9389e0d1ba51a37a3535a3d1c6b4a3e193d865c2b37b5e0b2895bfa",
+        "date": "2026-09-25"
+      }
+    ],
+    "JPM": [
+      {
+        "headline": "JPMorgan sends strong message to Meta stock investors",
+        "summary": "A Wall Street bank that soured on the stock in April now sees a historic run for its newest AI app",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=e4c9a010d5351c919685a4460b6e1b3cf6b97ce4492c2751e619d1a53c646749",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Why Welltower Stock Topped the Market on Thursday",
+        "summary": "An analyst upgraded his recommendation on the specialty REIT.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=561480f3f2831097c0a1f8196644d8bf1ecd0dc2219ef18287b5a9ad22787cda",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Sigma Lithium (SGML) Stock Could Be A Bargain After JPMorgan Initiation",
+        "summary": "Sigma Lithium has seen its share price swing sharply over recent years, which puts fresh attention on a basic question for investors who care about fundamentals. Is the current market value of the stock really supported by the sales the business is generating today and what it may reasonably add over time? The share price has declined 68.4% over the past 3 years, which raises the issue of how much",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=cbfaba55ced8a0c6254068a2cf8f05a5700262acc871308e935e11c71b95ab75",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "JPMorgan Mulls $3.8 Billion Construction Financing for NYC Tower",
+        "summary": "JPMorgan Chase & Co. is in talks to lead a massive financing for Extell Development’s plan to build condominiums on Manhattan’s Upper West Side at a site that once served as the headquarters of the ABC television network.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=c33b7d45ef800f84449dcabf03aab8d6ebfd59989bd4c05070a7f1b07556e856",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Office of the President of the Republic of Paraguay and J.P. Morgan Asset Management Announce $200 Million Investment in Sustainable Forestry in Paraguay",
+        "summary": "At this week's Paraguay Investment Forum NYC 2026, the Office of the President of the Republic of Paraguay and J.P. Morgan Natural Capital announced an investment of approximately USD 200 million to develop a large-scale sustainable forestry platform in Paraguay.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=20fbfa18bc7d33a5bfca71b89658be012527c12565ed2196f08b58e20c7b90f5",
         "date": "2026-09-24"
       }
     ],
@@ -305,37 +403,154 @@
         "url": "https://finnhub.io/api/news?id=845fa3987e318a36959d7520718005bf1f711b92dc4fd9f08b4cf665bc45cc90",
         "date": "2026-09-24"
       }
+    ],
+    "MSFT": [
+      {
+        "headline": "Can Plug Power’s (PLUG) NZ Electrolyzer Win Offset Questions Raised by a COO Exit?",
+        "summary": "Plug Power Inc. recently shipped a 1 MW GenEco PEM electrolyzer to HWR Hydrogen in New Zealand to supply locally produced hydrogen for a dual-fuel heavy truck fleet, while Chief Operating Officer Dean C. Fullerton has resigned and is assisting with a transition of his responsibilities. This mix of international project expansion in an emerging hydrogen ecosystem and senior leadership change highli",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=1481c43bdda2696f04f336cc3f72f688eb3faf1a881a5bfefd0f94feb3fd0f84",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Do Cloudflare’s (NET) New AI Crawler Controls Quietly Strengthen Its Data-Moat Narrative?",
+        "summary": "In September 2026, Cloudflare, Inc. launched new AI crawling controls, including a “Disallow AI Training” setting and an Accountable designation for AI crawlers, giving website owners granular control over search, AI training, and AI agents while keeping them visible in search results. A key innovation is Cloudflare’s Bot Preference Sync and accountability criteria, which standardize how websites ",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=cd2c4d10920a5ed7a5a104b8aa0251941ad181d80aee3a990a5f5198c55e8254",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "AMZN, META, GOOGL, MSFT, ORCL: Michael Burry Sounds Fresh Alarm On Big Tech’s AI Spending, Warns Of Massive Write-Offs In Two Years",
+        "summary": "Burry flags rising leverage, off-balance-sheet commitments and accounting practices as AI infrastructure spending accelerates.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=f89acd32dcc2c1ef8bb9f33a485a41b9ffa9dd8d4a5696db1f8e025be8438861",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Tech Companies’ Cash Burn Isn’t the Problem You Might Think",
+        "summary": "The five hyperscalers are spending some $1 trillion a year to build out artificial-intelligence infrastructure, and their annual free cash flow is expected to show a decline of $440 billion.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=eacbe6e0ad9871dc46884ff9eae5a0967988e2e9c02ed8db4f6e15bf8e140bd7",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Microsoft vs. Amazon: Which AI Cloud Stock Converts Capex Into Profits Better?",
+        "summary": "Microsoft Corporation (NASDAQ:MSFT) and Amazon.com, Inc. (NASDAQ:AMZN) are spending at extraordinary scale to own the AI cloud. Their valuations are surprisingly close: Microsoft trades near 25.3 times forward earnings, while Amazon is around 27.7 times. The harder question is which company is turning those infrastructure dollars into better economics. That question has become more important […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=a472dbfca3b00ba5b8d30e0077a3fced1967311cf6f34695ced5853e3844b337",
+        "date": "2026-09-25"
+      }
+    ],
+    "NVDA": [
+      {
+        "headline": "Can Plug Power’s (PLUG) NZ Electrolyzer Win Offset Questions Raised by a COO Exit?",
+        "summary": "Plug Power Inc. recently shipped a 1 MW GenEco PEM electrolyzer to HWR Hydrogen in New Zealand to supply locally produced hydrogen for a dual-fuel heavy truck fleet, while Chief Operating Officer Dean C. Fullerton has resigned and is assisting with a transition of his responsibilities. This mix of international project expansion in an emerging hydrogen ecosystem and senior leadership change highli",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=1481c43bdda2696f04f336cc3f72f688eb3faf1a881a5bfefd0f94feb3fd0f84",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Where Will Robinhood Stock Be in 5 Years?",
+        "summary": "The trading platform continues to launch the finance products of the future.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=bdf675fb096a8b4fb1212f3aed9b34afada5c950f6b860ac3cf1ea79cfaa281f",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "The Math Doesn't Lie: What Oklo's Stock Sales Actually Cost Investors",
+        "summary": "Oklo could change the way we use nuclear energy. But getting there hasn't been cheap.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=1e3efb7c2f8358428105612964fe49a2ed90fc43ddfa06a707dadb467313ea1c",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Meet the 6 Categories That Drove Costco’s 19.5% Digitally Enabled Sales Comps in Its Latest Quarter.",
+        "summary": "The growth figure was high, given how little the company hypes that channel.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=3a93e7bc32ebda45d01defd308a611300e146586528544905db7214d69873aa0",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Costco Just Showed Why It's a Better Buy Than Walmart",
+        "summary": "Costco delivered another strong earnings report, even as rivals like Walmart are seeing slowing revenue growth.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=fcb429a8cf83fe0315d520f4ee6f3a9aa8ecfddff673937ae8d720b943ab9acb",
+        "date": "2026-09-25"
+      }
+    ],
+    "TSM": [
+      {
+        "headline": "ASML vs. Applied Materials: Which AI Chip-Equipment Stock Is the Better Buy?",
+        "summary": "ASML Holding N.V. (NASDAQ:ASML) and Applied Materials, Inc. (NASDAQ:AMAT) sell different tools, but both compete for the same investor dollar tied to semiconductor capital spending. ASML trades around 31 times forward earnings, while Applied Materials trades near 27 times. That modest premium raises a useful question: how much should investors pay for a near-monopoly? The […]",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=c08ff8575733bc3b1222d51293c785ab4608a01a8ca0aaecef107f8326cdb9f7",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Dow Jones Futures: Market Rally Resilient As Yields, Oil Prices Keep Rising; Tesla Event On Deck",
+        "summary": "The stock market rallied to close mixed even as yields and oil prices kept rising. Taiwan Semi is a buy. A Tesla Semi event is on tap.",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=78238e26136a0958e886dd7b0985f3367f77c2ddd56135f7b81615238bc1bd03",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Why Is Taiwan Semiconductor Manufacturing (TSM) Raising Wafer Prices By 3% To 6%?",
+        "summary": "Taiwan Semiconductor Manufacturing (NYSE:TSM) plans to lift wafer foundry prices by 3% to 6% starting in 2027. The largest increases are planned for advanced process nodes used in high performance computing and AI chips. Management is preparing the multi year pricing update as capacity remains tight for AI related demand and advanced packaging through 2030. This planned 3% to 6% wafer pricing move",
+        "source": "Yahoo",
+        "url": "https://finnhub.io/api/news?id=4a3d6894884d3cb56ff01a9667e356a3e39dab6c0fffed97a8463dcdaf9bd200",
+        "date": "2026-09-25"
+      },
+      {
+        "headline": "Tracking Philippe Laffont's Coatue Management Portfolio - Q2 2026 Update",
+        "summary": "Coatueâs Q2 2026 13F jumps to $48.6B: top holdings and new buys in AI, semis, and energy. Read here for a detailed investment analysis.",
+        "source": "SeekingAlpha",
+        "url": "https://finnhub.io/api/news?id=6e9876f8563e7716d589129b891f07e0dbfcf101e3b3323e8ee2a3477ba594bf",
+        "date": "2026-09-24"
+      },
+      {
+        "headline": "Taiwan Semiconductor: AI Hiccups Lately, But Strong Growth Persists",
+        "summary": "Taiwan Semiconductor remains a buy as AI-driven growth lifts results and outlook, with attractive valuation despite 2nm, geopolitics, and capex risks. See more.",
+        "source": "SeekingAlpha",
+        "url": "https://finnhub.io/api/news?id=4f53e542eff5486f5f698ab1f8c77fe90db812188af813b17d5bd400fab6fb17",
+        "date": "2026-09-24"
+      }
     ]
   },
   "filings": {
-    "COST": [
+    "TSM": [
       {
-        "form": "8-K",
+        "form": "6-K",
         "date": "2026-09-24",
-        "items": "2.02,9.01",
-        "url": "https://www.sec.gov/Archives/edgar/data/909832/000090983226000084/cost-20260924.htm",
-        "label": "ผลประกอบการ"
+        "items": "",
+        "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000660/tsm-monthend6kx20260924.htm",
+        "label": ""
       }
     ]
   },
   "profiles": {
-    "ASML": {
-      "name": "ASML Holding NV",
-      "industry": "Semiconductors",
-      "country": "NL",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ASML.AS.png"
-    },
-    "COST": {
-      "name": "Costco Wholesale Corp",
+    "AMZN": {
+      "name": "Amazon.com Inc",
       "industry": "Retail",
       "country": "US",
-      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/COST.png"
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png"
     },
     "ETN": {
       "name": "Eaton Corporation PLC",
       "industry": "Electrical Equipment",
       "country": "IE",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ETN.png"
+    },
+    "GOOGL": {
+      "name": "Alphabet Inc",
+      "industry": "Media",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GOOG.png"
+    },
+    "JPM": {
+      "name": "JPMorgan Chase & Co",
+      "industry": "Banking",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JPM.png"
     },
     "LLY": {
       "name": "Eli Lilly and Co",
@@ -348,13 +563,51 @@
       "industry": "Financial Services",
       "country": "US",
       "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MA.png"
+    },
+    "MSFT": {
+      "name": "Microsoft Corp",
+      "industry": "Technology",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSFT.png"
+    },
+    "NVDA": {
+      "name": "NVIDIA Corp",
+      "industry": "Semiconductors",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png"
+    },
+    "TSM": {
+      "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+      "industry": "Semiconductors",
+      "country": "TW",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/2330.TW.png"
     }
   },
   "earnings": [
     {
+      "ticker": "JPM",
+      "date": "2026-10-13",
+      "hour": ""
+    },
+    {
       "ticker": "MA",
       "date": "2026-10-22",
       "hour": "bmo"
+    },
+    {
+      "ticker": "GOOGL",
+      "date": "2026-10-27",
+      "hour": "amc"
+    },
+    {
+      "ticker": "MSFT",
+      "date": "2026-10-27",
+      "hour": ""
+    },
+    {
+      "ticker": "AMZN",
+      "date": "2026-10-28",
+      "hour": "amc"
     },
     {
       "ticker": "LLY",
@@ -368,82 +621,500 @@
     }
   ],
   "summary": {
-    "text": "ตลาดแนวโน้มบวก ปันโปร่งตัวกำลังแข็งขัน นักลงทุนลุยหุ้นปันผล สตาร์ทอัพ เซมิคอนดักเตอร์ และจ่ายเงินดิจิทัล\n🟢 ASML: High-NA tools ถูกนำไปใช้ที่โรงงานมากขึ้น ยืนยันการผูกขาดในตลาด\n🟢 COST: Q4 ผลประกอบการแข็งแกร่ง ยอดขายตามดิจิทัล +19.5% สมาชิก +9.4%\n🟡 ETN: ลงทุน $242 ล้านสร้างโรงงานใหม่ เพิ่มกำลังสำหรับศูนย์ข้อมูล\n🟢 LLY: FDA อนุมัติ Onswik อินซูลินรายสัปดาห์ Medicare มี Lilly เข้าชิง\n🟢 MA: ร่วมมาตรฐาน AI-Agent KYA ยืนยันบทบาทในพาณิชย์อัตโนมัติ\nจับตา: LLY ประเมูลสูง อาจสะท้อนความคาดหวังยาลดน้ำหนัก Medicare แล่นเร็ว · COST ราคาสูงแม้ผลงานแข็ง นักวิเคราะห์วิตกเรื่องค่อยๆปรับตัว",
+    "text": "ตลาดสีเขียว AI infrastructure spending และการเตรียมตัว earnings ใกล้นี้ดึงความสนใจ\n🟡 AMZN: นักวิเคราะห์เตือนความเสี่ยง AI capex ขนาดใหญ่ แต่ยังสร้าง free cash flow ได้\n🟡 ETN: ลงทุน $242 ล้านโรงงานใหม่ แต่นักวิเคราะห์กังวล profit margin ร่วงและ valuation สูง\n🟡 GOOGL: ตัวเลือก Waymo Las Vegas ท้าชิง Zoox แต่ยังมีข้อกังวล AI spending ขนาด $1 ล้านล้านต่อปี\n🟢 LLY: FDA อนุมัติ Onswik อินซูลินสัปดาห์ละครั้ง Medicare ยกเลิก Novo Nordisk ได้บ้าง\n🟡 MA: ร่วมมือ Visa/Ant International มาตรฐาน AI agent identity สำหรับ agentic commerce\n🟡 MSFT: ยังจ่ายเงิน capex AI สูง แต่ free cash flow ยังอยู่ได้ตามนักวิเคราะห์บางราย\n🟢 TSM: ราคา wafer ขึ้น 3-6% ปี 2027 สำหรับ AI chip ความต้องการแข็งแกร่ง\nจับตา: ความเสี่ยง AI capex: Burry เตือนหนี้สูง write-off ใน 2 ปี แม้ hyperscaler ยังไป cash positive ได้ · Earnings รอบมุม JPM, MA, GOOGL, MSFT, AMZN ตลาด Oct 13-28 เนื่อง AI spending profitability",
     "structured": {
-      "overview": "ตลาดแนวโน้มบวก ปันโปร่งตัวกำลังแข็งขัน นักลงทุนลุยหุ้นปันผล สตาร์ทอัพ เซมิคอนดักเตอร์ และจ่ายเงินดิจิทัล",
+      "overview": "ตลาดสีเขียว AI infrastructure spending และการเตรียมตัว earnings ใกล้นี้ดึงความสนใจ",
       "tickers": [
         {
-          "ticker": "ASML",
-          "about": "ผู้ผลิตเครื่องมืออุตสาหกรรมซิลิคอนชั้นนำโลก",
-          "sentiment": "pos",
-          "line": "High-NA tools ถูกนำไปใช้ที่โรงงานมากขึ้น ยืนยันการผูกขาดในตลาด"
-        },
-        {
-          "ticker": "COST",
-          "about": "ร้านสมาชิกจำหน่ายสินค้าคุณภาพราคาถูก",
-          "sentiment": "pos",
-          "line": "Q4 ผลประกอบการแข็งแกร่ง ยอดขายตามดิจิทัล +19.5% สมาชิก +9.4%"
+          "ticker": "AMZN",
+          "about": "ค้าปลีกออนไลน์และคลาวด์ AI",
+          "sentiment": "neu",
+          "line": "นักวิเคราะห์เตือนความเสี่ยง AI capex ขนาดใหญ่ แต่ยังสร้าง free cash flow ได้"
         },
         {
           "ticker": "ETN",
-          "about": "ผู้ผลิตอุปกรณ์ไฟฟ้าและจัดการพลังงาน",
+          "about": "อุปกรณ์ไฟฟ้าและระบบพลังงาน",
           "sentiment": "neu",
-          "line": "ลงทุน $242 ล้านสร้างโรงงานใหม่ เพิ่มกำลังสำหรับศูนย์ข้อมูล"
+          "line": "ลงทุน $242 ล้านโรงงานใหม่ แต่นักวิเคราะห์กังวล profit margin ร่วงและ valuation สูง"
+        },
+        {
+          "ticker": "GOOGL",
+          "about": "โฆษณาดิจิทัลและเทคโนโลยีคลาวด์",
+          "sentiment": "neu",
+          "line": "ตัวเลือก Waymo Las Vegas ท้าชิง Zoox แต่ยังมีข้อกังวล AI spending ขนาด $1 ล้านล้านต่อปี"
+        },
+        {
+          "ticker": "JPM",
+          "about": "สถาบันการเงินและการลงทุน",
+          "sentiment": "neu",
+          "line": "ไม่มีข่าวสำคัญ"
         },
         {
           "ticker": "LLY",
-          "about": "บริษัทยาชั้นนำเน้นยารักษาเบาหวานและลดน้ำหนัก",
+          "about": "ยารักษาเบาหวาน โรค สูตรการลดน้ำหนัก",
           "sentiment": "pos",
-          "line": "FDA อนุมัติ Onswik อินซูลินรายสัปดาห์ Medicare มี Lilly เข้าชิง"
+          "line": "FDA อนุมัติ Onswik อินซูลินสัปดาห์ละครั้ง Medicare ยกเลิก Novo Nordisk ได้บ้าง"
         },
         {
           "ticker": "MA",
-          "about": "เครือข่ายสถาบันการจ่ายเงินดิจิทัลระดับโลก",
+          "about": "ระบบชำระเงินและธุรกรรมดิจิทัล",
+          "sentiment": "neu",
+          "line": "ร่วมมือ Visa/Ant International มาตรฐาน AI agent identity สำหรับ agentic commerce"
+        },
+        {
+          "ticker": "MSFT",
+          "about": "ซอฟต์แวร์คลาวด์ AI และบริการดิจิทัล",
+          "sentiment": "neu",
+          "line": "ยังจ่ายเงิน capex AI สูง แต่ free cash flow ยังอยู่ได้ตามนักวิเคราะห์บางราย"
+        },
+        {
+          "ticker": "NVDA",
+          "about": "ชิป GPU เซมิคอนดักเตอร์ AI",
+          "sentiment": "neu",
+          "line": "ไม่มีข่าวสำคัญ"
+        },
+        {
+          "ticker": "TSM",
+          "about": "ผลิตชิปเซมิคอนดักเตอร์ขั้นสูง",
           "sentiment": "pos",
-          "line": "ร่วมมาตรฐาน AI-Agent KYA ยืนยันบทบาทในพาณิชย์อัตโนมัติ"
+          "line": "ราคา wafer ขึ้น 3-6% ปี 2027 สำหรับ AI chip ความต้องการแข็งแกร่ง"
         }
       ],
       "watch": [
-        "LLY ประเมูลสูง อาจสะท้อนความคาดหวังยาลดน้ำหนัก Medicare แล่นเร็ว",
-        "COST ราคาสูงแม้ผลงานแข็ง นักวิเคราะห์วิตกเรื่องค่อยๆปรับตัว"
+        "ความเสี่ยง AI capex: Burry เตือนหนี้สูง write-off ใน 2 ปี แม้ hyperscaler ยังไป cash positive ได้",
+        "Earnings รอบมุม JPM, MA, GOOGL, MSFT, AMZN ตลาด Oct 13-28 เนื่อง AI spending profitability"
       ],
       "flags": []
     },
     "model": "claude-haiku-4-5-20251001",
     "usage": {
-      "input_tokens": 3575,
+      "input_tokens": 5884,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 866,
+      "output_tokens": 1154,
       "service_tier": "standard",
       "inference_geo": "not_available"
     }
   },
+  "decision": {
+    "mode": "initial",
+    "cost_usd": 0.2812,
+    "tools_used": 14,
+    "status": "executed",
+    "market_view": "ตลาดอยู่ในโหมด risk-on ดัชนีอยู่เหนือเส้น 200 วันราว 7% และ VIX ต่ำที่ 15.3 แต่ผลตอบแทนพันธบัตรสหรัฐ 10 ปีขึ้นแรงมาอยู่ที่ 5.16% ซึ่งกดดันหุ้นที่ราคาแพง ช่วงนี้กลุ่มเทคโนโลยีนำตลาด ขณะที่กลุ่มที่อ่อนไหวต่อดอกเบี้ยอย่างสาธารณูปโภค อสังหาฯ และสินค้าจำเป็นปรับลง จึงเลือกถือหุ้นคุณภาพสูงที่กำไรโตจริงและ PE ล่วงหน้าไม่แพงเกินไป และถือเงินสดไว้ราว 7%",
+    "action": "initial",
+    "summary_th": "เริ่มพอร์ตด้วยหุ้นคุณภาพ 9 ตัว เน้น AI (NVDA, TSM, MSFT, GOOGL, AMZN) และกระจายไปยังกลุ่มยา การเงิน และอุตสาหกรรม ถือเงินสดไว้ 7%",
+    "journal": "ตลาดเป็น risk-on แต่ผลตอบแทนพันธบัตร 10 ปีพุ่งขึ้น 0.52 จุดมาอยู่ที่ 5.16% ภายใน 4 สัปดาห์ ซึ่งเป็นความเสี่ยงหลักต่อหุ้นที่ PE สูง จึงเลือกหุ้นที่ PE ล่วงหน้าต่ำกว่า 25 เท่าเป็นหลัก และข้าม COST (PEG 4.4), META (ราคาขึ้นมา 36% ใน 1 เดือนจนใกล้เป้านักวิเคราะห์แล้ว) และ ASML (PE ย้อนหลังสูงราว 60 เท่า) กลุ่มเทคโนโลยีรวม 36% ยังต่ำกว่าเพดาน 40% และแต่ละตัวไม่เกิน 14% เพื่อไม่ให้หุ้นตัวเดียวตัดสินผลทั้งพอร์ต ใส่ LLY, MA และ JPM เพื่อให้ beta ของพอร์ตต่ำลงและกระจายปัจจัยเสี่ยง ในอีก 6 สัปดาห์ข้างหน้าเป็นฤดูประกาศงบของทุกตัว ซึ่งจะเป็นบททดสอบ thesis แต่ละข้อ สิ่งที่จะทำให้เปลี่ยนใจคือ yield ขึ้นเกิน 5.5% พร้อมกับตลาดหลุดเส้น 200 วัน ถ้าเกิดขึ้นจะพิจารณาเพิ่มเงินสด (แต่จะไม่ขายหุ้นที่ thesis ยังดีอยู่เพียงเพราะเรื่องนี้) หรือถ้างบของตัวใดไม่ผ่าน exit condition ที่ตั้งไว้ก็จะขายตัวนั้น",
+    "targets": [
+      {
+        "ticker": "NVDA",
+        "weight": 0.12,
+        "thesis": "ผู้นำชิป AI สำหรับดาต้าเซ็นเตอร์ รายได้โต 106% และกำไรโต 128% แต่ PE ล่วงหน้าเพียงราว 14-17 เท่า PEG 0.48 ถือว่าถูกเมื่อเทียบกับการเติบโต",
+        "exit_condition": "ขายถ้ารายได้ดาต้าเซ็นเตอร์โตต่ำกว่า 30% ต่อปี หรือบริษัทลดแนวโน้มรายได้ (guidance) ลงชัดเจน หรือ gross margin ต่ำกว่า 65% ติดกัน 2 ไตรมาส",
+        "expected_outcome": "ภายใน 12 สัปดาห์ งบวันที่ 17 พ.ย. เกินคาดและรักษาแนวโน้มการเติบโตได้ ราคาทำผลตอบแทนดีกว่า VOO",
+        "about": "ผู้ออกแบบชิป GPU และระบบประมวลผล AI"
+      },
+      {
+        "ticker": "TSM",
+        "weight": 0.12,
+        "thesis": "โรงงานผลิตชิปขั้นสูงที่แทบผูกขาดตลาด รายได้โต 36% กำไรโต 77% PE ล่วงหน้าราว 19-21 เท่า PEG 0.85 และเป็นผู้ได้ประโยชน์จากชิป AI ทุกค่าย",
+        "exit_condition": "ขายถ้ารายได้โตต่ำกว่า 15% ต่อปี หรือ gross margin ต่ำกว่า 55% หรือความเสี่ยงภูมิรัฐศาสตร์ช่องแคบไต้หวันยกระดับเป็นมาตรการจริง",
+        "expected_outcome": "งบวันที่ 14 ต.ค. แสดงรายได้โตมากกว่า 30% และราคาขยับเข้าหาเป้านักวิเคราะห์ราว 550 ดอลลาร์",
+        "about": "ผู้รับจ้างผลิตชิปเซมิคอนดักเตอร์รายใหญ่ที่สุดในโลก"
+      },
+      {
+        "ticker": "MSFT",
+        "weight": 0.12,
+        "thesis": "ธุรกิจคลาวด์ Azure และซอฟต์แวร์องค์กรที่มี moat แข็ง รายได้โต 18% กำไรโต 32% PE ล่วงหน้าราว 21-24 เท่า สมเหตุสมผลสำหรับคุณภาพระดับนี้",
+        "exit_condition": "ขายถ้า Azure โตต่ำกว่า 25% หรือ operating margin ลดลงต่ำกว่า 40% เพราะ capex ของ AI ไม่สร้างรายได้",
+        "expected_outcome": "งบวันที่ 27 ต.ค. แสดงรายได้โตมากกว่า 15% และราคาหุ้นทำผลตอบแทนเทียบเท่าหรือดีกว่า VOO",
+        "about": "บริษัทซอฟต์แวร์และคลาวด์ (Windows, Office, Azure)"
+      },
+      {
+        "ticker": "GOOGL",
+        "weight": 0.14,
+        "thesis": "PE ย้อนหลังราว 17 เท่าและ PE ล่วงหน้าราว 21-23 เท่า รายได้โต 24% มีทั้ง Search, YouTube และ Cloud ที่กำลังเร่งตัว เงินสดสุทธิสูง เป็นหุ้นเมกะแคปที่ถูกที่สุดในกลุ่ม",
+        "exit_condition": "ขายถ้ารายได้ Search หดตัวเทียบปีก่อน (ส่วนแบ่งตลาดเสียให้ AI คู่แข่ง) หรือถูกคำสั่งศาล antitrust ให้แยกธุรกิจหลัก",
+        "expected_outcome": "งบวันที่ 27 ต.ค. แสดงรายได้โตมากกว่า 15% และ Cloud margin ดีขึ้น ราคากลับไปทดสอบ 380-400 ดอลลาร์",
+        "about": "เจ้าของ Google Search, YouTube และ Google Cloud"
+      },
+      {
+        "ticker": "AMZN",
+        "weight": 0.1,
+        "thesis": "AWS และธุรกิจโฆษณาเป็นเครื่องยนต์กำไร รายได้โต 20% PE ล่วงหน้าราว 23-24 เท่า ราคาย่อลงมา 4% ในเดือนที่ผ่านมา จึงเป็นจังหวะเข้าที่ดี",
+        "exit_condition": "ขายถ้า AWS โตต่ำกว่า 12% หรือ operating margin รวมลดลงต่ำกว่า 9% ติดกัน 2 ไตรมาส",
+        "expected_outcome": "งบวันที่ 28 ต.ค. แสดงว่า AWS เร่งการเติบโต และราคาหุ้นกลับไปเหนือ 270 ดอลลาร์",
+        "about": "ค้าปลีกออนไลน์และผู้ให้บริการคลาวด์ AWS"
+      },
+      {
+        "ticker": "LLY",
+        "weight": 0.1,
+        "thesis": "ผู้นำยาลดน้ำหนักและเบาหวาน (Mounjaro/Zepbound) รายได้โต 48% PE ล่วงหน้าราว 25 เท่า PEG 1.1 beta ต่ำ 0.5 ช่วยกระจายความเสี่ยงจากกลุ่มเทค",
+        "exit_condition": "ขายถ้ารายได้โตต่ำกว่า 20% หรือมีปัญหาความปลอดภัยของยาหลัก หรือราคายาถูกกดลงจนแนวโน้มกำไรทั้งปีถูกลดลงมากกว่า 10%",
+        "expected_outcome": "งบวันที่ 29 ต.ค. แสดงรายได้โตมากกว่า 30% และราคาหุ้นกลับไปเหนือ 1,250 ดอลลาร์",
+        "about": "บริษัทยา โฟกัสยาเบาหวานและยาลดน้ำหนัก"
+      },
+      {
+        "ticker": "MA",
+        "weight": 0.08,
+        "thesis": "เครือข่ายชำระเงินที่ได้ประโยชน์จากการใช้จ่ายและเงินเฟ้อ margin สูงกว่า 58% รายได้โต 14% beta ต่ำ ราคาย่อลงมา 6% ในเดือนที่ผ่านมา",
+        "exit_condition": "ขายถ้ารายได้สุทธิโตต่ำกว่า 9% หรือมีกฎหมายจำกัดค่าธรรมเนียมบัตร (เช่น Credit Card Competition Act) ผ่านสภา",
+        "expected_outcome": "งบวันที่ 22 ต.ค. แสดงรายได้โตมากกว่า 12% และราคากลับไปใกล้ 600 ดอลลาร์",
+        "about": "บริษัทระบบชำระเงินผ่านบัตร"
+      },
+      {
+        "ticker": "JPM",
+        "weight": 0.08,
+        "thesis": "ธนาคารที่ดีที่สุดในสหรัฐ PE ราว 14 เท่า ปันผล 2% ได้ประโยชน์จากดอกเบี้ยระยะยาวที่สูงขึ้นและกิจกรรมวาณิชธนกิจ ช่วยถ่วงดุลความเสี่ยงของกลุ่ม growth",
+        "exit_condition": "ขายถ้าหนี้เสียหรือเงินสำรองหนี้สูญเพิ่มผิดปกติมากกว่า 30% เทียบปีก่อน หรือ ROE ต่ำกว่า 14%",
+        "expected_outcome": "งบวันที่ 13 ต.ค. แสดง ROE มากกว่า 16% และราคากลับไปเหนือ 355 ดอลลาร์",
+        "about": "ธนาคารพาณิชย์และวาณิชธนกิจรายใหญ่ที่สุดของสหรัฐ"
+      },
+      {
+        "ticker": "ETN",
+        "weight": 0.07,
+        "thesis": "ได้ประโยชน์จากความต้องการระบบไฟฟ้าของดาต้าเซ็นเตอร์และการลงทุนโครงข่ายไฟฟ้า รายได้โต 21% และกำลังขยายโรงงาน กระจายความเสี่ยงของธีม AI ไปยังกลุ่มอุตสาหกรรม",
+        "exit_condition": "ขายถ้า order backlog ของ Electrical Americas ลดลงเทียบปีก่อน หรือรายได้โตต่ำกว่า 8%",
+        "expected_outcome": "งบวันที่ 2 พ.ย. แสดง backlog โตและกำไรต่อหุ้นกลับมาเป็นบวก ราคาขยับเข้าใกล้ 480 ดอลลาร์",
+        "about": "ผู้ผลิตอุปกรณ์ไฟฟ้าและระบบจัดการพลังงาน"
+      }
+    ],
+    "sells": [],
+    "sectors": {
+      "NVDA": "Technology",
+      "TSM": "Technology",
+      "MSFT": "Technology",
+      "GOOGL": "Communication Services",
+      "AMZN": "Consumer Cyclical",
+      "LLY": "Healthcare",
+      "MA": "Financial Services",
+      "JPM": "Financial Services",
+      "ETN": "Industrials"
+    }
+  },
+  "trades": [
+    {
+      "date": "2026-09-24",
+      "ticker": "NVDA",
+      "side": "buy",
+      "price": 224.5800018310547,
+      "usd": 359.82
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "TSM",
+      "side": "buy",
+      "price": 451.1499938964844,
+      "usd": 359.82
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "MSFT",
+      "side": "buy",
+      "price": 497.92999267578125,
+      "usd": 359.82
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "GOOGL",
+      "side": "buy",
+      "price": 342.3599853515625,
+      "usd": 419.79
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "AMZN",
+      "side": "buy",
+      "price": 249.3800048828125,
+      "usd": 299.85
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "LLY",
+      "side": "buy",
+      "price": 1181.8900146484375,
+      "usd": 299.85
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "MA",
+      "side": "buy",
+      "price": 566.0800170898438,
+      "usd": 239.88
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "JPM",
+      "side": "buy",
+      "price": 338.55999755859375,
+      "usd": 239.88
+    },
+    {
+      "date": "2026-09-24",
+      "ticker": "ETN",
+      "side": "buy",
+      "price": 440.0,
+      "usd": 209.9
+    }
+  ],
+  "monthly_review": null,
   "warnings": [],
-  "inception_date": null,
+  "inception_date": "2026-09-24",
   "start_capital_thb": 100000,
   "books": {
     "portfolio": {
-      "cash_usd": 0.0,
-      "holdings": {}
+      "cash_usd": 209.89506207719427,
+      "holdings": {
+        "NVDA": {
+          "shares": 1.5981857388264211,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24",
+          "sector": "Technology",
+          "thesis": {
+            "thesis": "ผู้นำชิป AI สำหรับดาต้าเซ็นเตอร์ รายได้โต 106% และกำไรโต 128% แต่ PE ล่วงหน้าเพียงราว 14-17 เท่า PEG 0.48 ถือว่าถูกเมื่อเทียบกับการเติบโต",
+            "exit_condition": "ขายถ้ารายได้ดาต้าเซ็นเตอร์โตต่ำกว่า 30% ต่อปี หรือบริษัทลดแนวโน้มรายได้ (guidance) ลงชัดเจน หรือ gross margin ต่ำกว่า 65% ติดกัน 2 ไตรมาส",
+            "expected_outcome": "ภายใน 12 สัปดาห์ งบวันที่ 17 พ.ย. เกินคาดและรักษาแนวโน้มการเติบโตได้ ราคาทำผลตอบแทนดีกว่า VOO",
+            "about": "ผู้ออกแบบชิป GPU และระบบประมวลผล AI",
+            "updated": "2026-09-24"
+          }
+        },
+        "TSM": {
+          "shares": 0.7955681281342473,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24",
+          "sector": "Technology",
+          "thesis": {
+            "thesis": "โรงงานผลิตชิปขั้นสูงที่แทบผูกขาดตลาด รายได้โต 36% กำไรโต 77% PE ล่วงหน้าราว 19-21 เท่า PEG 0.85 และเป็นผู้ได้ประโยชน์จากชิป AI ทุกค่าย",
+            "exit_condition": "ขายถ้ารายได้โตต่ำกว่า 15% ต่อปี หรือ gross margin ต่ำกว่า 55% หรือความเสี่ยงภูมิรัฐศาสตร์ช่องแคบไต้หวันยกระดับเป็นมาตรการจริง",
+            "expected_outcome": "งบวันที่ 14 ต.ค. แสดงรายได้โตมากกว่า 30% และราคาขยับเข้าหาเป้านักวิเคราะห์ราว 550 ดอลลาร์",
+            "about": "ผู้รับจ้างผลิตชิปเซมิคอนดักเตอร์รายใหญ่ที่สุดในโลก",
+            "updated": "2026-09-24"
+          }
+        },
+        "MSFT": {
+          "shares": 0.7208253397696175,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24",
+          "sector": "Technology",
+          "thesis": {
+            "thesis": "ธุรกิจคลาวด์ Azure และซอฟต์แวร์องค์กรที่มี moat แข็ง รายได้โต 18% กำไรโต 32% PE ล่วงหน้าราว 21-24 เท่า สมเหตุสมผลสำหรับคุณภาพระดับนี้",
+            "exit_condition": "ขายถ้า Azure โตต่ำกว่า 25% หรือ operating margin ลดลงต่ำกว่า 40% เพราะ capex ของ AI ไม่สร้างรายได้",
+            "expected_outcome": "งบวันที่ 27 ต.ค. แสดงรายได้โตมากกว่า 15% และราคาหุ้นทำผลตอบแทนเทียบเท่าหรือดีกว่า VOO",
+            "about": "บริษัทซอฟต์แวร์และคลาวด์ (Windows, Office, Azure)",
+            "updated": "2026-09-24"
+          }
+        },
+        "GOOGL": {
+          "shares": 1.2231004403566832,
+          "cost_usd": 419.7901241543897,
+          "opened": "2026-09-24",
+          "sector": "Communication Services",
+          "thesis": {
+            "thesis": "PE ย้อนหลังราว 17 เท่าและ PE ล่วงหน้าราว 21-23 เท่า รายได้โต 24% มีทั้ง Search, YouTube และ Cloud ที่กำลังเร่งตัว เงินสดสุทธิสูง เป็นหุ้นเมกะแคปที่ถูกที่สุดในกลุ่ม",
+            "exit_condition": "ขายถ้ารายได้ Search หดตัวเทียบปีก่อน (ส่วนแบ่งตลาดเสียให้ AI คู่แข่ง) หรือถูกคำสั่งศาล antitrust ให้แยกธุรกิจหลัก",
+            "expected_outcome": "งบวันที่ 27 ต.ค. แสดงรายได้โตมากกว่า 15% และ Cloud margin ดีขึ้น ราคากลับไปทดสอบ 380-400 ดอลลาร์",
+            "about": "เจ้าของ Google Search, YouTube และ Google Cloud",
+            "updated": "2026-09-24"
+          }
+        },
+        "AMZN": {
+          "shares": 1.1993762835980155,
+          "cost_usd": 299.8500886817069,
+          "opened": "2026-09-24",
+          "sector": "Consumer Cyclical",
+          "thesis": {
+            "thesis": "AWS และธุรกิจโฆษณาเป็นเครื่องยนต์กำไร รายได้โต 20% PE ล่วงหน้าราว 23-24 เท่า ราคาย่อลงมา 4% ในเดือนที่ผ่านมา จึงเป็นจังหวะเข้าที่ดี",
+            "exit_condition": "ขายถ้า AWS โตต่ำกว่า 12% หรือ operating margin รวมลดลงต่ำกว่า 9% ติดกัน 2 ไตรมาส",
+            "expected_outcome": "งบวันที่ 28 ต.ค. แสดงว่า AWS เร่งการเติบโต และราคาหุ้นกลับไปเหนือ 270 ดอลลาร์",
+            "about": "ค้าปลีกออนไลน์และผู้ให้บริการคลาวด์ AWS",
+            "updated": "2026-09-24"
+          }
+        },
+        "LLY": {
+          "shares": 0.2530696255598474,
+          "cost_usd": 299.8500886817069,
+          "opened": "2026-09-24",
+          "sector": "Healthcare",
+          "thesis": {
+            "thesis": "ผู้นำยาลดน้ำหนักและเบาหวาน (Mounjaro/Zepbound) รายได้โต 48% PE ล่วงหน้าราว 25 เท่า PEG 1.1 beta ต่ำ 0.5 ช่วยกระจายความเสี่ยงจากกลุ่มเทค",
+            "exit_condition": "ขายถ้ารายได้โตต่ำกว่า 20% หรือมีปัญหาความปลอดภัยของยาหลัก หรือราคายาถูกกดลงจนแนวโน้มกำไรทั้งปีถูกลดลงมากกว่า 10%",
+            "expected_outcome": "งบวันที่ 29 ต.ค. แสดงรายได้โตมากกว่า 30% และราคาหุ้นกลับไปเหนือ 1,250 ดอลลาร์",
+            "about": "บริษัทยา โฟกัสยาเบาหวานและยาลดน้ำหนัก",
+            "updated": "2026-09-24"
+          }
+        },
+        "MA": {
+          "shares": 0.42269708087933694,
+          "cost_usd": 239.88007094536553,
+          "opened": "2026-09-24",
+          "sector": "Financial Services",
+          "thesis": {
+            "thesis": "เครือข่ายชำระเงินที่ได้ประโยชน์จากการใช้จ่ายและเงินเฟ้อ margin สูงกว่า 58% รายได้โต 14% beta ต่ำ ราคาย่อลงมา 6% ในเดือนที่ผ่านมา",
+            "exit_condition": "ขายถ้ารายได้สุทธิโตต่ำกว่า 9% หรือมีกฎหมายจำกัดค่าธรรมเนียมบัตร (เช่น Credit Card Competition Act) ผ่านสภา",
+            "expected_outcome": "งบวันที่ 22 ต.ค. แสดงรายได้โตมากกว่า 12% และราคากลับไปใกล้ 600 ดอลลาร์",
+            "about": "บริษัทระบบชำระเงินผ่านบัตร",
+            "updated": "2026-09-24"
+          }
+        },
+        "JPM": {
+          "shares": 0.7067591342553411,
+          "cost_usd": 239.88007094536553,
+          "opened": "2026-09-24",
+          "sector": "Financial Services",
+          "thesis": {
+            "thesis": "ธนาคารที่ดีที่สุดในสหรัฐ PE ราว 14 เท่า ปันผล 2% ได้ประโยชน์จากดอกเบี้ยระยะยาวที่สูงขึ้นและกิจกรรมวาณิชธนกิจ ช่วยถ่วงดุลความเสี่ยงของกลุ่ม growth",
+            "exit_condition": "ขายถ้าหนี้เสียหรือเงินสำรองหนี้สูญเพิ่มผิดปกติมากกว่า 30% เทียบปีก่อน หรือ ROE ต่ำกว่า 14%",
+            "expected_outcome": "งบวันที่ 13 ต.ค. แสดง ROE มากกว่า 16% และราคากลับไปเหนือ 355 ดอลลาร์",
+            "about": "ธนาคารพาณิชย์และวาณิชธนกิจรายใหญ่ที่สุดของสหรัฐ",
+            "updated": "2026-09-24"
+          }
+        },
+        "ETN": {
+          "shares": 0.4758416464136406,
+          "cost_usd": 209.89506207719484,
+          "opened": "2026-09-24",
+          "sector": "Industrials",
+          "thesis": {
+            "thesis": "ได้ประโยชน์จากความต้องการระบบไฟฟ้าของดาต้าเซ็นเตอร์และการลงทุนโครงข่ายไฟฟ้า รายได้โต 21% และกำลังขยายโรงงาน กระจายความเสี่ยงของธีม AI ไปยังกลุ่มอุตสาหกรรม",
+            "exit_condition": "ขายถ้า order backlog ของ Electrical Americas ลดลงเทียบปีก่อน หรือรายได้โตต่ำกว่า 8%",
+            "expected_outcome": "งบวันที่ 2 พ.ย. แสดง backlog โตและกำไรต่อหุ้นกลับมาเป็นบวก ราคาขยับเข้าใกล้ 480 ดอลลาร์",
+            "about": "ผู้ผลิตอุปกรณ์ไฟฟ้าและระบบจัดการพลังงาน",
+            "updated": "2026-09-24"
+          }
+        }
+      }
     },
     "benchmark": {
       "cash_usd": 0.0,
-      "holdings": {}
+      "holdings": {
+        "VOO": {
+          "shares": 4.230618079342927,
+          "cost_usd": 2998.500886817069,
+          "opened": "2026-09-24"
+        }
+      }
     },
     "shadow": {
-      "cash_usd": 0.0,
-      "holdings": {}
+      "cash_usd": 209.89506207719427,
+      "holdings": {
+        "NVDA": {
+          "shares": 1.5981857388264211,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24"
+        },
+        "TSM": {
+          "shares": 0.7955681281342473,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24"
+        },
+        "MSFT": {
+          "shares": 0.7208253397696175,
+          "cost_usd": 359.8201064180483,
+          "opened": "2026-09-24"
+        },
+        "GOOGL": {
+          "shares": 1.2231004403566832,
+          "cost_usd": 419.7901241543897,
+          "opened": "2026-09-24"
+        },
+        "AMZN": {
+          "shares": 1.1993762835980155,
+          "cost_usd": 299.8500886817069,
+          "opened": "2026-09-24"
+        },
+        "LLY": {
+          "shares": 0.2530696255598474,
+          "cost_usd": 299.8500886817069,
+          "opened": "2026-09-24"
+        },
+        "MA": {
+          "shares": 0.42269708087933694,
+          "cost_usd": 239.88007094536553,
+          "opened": "2026-09-24"
+        },
+        "JPM": {
+          "shares": 0.7067591342553411,
+          "cost_usd": 239.88007094536553,
+          "opened": "2026-09-24"
+        },
+        "ETN": {
+          "shares": 0.4758416464136406,
+          "cost_usd": 209.89506207719484,
+          "opened": "2026-09-24"
+        }
+      }
     }
   },
-  "weights": {},
+  "theses": {
+    "NVDA": "ผู้นำชิป AI สำหรับดาต้าเซ็นเตอร์ รายได้โต 106% และกำไรโต 128% แต่ PE ล่วงหน้าเพียงราว 14-17 เท่า PEG 0.48 ถือว่าถูกเมื่อเทียบกับการเติบโต",
+    "TSM": "โรงงานผลิตชิปขั้นสูงที่แทบผูกขาดตลาด รายได้โต 36% กำไรโต 77% PE ล่วงหน้าราว 19-21 เท่า PEG 0.85 และเป็นผู้ได้ประโยชน์จากชิป AI ทุกค่าย",
+    "MSFT": "ธุรกิจคลาวด์ Azure และซอฟต์แวร์องค์กรที่มี moat แข็ง รายได้โต 18% กำไรโต 32% PE ล่วงหน้าราว 21-24 เท่า สมเหตุสมผลสำหรับคุณภาพระดับนี้",
+    "GOOGL": "PE ย้อนหลังราว 17 เท่าและ PE ล่วงหน้าราว 21-23 เท่า รายได้โต 24% มีทั้ง Search, YouTube และ Cloud ที่กำลังเร่งตัว เงินสดสุทธิสูง เป็นหุ้นเมกะแคปที่ถูกที่สุดในกลุ่ม",
+    "AMZN": "AWS และธุรกิจโฆษณาเป็นเครื่องยนต์กำไร รายได้โต 20% PE ล่วงหน้าราว 23-24 เท่า ราคาย่อลงมา 4% ในเดือนที่ผ่านมา จึงเป็นจังหวะเข้าที่ดี",
+    "LLY": "ผู้นำยาลดน้ำหนักและเบาหวาน (Mounjaro/Zepbound) รายได้โต 48% PE ล่วงหน้าราว 25 เท่า PEG 1.1 beta ต่ำ 0.5 ช่วยกระจายความเสี่ยงจากกลุ่มเทค",
+    "MA": "เครือข่ายชำระเงินที่ได้ประโยชน์จากการใช้จ่ายและเงินเฟ้อ margin สูงกว่า 58% รายได้โต 14% beta ต่ำ ราคาย่อลงมา 6% ในเดือนที่ผ่านมา",
+    "JPM": "ธนาคารที่ดีที่สุดในสหรัฐ PE ราว 14 เท่า ปันผล 2% ได้ประโยชน์จากดอกเบี้ยระยะยาวที่สูงขึ้นและกิจกรรมวาณิชธนกิจ ช่วยถ่วงดุลความเสี่ยงของกลุ่ม growth",
+    "ETN": "ได้ประโยชน์จากความต้องการระบบไฟฟ้าของดาต้าเซ็นเตอร์และการลงทุนโครงข่ายไฟฟ้า รายได้โต 21% และกำลังขยายโรงงาน กระจายความเสี่ยงของธีม AI ไปยังกลุ่มอุตสาหกรรม"
+  },
+  "about": {
+    "NVDA": "ผู้ออกแบบชิป GPU และระบบประมวลผล AI",
+    "TSM": "ผู้รับจ้างผลิตชิปเซมิคอนดักเตอร์รายใหญ่ที่สุดในโลก",
+    "MSFT": "บริษัทซอฟต์แวร์และคลาวด์ (Windows, Office, Azure)",
+    "GOOGL": "เจ้าของ Google Search, YouTube และ Google Cloud",
+    "AMZN": "ค้าปลีกออนไลน์และผู้ให้บริการคลาวด์ AWS",
+    "LLY": "บริษัทยา โฟกัสยาเบาหวานและยาลดน้ำหนัก",
+    "MA": "บริษัทระบบชำระเงินผ่านบัตร",
+    "JPM": "ธนาคารพาณิชย์และวาณิชธนกิจรายใหญ่ที่สุดของสหรัฐ",
+    "ETN": "ผู้ผลิตอุปกรณ์ไฟฟ้าและระบบจัดการพลังงาน"
+  },
+  "sectors": {
+    "NVDA": "Technology",
+    "TSM": "Technology",
+    "MSFT": "Technology",
+    "GOOGL": "Communication Services",
+    "AMZN": "Consumer Cyclical",
+    "LLY": "Healthcare",
+    "MA": "Financial Services",
+    "JPM": "Financial Services",
+    "ETN": "Industrials"
+  },
+  "max_sector_weight": 0.4,
+  "weights": {
+    "NVDA": 0.11997895106121734,
+    "TSM": 0.11997895106121734,
+    "MSFT": 0.11997895106121734,
+    "GOOGL": 0.13997544290475356,
+    "AMZN": 0.0999824592176811,
+    "LLY": 0.0999824592176811,
+    "MA": 0.07998596737414489,
+    "JPM": 0.07998596737414489,
+    "ETN": 0.06998772145237678,
+    "CASH": 0.0701631292755655
+  },
   "totals": {
     "dividends_usd": 0.0,
-    "fees_usd": 0.0
+    "fees_usd": 6.9715
   },
-  "history": []
+  "history": [
+    {
+      "date": "2026-09-24",
+      "fx": 33.349998474121094,
+      "portfolio": 99767.5,
+      "benchmark": 99750.0,
+      "shadow": 99767.5,
+      "portfolio_usd": 2991.53
+    }
+  ],
+  "scorecard": {
+    "correct": 0,
+    "wrong": 0,
+    "too_early": 0,
+    "hit_rate": null
+  },
+  "api_spend_month_usd": 0.3,
+  "human_flags": []
 }
