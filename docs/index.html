@@ -92,6 +92,19 @@ details[open] summary::after{content:" ▴"}
 svg text{fill:var(--muted);font:11px var(--font)}
 .warnbox{font-size:12.5px;color:var(--warn)}
 .empty{color:var(--muted);font-size:13.5px}
+details.hold{margin:0;border-top:1px solid var(--line)}
+details.hold:first-of-type{border-top:0}
+details.hold summary{list-style:none;color:var(--text);font-weight:400;font-size:15px}
+details.hold summary::after{content:none}
+details.hold .stock{border-top:0}
+details.hold[open] .stock{padding-bottom:6px}
+.hd{background:var(--card-2);border-radius:14px;padding:12px 14px;margin:0 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.hd span{display:block;font-size:12px;color:var(--muted)}
+.hd b{font-size:16px;font-variant-numeric:tabular-nums;font-weight:600}
+.hd .full{grid-column:1/-1;font-size:13px}
+.hd .full b{font-size:13.5px;font-weight:500;line-height:1.5}
+.pl{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.pl.up{background:none;color:var(--accent-ink)} .pl.down{background:none;color:var(--neg)}
 .livetag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .livetag i{width:8px;height:8px;border-radius:50%;background:var(--neg);animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -185,6 +198,32 @@ function stockRow(t, d, extra) {
     <div class="st-side"><div class="p">$${p.price ? p.price.toFixed(2) : '–'}</div>${chip(p.chg_1w)}${extra || ''}</div></div>`;
 }
 
+function holdingRow(t, d) {
+  const h = d.books.portfolio.holdings[t], th = h.thesis || {}, prof = (d.profiles || {})[t] || {};
+  const lq = d.live && d.live.quotes[t], fx = d.live ? d.live.fx : d.fx;
+  const price = lq ? lq.price : d.prices[t].price, day = lq ? lq.chg_day : null;
+  const valUsd = h.shares * price, valThb = valUsd * fx, pl = valUsd / h.cost_usd - 1, plThb = (valUsd - h.cost_usd) * fx;
+  const tot = d.books.portfolio.cash_usd + Object.entries(d.books.portfolio.holdings).reduce((a, [k, x]) => a + x.shares * ((d.live && d.live.quotes[k]) ? d.live.quotes[k].price : d.prices[k].price), 0);
+  const w = valUsd / tot, cls = pl > 0.0005 ? 'up' : pl < -0.0005 ? 'down' : 'flat';
+  const av = prof.logo ? `<img src="${esc(prof.logo)}" alt="" data-t="${esc(t.slice(0, 4))}" onerror="this.parentNode.textContent=this.dataset.t">` : esc(t.slice(0, 4));
+  const n = (x, dp = 2) => x.toLocaleString('en-US', {minimumFractionDigits: dp, maximumFractionDigits: dp});
+  const since = new Date(h.opened + 'T00:00:00').toLocaleDateString('th-TH', {day: 'numeric', month: 'short', year: '2-digit'});
+  return `<details class="hold"><summary><div class="stock"><div class="av">${av}</div>
+      <div class="st-main"><div><span class="t">${esc(t)}</span><span class="n">${(w * 100).toFixed(1)}% ของพอร์ต</span></div><div class="a">${esc(th.about || prof.name || '')}</div></div>
+      <div class="st-side"><div class="p">${n(valThb)} ฿</div><div class="pl ${cls}">${pl > 0 ? '↗' : pl < 0 ? '↘' : ''} ${pct(pl, 2)}</div><div class="w">(${plThb >= 0 ? '+' : ''}${n(plThb)} ฿)</div></div></div></summary>
+    <div class="hd">
+      <div><span>จำนวนหุ้นที่ถือ</span><b>${n(h.shares, 4)}</b></div>
+      <div><span>ราคา (USD)${day != null ? ' · วันนี้' : ''}</span><b>${n(price)}</b>${day != null ? ` <span class="pl ${day > 0 ? 'up' : day < 0 ? 'down' : ''}" style="display:inline">${pct(day, 2)}</span>` : ''}</div>
+      <div><span>ต้นทุนต่อหุ้น (USD)</span><b>${n(h.cost_usd / h.shares)}</b></div>
+      <div><span>ต้นทุนรวม (USD)</span><b>${n(h.cost_usd)}</b></div>
+      <div><span>มูลค่าปัจจุบัน (USD)</span><b>${n(valUsd)}</b></div>
+      <div><span>ถือตั้งแต่</span><b>${since}</b></div>
+      ${th.thesis ? `<div class="full"><span>ทำไมถือ</span><b>${esc(th.thesis)}</b></div>` : ''}
+      ${th.exit_condition ? `<div class="full"><span>จะขายเมื่อ</span><b>${esc(th.exit_condition)}</b></div>` : ''}
+      ${th.expected_outcome ? `<div class="full"><span>AI คาดว่า</span><b>${esc(th.expected_outcome)}</b></div>` : ''}
+    </div></details>`;
+}
+
 function render(d) {
   const live = d.status === 'live', S = (d.summary && d.summary.structured) || null, L = d.live;
   document.getElementById('date').textContent = `ข้อมูล ${d.market_date} · 1 USD = ${d.fx.toFixed(2)} บาท`;
@@ -207,8 +246,8 @@ function render(d) {
       </div></section>`;
     const port = d.books.portfolio;
     const rows = Object.keys(port.holdings).sort((a, b) => (d.weights[b] || 0) - (d.weights[a] || 0));
-    h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">สัดส่วนในพอร์ต · ${L ? 'ราคาสด · เปลี่ยนแปลงวันนี้' : 'ราคาเปลี่ยนแปลง 1 สัปดาห์'}</p>
-      ${rows.map(t => stockRow(t, d, `<div class="w">${((d.weights[t] || 0) * 100).toFixed(0)}% ของพอร์ต</div>`)).join('')}
+    h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">มูลค่า (บาท) · กำไร/ขาดทุนจากต้นทุน · แตะที่หุ้นเพื่อดูรายละเอียด</p>
+      ${rows.map(t => holdingRow(t, d)).join('')}
       <div class="stock"><div class="av">฿</div><div class="st-main"><span class="t">เงินสด</span></div><div class="st-side"><div class="w">${((d.weights.CASH || 0) * 100).toFixed(0)}% ของพอร์ต</div></div></div></section>`;
     const bySec = {};
     rows.forEach(t => { const k = secName((d.sectors || {})[t]); bySec[k] = (bySec[k] || 0) + (d.weights[t] || 0); });
