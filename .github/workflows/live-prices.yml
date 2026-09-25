@@ -3,11 +3,12 @@ name: Live prices
 # One long-running job per half-session instead of many short cron runs:
 # GitHub often delays or drops frequent schedules, but a single start per session is reliable.
 on:
+  # GitHub delays scheduled starts by up to ~3 h at busy times, so jobs start EARLY and wait for the open.
+  # Only one job runs at a time; a queued job takes over when the previous one hands off (~5h40m).
   schedule:
-    - cron: "25 13 * * 1-5"   # US open (summer time)
-    - cron: "25 14 * * 1-5"   # US open (winter time) — queued/no-op if already running
-    - cron: "5 19 * * 1-5"    # second half of the session (a job can run max 6 h)
-    - cron: "5 20 * * 1-5"
+    - cron: "7 10 * * 1-5"    # ~17:07 Bangkok: start waiting for the open
+    - cron: "37 12 * * 1-5"   # backup start
+    - cron: "7 16 * * 1-5"    # takes over the second half of the session
   workflow_dispatch:
 
 permissions:
@@ -44,6 +45,8 @@ jobs:
           mkdir -p out
           start=$(date +%s)
           set +e
+          # wait (up to ~4 h) if we started before the open
+          while [ "$(python -m src.live_prices --status)" = "pre" ] && [ $(( $(date +%s) - start )) -lt 14400 ]; do sleep 60; done
           python -m src.live_prices out/live.json; rc=$?
           if [ $rc -eq 3 ]; then
             # market closed: a manual run still refreshes once, a scheduled run just exits

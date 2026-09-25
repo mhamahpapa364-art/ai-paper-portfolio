@@ -48,7 +48,21 @@ def yf_quote(t: str) -> dict | None:
     return None
 
 
+def session_status(now: datetime) -> str:
+    """pre = weekday before the open · open · closed"""
+    ny = now.astimezone(NY)
+    if ny.weekday() >= 5:
+        return "closed"
+    if ny.time() < time(9, 30):
+        return "pre"
+    return "open" if ny.time() <= time(16, 20) else "closed"
+
+
 def main(argv=None) -> int:
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--status" and argv is None:
+        print(session_status(datetime.now(timezone.utc)))
+        return 0
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--force", action="store_true")
