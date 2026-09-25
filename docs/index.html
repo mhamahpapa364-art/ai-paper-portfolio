@@ -5,155 +5,230 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Paper Portfolio</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0f0e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b1426; --panel:#111d35; --panel-2:#16243f; --line:#223358;
-  --text:#e8ecf4; --muted:#8e9bb5; --gold:#d6ad55; --gold-dim:#8a7040;
-  --pos:#5cc58a; --neg:#ef6f6c; --warn:#e8b64a; --bench:#8fa3c4; --shadow:#6f7f9e;
-  --sans:"IBM Plex Sans","IBM Plex Sans Thai",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,monospace; --serif:"Fraunces",Georgia,serif;
+  --bg:#0d0f0e; --card:#161a18; --card-2:#1d2320; --line:#262d29;
+  --text:#f1f5f2; --muted:#8f9a94; --accent:#5df591; --accent-ink:#5df591; --mint:#befec2;
+  --accent-soft:rgba(93,245,145,.12); --neg:#ff6b6b; --neg-soft:rgba(255,107,107,.12);
+  --warn:#ffc857; --warn-soft:rgba(255,200,87,.12); --bench:#9aa6a0; --shadow:#5d6862;
+  --font:"Inter","Noto Sans Thai",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f3f6f4; --card:#ffffff; --card-2:#f1f5f2; --line:#e2e8e4;
+    --text:#111613; --muted:#66716b; --accent:#5df591; --accent-ink:#1f6a1a; --mint:#befec2;
+    --accent-soft:#e6fde9; --neg:#d63a3a; --neg-soft:#fdeaea; --warn:#9a6700; --warn-soft:#fff5d6;
+    --bench:#7b8781; --shadow:#b4bdb8;
+  }
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
-.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
-header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-h1{font:700 26px/1.1 var(--serif);margin:0;letter-spacing:-.01em}
-h1 span{color:var(--gold)}
-.sub{color:var(--muted);font-size:13px;margin-top:4px}
-.badge{font:500 12px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-.badge.live{border-color:var(--gold-dim);color:var(--gold)}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
-.c12{grid-column:span 12}.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}
-@media (max-width:760px){.c8,.c6,.c4{grid-column:span 12}.c3{grid-column:span 6}}
-h2{font:600 12px var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 10px}
-.big{font:700 34px/1.1 var(--serif)}
-.kpi{font:500 22px/1.2 var(--mono)}
-.label{color:var(--muted);font-size:12px}
-.pos{color:var(--pos)}.neg{color:var(--neg)}.mut{color:var(--muted)}
-.mono{font-family:var(--mono)}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{font-weight:500;color:var(--muted);text-align:left;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}
-td{padding:8px 4px;border-bottom:1px solid var(--line)}
-td.n,th.n{text-align:right;font-family:var(--mono)}
-tr:last-child td{border-bottom:0}
-.bar{height:6px;background:var(--panel-2);border-radius:3px;overflow:hidden;margin-top:4px}
-.bar i{display:block;height:100%;background:var(--gold)}
-.regime{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.dot{width:12px;height:12px;border-radius:50%}
-.sig{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
-.sig:last-child{border:0}
-.summary{white-space:pre-wrap;font-size:14px}
-.news-t{font-weight:600;color:var(--gold);margin:12px 0 4px;font-family:var(--mono);font-size:13px}
-.news a{color:var(--text);text-decoration:none}.news a:hover{color:var(--gold)}
-.news li{margin:3px 0;font-size:13.5px}.news ul{margin:0;padding-left:18px}
-.warn{border-color:#5a4520;background:#1c1a17}
-.warn li{color:var(--warn);font-size:13px}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:6px}
-.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
-svg text{fill:var(--muted);font:11px var(--mono)}
-.empty{color:var(--muted);font-size:13px;padding:8px 0}
-footer{color:var(--muted);font-size:12px;margin-top:20px;text-align:center}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#0d0f0e;display:grid;place-items:center;font-weight:800;font-size:15px}
+h1{font-size:18px;font-weight:700;margin:0;line-height:1.2}
+.date{color:var(--muted);font-size:12.5px}
+.pill{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--card-2);color:var(--muted);white-space:nowrap}
+.pill.live{background:var(--accent-soft);color:var(--accent-ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
+h2{font-size:16px;font-weight:700;margin:0 0 4px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.chip{display:inline-block;font-weight:600;font-size:13px;padding:3px 9px;border-radius:8px;font-variant-numeric:tabular-nums}
+.up{background:var(--accent-soft);color:var(--accent-ink)} .down{background:var(--neg-soft);color:var(--neg)} .flat{background:var(--card-2);color:var(--muted)}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.mini{background:var(--card-2);border-radius:12px;padding:10px}
+.mini b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.mini span{font-size:12px;color:var(--muted)}
+.stock{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.stock:first-of-type{border-top:0}
+.av{flex:0 0 40px;height:40px;border-radius:12px;background:var(--card-2);display:grid;place-items:center;font-weight:700;font-size:12px;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover;background:#fff}
+.st-main{flex:1;min-width:0}
+.st-main .t{font-weight:700}
+.st-main .n{color:var(--muted);font-size:12.5px;margin-left:6px}
+.st-main .a{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.st-side{text-align:right;font-variant-numeric:tabular-nums}
+.st-side .p{font-weight:600}
+.w{font-size:12px;color:var(--muted)}
+.mood{display:flex;align-items:center;gap:12px;background:var(--card-2);border-radius:14px;padding:14px;margin-bottom:12px}
+.mood .e{font-size:30px;line-height:1}
+.mood b{font-size:18px;display:block}
+.mood span{font-size:13px;color:var(--muted)}
+.sig{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.sig:first-of-type{border-top:0}
+.sig .i{flex:0 0 22px;text-align:center}
+.sig small{display:block;color:var(--muted);font-size:12.5px}
+details{margin-top:10px}
+summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:13.5px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:" ▾"}
+details[open] summary::after{content:" ▴"}
+.lvl{display:flex;gap:10px;padding:8px 0;font-size:13.5px}
+.lvl b{white-space:nowrap}
+.overview{font-size:15px;margin:0 0 10px}
+.news{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.news:first-of-type{border-top:0}
+.dot{flex:0 0 8px;height:8px;border-radius:50%;margin-top:7px}
+.dot.pos{background:var(--accent)} .dot.neu{background:var(--muted)} .dot.neg{background:var(--neg)}
+.news .t{font-weight:700;margin-right:6px}
+.watch{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13.5px;margin-top:10px}
+.src{font-size:13px;margin-top:8px}
+.src p{margin:10px 0 2px;font-weight:700}
+.src a{color:var(--text);text-decoration:none}
+.src a:hover{color:var(--accent-ink)}
+.src li{margin:3px 0;color:var(--muted)}
+.src ul{margin:0;padding-left:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.ech{background:var(--card-2);border-radius:10px;padding:8px 12px;font-size:13px}
+.ech b{margin-right:6px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:4px 0 8px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+svg text{fill:var(--muted);font:11px var(--font)}
+.warnbox{font-size:12.5px;color:var(--warn)}
+.empty{color:var(--muted);font-size:13.5px}
+footer{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div><h1>AI Paper <span>Portfolio</span></h1><div class="sub" id="sub">กำลังโหลด…</div></div>
-    <div class="badge" id="status">–</div>
+    <div class="brand"><div class="logo">AI</div><div><h1>AI Paper Portfolio</h1><div class="date" id="date">กำลังโหลด…</div></div></div>
+    <span class="pill" id="pill">–</span>
   </header>
-  <div class="grid" id="app"></div>
-  <footer>พอร์ตจำลอง ไม่ใช่เงินจริง · อัปเดตอัตโนมัติทุกวันเสาร์</footer>
+  <main id="app"></main>
+  <footer>พอร์ตจำลอง ไม่ใช่เงินจริง · อัปเดตอัตโนมัติทุกเช้าวันเสาร์</footer>
 </div>
 <script>
-const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstChild; };
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const pct = (x, d = 2) => x == null ? '–' : (x > 0 ? '+' : '') + (x * 100).toFixed(d) + '%';
-const cls = (x) => x == null ? 'mut' : x > 0 ? 'pos' : x < 0 ? 'neg' : 'mut';
-const thb = (x) => x == null ? '–' : Math.round(x).toLocaleString('en-US');
-const card = (span, title, body, extra = '') => `<section class="card ${span} ${extra}">${title ? `<h2>${title}</h2>` : ''}${body}</section>`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct = (x, d = 1) => x == null ? '–' : (x > 0 ? '+' : '') + (x * 100).toFixed(d) + '%';
+const chip = (x, d = 1) => `<span class="chip ${x == null ? 'flat' : x > 0.0005 ? 'up' : x < -0.0005 ? 'down' : 'flat'}">${pct(x, d)}</span>`;
+const thb = x => Math.round(x).toLocaleString('en-US');
+const SECTOR_TH = {XLK:'เทคโนโลยี',XLC:'สื่อสาร',XLY:'สินค้าฟุ่มเฟือย',XLP:'สินค้าจำเป็น',XLV:'สุขภาพ',XLF:'การเงิน',XLI:'อุตสาหกรรม',XLE:'พลังงาน',XLB:'วัตถุดิบ',XLU:'สาธารณูปโภค',XLRE:'อสังหาฯ'};
+const MOOD = {
+  'risk-on':  {e:'🟢', th:'ตลาดกล้าเสี่ยง', en:'Risk-on',  d:'สัญญาณส่วนใหญ่ดี นักลงทุนกล้าซื้อหุ้น', cash:'ถือเงินสดน้อย 0–10%'},
+  'neutral':  {e:'🟡', th:'ตลาดกลางๆ',     en:'Neutral',  d:'สัญญาณดีและไม่ดีปนกัน', cash:'ถือเงินสด 5–20%'},
+  'risk-off': {e:'🔴', th:'ตลาดระวังตัว',  en:'Risk-off', d:'สัญญาณเตือนหลายตัว นักลงทุนหนีความเสี่ยง', cash:'ถือเงินสดมากขึ้น 15–30%'},
+  'unknown':  {e:'⚪', th:'ยังอ่านไม่ได้',  en:'Unknown',  d:'ข้อมูลไม่พอคำนวณ', cash:'–'}
+};
+
+function signals(s, sectors) {
+  const out = [];
+  if (s.market_vs_200dma != null) out.push(s.market_vs_200dma > 0
+    ? ['✅', `ตลาดหุ้น US อยู่เหนือราคาเฉลี่ย 200 วัน ${pct(s.market_vs_200dma)}`, 'แนวโน้มระยะยาวยังเป็นขาขึ้น']
+    : ['⚠️', `ตลาดหุ้น US ต่ำกว่าราคาเฉลี่ย 200 วัน ${pct(s.market_vs_200dma)}`, 'แนวโน้มระยะยาวอ่อนแรง']);
+  if (s.sma50_above_sma200 != null) out.push(s.sma50_above_sma200
+    ? ['✅', 'แรงส่งระยะกลางยังดี', 'ราคาเฉลี่ย 50 วันอยู่เหนือ 200 วัน']
+    : ['⚠️', 'แรงส่งระยะกลางอ่อน', 'ราคาเฉลี่ย 50 วันหลุดต่ำกว่า 200 วัน']);
+  if (s.vix != null) out.push(s.vix < 18 ? ['✅', `ดัชนีความกลัว (VIX) ${s.vix} — ต่ำ`, 'ตลาดสงบ ไม่ตื่นตระหนก']
+    : s.vix <= 25 ? ['➖', `ดัชนีความกลัว (VIX) ${s.vix} — ปกติ`, 'ความผันผวนระดับทั่วไป']
+    : ['⚠️', `ดัชนีความกลัว (VIX) ${s.vix} — สูง`, 'ตลาดกังวล ราคาแกว่งแรง']);
+  if (s.us10y != null) { const ch = s.us10y_4w_change_pts || 0, sg = ch > 0 ? '+' : '';
+    out.push(ch > 0.4 ? ['⚠️', `ดอกเบี้ยพันธบัตร 10 ปี ${s.us10y.toFixed(2)}% (ขึ้นเร็ว ${sg}${ch.toFixed(2)} ใน 4 สัปดาห์)`, 'ดอกเบี้ยขึ้นเร็วมักกดดันราคาหุ้น']
+      : ['✅', `ดอกเบี้ยพันธบัตร 10 ปี ${s.us10y.toFixed(2)}%`, `เปลี่ยน ${sg}${ch.toFixed(2)} ใน 4 สัปดาห์ — ไม่เร่งตัว`]); }
+  if (s.defensives_leading != null) { const top = (sectors || []).slice(0, 3).map(x => SECTOR_TH[x.etf] || x.name).join(', ');
+    out.push(s.defensives_leading ? ['⚠️', 'หุ้นกลุ่มปลอดภัยนำตลาด', `นำโดย ${top} — นักลงทุนเริ่มหลบภัย`]
+      : ['✅', 'หุ้นกลุ่มเติบโตนำตลาด', `นำโดย ${top}`]); }
+  return out;
+}
 
 function chart(hist, start) {
-  if (!hist || hist.length < 2) return '<div class="empty">กราฟจะขึ้นหลังรันครบ 2 สัปดาห์</div>';
-  const W = 640, H = 220, P = {l: 52, r: 10, t: 10, b: 24};
-  const keys = [['portfolio', 'var(--gold)', ''], ['benchmark', 'var(--bench)', ''], ['shadow', 'var(--shadow)', '5 4']];
+  if (!hist || hist.length < 2) return '<p class="empty">กราฟจะแสดงหลังเก็บข้อมูลครบ 2 สัปดาห์</p>';
+  const W = 640, H = 200, P = {l: 44, r: 8, t: 8, b: 22};
+  const keys = [['shadow', 'var(--shadow)', '5 4', 1.6], ['benchmark', 'var(--bench)', '', 1.6], ['portfolio', 'var(--accent)', '', 2.6]];
   const all = hist.flatMap(h => keys.map(k => h[k[0]])).concat([start]);
-  let lo = Math.min(...all), hi = Math.max(...all); const pad = (hi - lo) * 0.1 || 1000; lo -= pad; hi += pad;
+  let lo = Math.min(...all), hi = Math.max(...all); const pad = (hi - lo) * .12 || 1000; lo -= pad; hi += pad;
   const x = i => P.l + i * (W - P.l - P.r) / (hist.length - 1), y = v => P.t + (hi - v) * (H - P.t - P.b) / (hi - lo);
   let g = '';
-  for (let k = 0; k <= 3; k++) { const v = lo + (hi - lo) * k / 3;
+  for (let k = 0; k <= 2; k++) { const v = lo + (hi - lo) * k / 2;
     g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" text-anchor="end">${(v / 1000).toFixed(0)}k</text>`; }
-  g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(start)}" y2="${y(start)}" stroke="var(--gold-dim)" stroke-dasharray="2 3"/>`;
-  [0, hist.length - 1].forEach(i => g += `<text x="${x(i)}" y="${H - 6}" text-anchor="${i ? 'end' : 'start'}">${hist[i].date}</text>`);
-  keys.slice().reverse().forEach(([k, c, d]) => {
-    g += `<polyline fill="none" stroke="${c}" stroke-width="${k === 'portfolio' ? 2.5 : 1.6}" stroke-dasharray="${d}" points="${hist.map((h, i) => x(i) + ',' + y(h[k])).join(' ')}"/>`; });
-  return `<div class="legend"><span><i style="background:var(--gold)"></i>พอร์ต AI</span><span><i style="background:var(--bench)"></i>VOO</span><span><i style="background:var(--shadow)"></i>พอร์ตเงา (ถือเฉยๆ)</span></div>
+  [0, hist.length - 1].forEach(i => g += `<text x="${x(i)}" y="${H - 4}" text-anchor="${i ? 'end' : 'start'}">${hist[i].date.slice(5)}</text>`);
+  keys.forEach(([k, c, d, w]) => g += `<polyline fill="none" stroke="${c}" stroke-width="${w}" stroke-dasharray="${d}" stroke-linejoin="round" points="${hist.map((h, i) => x(i) + ',' + y(h[k])).join(' ')}"/>`);
+  return `<div class="legend"><span><i style="background:var(--accent)"></i>พอร์ต AI</span><span><i style="background:var(--bench)"></i>VOO</span><span><i style="background:var(--shadow)"></i>พอร์ตเงา</span></div>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="มูลค่าพอร์ตเทียบ VOO และพอร์ตเงา">${g}</svg>`;
 }
 
+function stockRow(t, d, extra) {
+  const p = d.prices[t] || {}, prof = (d.profiles || {})[t] || {};
+  const ai = ((d.summary && d.summary.structured && d.summary.structured.tickers) || []).find(x => x.ticker === t) || {};
+  const about = (d.theses || {})[t] || ai.about || prof.industry || '';
+  const av = prof.logo ? `<img src="${esc(prof.logo)}" alt="" data-t="${esc(t.slice(0, 4))}" onerror="this.parentNode.textContent=this.dataset.t">` : esc(t.slice(0, 4));
+  return `<div class="stock"><div class="av">${av}</div>
+    <div class="st-main"><div><span class="t">${esc(t)}</span><span class="n">${esc(prof.name || '')}</span></div><div class="a">${esc(about)}</div></div>
+    <div class="st-side"><div class="p">$${p.price ? p.price.toFixed(2) : '–'}</div>${chip(p.chg_1w)}${extra || ''}</div></div>`;
+}
+
 function render(d) {
-  const live = d.status === 'live', app = document.getElementById('app');
-  document.getElementById('sub').textContent = `ข้อมูลตลาด ${d.market_date} · USD/THB ${d.fx.toFixed(2)}` + (live ? ` · เริ่ม ${d.inception_date}` : '');
-  const st = document.getElementById('status'); st.textContent = live ? 'LIVE' : 'PRE-LIVE'; st.classList.toggle('live', live);
+  const live = d.status === 'live', S = (d.summary && d.summary.structured) || null;
+  document.getElementById('date').textContent = `ข้อมูล ${d.market_date} · 1 USD = ${d.fx.toFixed(2)} บาท`;
+  const pill = document.getElementById('pill'); pill.textContent = live ? 'กำลังลงทุน' : 'ยังไม่เริ่ม'; pill.classList.toggle('live', live);
   let h = '';
 
   if (live) {
     const p = d.performance, r = p.returns;
-    h += card('c12', 'มูลค่าพอร์ต', `<div class="big">${thb(p.portfolio.value_thb)} <span class="mut" style="font-size:18px">บาท</span></div>
-      <div class="kpi ${cls(r.portfolio_thb)}" style="margin-top:4px">${pct(r.portfolio_thb)}</div>
-      <div class="label">จากเงินต้น ${thb(d.start_capital_thb)} บาท</div>`);
-    const k = (t, v, note) => card('c3', '', `<div class="label">${t}</div><div class="kpi ${cls(v)}">${pct(v)}</div><div class="label">${note}</div>`);
-    h += k('ชนะ/แพ้ VOO', r.vs_benchmark, `VOO ${pct(r.benchmark_thb)}`);
-    h += k('ชนะ/แพ้ พอร์ตเงา', r.vs_shadow, 'การปรับตัวคุ้มไหม');
-    h += k('ผลจากหุ้น (USD)', r.portfolio_usd, `ค่าเงิน ${pct(r.fx_effect)}`);
-    h += k('ลงจากจุดสูงสุด', p.drawdown_from_peak, `ลึกสุด ${pct(p.max_drawdown)}`);
-    h += card('c12', 'มูลค่าเทียบกัน (บาท)', chart(d.history, d.start_capital_thb));
-
-    const port = d.books.portfolio, rows = Object.entries(port.holdings).map(([t, x]) => {
-      const pr = d.prices[t].price, val = x.shares * pr, pl = val / x.cost_usd - 1, w = d.weights[t] || 0;
-      return {t, pr, val, pl, w}; }).sort((a, b) => b.w - a.w);
-    h += card('c8', 'หุ้นในพอร์ต', `<table><tr><th>Ticker</th><th class="n">ราคา $</th><th class="n">กำไร/ขาดทุน</th><th class="n">สัดส่วน</th></tr>
-      ${rows.map(o => `<tr><td class="mono">${esc(o.t)}</td><td class="n">${o.pr.toFixed(2)}</td><td class="n ${cls(o.pl)}">${pct(o.pl, 1)}</td>
-      <td class="n">${(o.w * 100).toFixed(1)}%<div class="bar"><i style="width:${Math.min(100, o.w * 400)}%"></i></div></td></tr>`).join('')}
-      <tr><td class="mono mut">CASH</td><td></td><td></td><td class="n">${((d.weights.CASH || 0) * 100).toFixed(1)}%</td></tr></table>
-      <div class="label" style="margin-top:8px">ปันผลสะสม $${d.totals.dividends_usd.toFixed(2)} (หักภาษี 15%) · ค่าธรรมเนียมจำลอง $${d.totals.fees_usd.toFixed(2)}</div>`);
+    h += `<section class="card"><div class="hint" style="margin:0">มูลค่าพอร์ต</div>
+      <div class="big">${thb(p.portfolio.value_thb)} <span style="font-size:18px;color:var(--muted);font-weight:600">บาท</span></div>
+      <div style="margin-top:6px">${chip(r.portfolio_thb, 2)} <span class="hint">จากเงินต้น ${thb(d.start_capital_thb)} บาท</span></div>
+      <div class="row3">
+        <div class="mini"><span>เทียบ VOO</span><b>${pct(r.vs_benchmark)}</b></div>
+        <div class="mini"><span>เทียบพอร์ตเงา</span><b>${pct(r.vs_shadow)}</b></div>
+        <div class="mini"><span>ลงจากจุดสูงสุด</span><b>${pct(p.drawdown_from_peak)}</b></div>
+      </div></section>`;
+    const port = d.books.portfolio;
+    const rows = Object.keys(port.holdings).sort((a, b) => (d.weights[b] || 0) - (d.weights[a] || 0));
+    h += `<section class="card"><h2>หุ้นที่ AI เลือก</h2><p class="hint">สัดส่วนในพอร์ต · ราคาเปลี่ยนแปลง 1 สัปดาห์</p>
+      ${rows.map(t => stockRow(t, d, `<div class="w">${((d.weights[t] || 0) * 100).toFixed(0)}% ของพอร์ต</div>`)).join('')}
+      <div class="stock"><div class="av">฿</div><div class="st-main"><span class="t">เงินสด</span></div><div class="st-side"><div class="w">${((d.weights.CASH || 0) * 100).toFixed(0)}% ของพอร์ต</div></div></div></section>`;
   } else {
-    h += card('c12', 'สถานะ', `<div style="font:600 18px var(--serif)">ยังไม่เริ่มลงทุน</div>
-      <div class="label">ระบบกำลังทดสอบ — AI จะเลือกหุ้นตั้งต้นจากราคาวันที่ go-live</div>`);
-    const w = Object.entries(d.prices).filter(([t]) => !t.includes('='));
-    h += card('c8', 'รายชื่อที่ติดตาม (ทดสอบ)', `<table><tr><th>Ticker</th><th class="n">ราคา $</th><th class="n">ข้อมูลจาก</th></tr>
-      ${w.map(([t, p]) => `<tr><td class="mono">${esc(t)}</td><td class="n">${p.price.toFixed(2)}</td><td class="n mut">${esc(p.source)} ${esc(p.date)}</td></tr>`).join('')}</table>`);
+    h += `<section class="card"><h2>ยังไม่เริ่มลงทุน</h2><p class="hint" style="margin:0">ตอนนี้ระบบรันทดสอบอยู่ พอเปิดใช้งานจริง AI จะเลือกหุ้นชุดแรกเองโดยใช้ราคาของวันนั้น (เงินต้น ${thb(d.start_capital_thb)} บาท)</p></section>`;
+    const t = Object.keys(d.prices).filter(k => !k.includes('=') && k !== 'VOO');
+    h += `<section class="card"><h2>หุ้นที่ติดตามอยู่</h2><p class="hint">รายชื่อสำหรับทดสอบระบบ ยังไม่ได้ซื้อจริง · ราคาเปลี่ยนแปลง 1 สัปดาห์</p>${t.map(x => stockRow(x, d)).join('')}</section>`;
   }
 
-  const rg = d.regime, s = rg.signals || {}, col = {'risk-on': 'var(--pos)', 'neutral': 'var(--warn)', 'risk-off': 'var(--neg)'}[rg.label] || 'var(--muted)';
-  const sig = (a, b) => `<div class="sig"><span class="mut">${a}</span><span class="mono">${b}</span></div>`;
-  h += card('c4', 'สภาพตลาด', `<div class="regime"><span class="dot" style="background:${col}"></span><span style="font:600 18px var(--serif)">${esc(rg.label)}</span><span class="label mono">score ${rg.score}</span></div>
-    ${sig('VOO vs เส้น 200 วัน', pct(s.market_vs_200dma))}${sig('VOO 4 สัปดาห์', pct(s.market_4w))}${sig('VIX', s.vix ?? '–')}
-    ${sig('พันธบัตร 10 ปี', s.us10y != null ? s.us10y.toFixed(2) + '%' : '–')}${sig('หมวดนำ', (rg.sectors_4w || []).slice(0, 3).map(x => x.etf).join(' · ') || '–')}
-    ${sig('หมวดตาม', (rg.sectors_4w || []).slice(-2).map(x => x.etf).join(' · ') || '–')}`);
+  const rg = d.regime, m = MOOD[rg.label] || MOOD.unknown, sg = signals(rg.signals || {}, rg.sectors_4w);
+  h += `<section class="card"><h2>สภาพตลาดตอนนี้</h2>
+    <div class="mood"><div class="e">${m.e}</div><div><b>${m.th} <span style="font-weight:500;color:var(--muted);font-size:14px">(${m.en})</span></b><span>${m.d} → AI ${m.cash}</span></div></div>
+    ${sg.map(([i, a, b]) => `<div class="sig"><div class="i">${i}</div><div>${esc(a)}<small>${esc(b)}</small></div></div>`).join('')}
+    <details><summary>สภาพตลาดแต่ละแบบหมายถึงอะไร</summary>
+      ${['risk-on', 'neutral', 'risk-off'].map(k => `<div class="lvl"><b>${MOOD[k].e} ${MOOD[k].th}</b><span>${MOOD[k].d} → ${MOOD[k].cash}</span></div>`).join('')}
+      <p class="hint" style="margin-top:6px">ระบบนับคะแนนจากสัญญาณด้านบน ✅ ได้ +1 ⚠️ ได้ −1 แล้วใช้คะแนนรวมตัดสินระดับ สภาพตลาดใช้แค่กำหนดว่าจะถือเงินสดมากหรือน้อย ไม่ได้เป็นเหตุผลให้ขายหุ้นที่ยังดีอยู่</p>
+    </details></section>`;
 
-  const sum = d.summary && d.summary.text;
-  h += card('c8', 'สรุปข่าวสัปดาห์ (AI)', sum ? `<div class="summary">${esc(sum)}</div>` : '<div class="empty">ไม่มีสรุปรอบนี้</div>');
-  h += card('c4', 'งบที่จะประกาศ', d.earnings.length ? `<table>${d.earnings.map(e => `<tr><td class="mono">${esc(e.ticker)}</td><td class="n">${esc(e.date)}</td><td class="n mut">${esc(e.hour)}</td></tr>`).join('')}</table>` : '<div class="empty">ไม่มีใน 45 วันข้างหน้า</div>');
+  h += `<section class="card"><h2>ข่าวสัปดาห์นี้</h2>`;
+  if (S) {
+    const lines = S.tickers.filter(t => t.line && t.line !== 'ไม่มีข่าวสำคัญ');
+    h += `<p class="overview">${esc(S.overview)}</p>
+      ${lines.map(t => `<div class="news"><span class="dot ${t.sentiment}"></span><div><span class="t">${esc(t.ticker)}</span>${esc(t.line)}</div></div>`).join('')}
+      ${S.watch && S.watch.length ? `<div class="watch">👀 จับตา: ${S.watch.map(esc).join(' · ')}</div>` : ''}`;
+  } else if (d.summary && d.summary.text) {
+    h += `<p class="overview" style="white-space:pre-wrap">${esc(d.summary.text)}</p>`;
+  } else h += '<p class="empty">ไม่มีสรุปรอบนี้</p>';
+  const nt = Object.entries(d.news || {}).filter(([, v]) => v.length), ft = Object.entries(d.filings || {});
+  if (nt.length || ft.length) h += `<details><summary>ดูข่าวต้นฉบับ${ft.length ? ' + เอกสาร SEC' : ''}</summary><div class="src">
+      ${nt.map(([t, v]) => `<p>${esc(t)}</p><ul>${v.slice(0, 3).map(n => `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a> · ${esc(n.source)}</li>`).join('')}</ul>`).join('')}
+      ${ft.map(([t, v]) => `<p>${esc(t)} · SEC</p><ul>${v.map(f => `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.form)} ${esc(f.date)}</a> ${esc(f.label || '')}</li>`).join('')}</ul>`).join('')}
+    </div></details>`;
+  h += `</section>`;
 
-  const nt = Object.entries(d.news).filter(([, v]) => v.length);
-  h += card('c8', 'ข่าวล่าสุด', nt.length ? `<div class="news">${nt.map(([t, v]) => `<div class="news-t">${esc(t)}</div><ul>${v.map(n =>
-    `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a> <span class="label">· ${esc(n.source)} ${esc(n.date)}</span></li>`).join('')}</ul>`).join('')}</div>` : '<div class="empty">ไม่มีข่าว</div>');
-  const ft = Object.entries(d.filings);
-  h += card('c4', 'เอกสาร SEC', ft.length ? `<div class="news">${ft.map(([t, v]) => `<div class="news-t">${esc(t)}</div><ul>${v.map(f =>
-    `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.form)}</a> <span class="label">${esc(f.date)} ${esc(f.label || '')}</span></li>`).join('')}</ul>`).join('')}</div>` : '<div class="empty">ไม่มีเอกสารใหม่</div>');
+  if (d.earnings && d.earnings.length) {
+    const th = s => new Date(s + 'T00:00:00').toLocaleDateString('th-TH', {day: 'numeric', month: 'short'});
+    h += `<section class="card"><h2>งบที่กำลังจะประกาศ</h2><p class="hint">วันที่ตามเวลาสหรัฐฯ</p><div class="chips">${d.earnings.map(e => `<div class="ech"><b>${esc(e.ticker)}</b>${th(e.date)}</div>`).join('')}</div></section>`;
+  }
 
-  if (d.events && d.events.length) h += card('c12', 'ปันผล / แตกพาร์ ที่บันทึกรอบนี้', `<table>${d.events.filter(e => e.book === 'portfolio').map(e =>
-    `<tr><td class="mono">${esc(e.ticker)}</td><td>${e.type === 'split' ? 'แตกพาร์ ' + e.ratio + ':1' : 'ปันผล $' + e.amount}</td><td class="n">${esc(e.date)}</td></tr>`).join('')}</table>`);
-  if (d.warnings.length) h += card('c12', 'คำเตือนจากระบบ', `<ul>${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul>`, 'warn');
-  app.innerHTML = h;
+  if (live) h += `<section class="card"><h2>เทียบผลตอบแทน</h2><p class="hint">พอร์ตเงา = หุ้นชุดแรกที่ถือไว้เฉยๆ ไม่ซื้อขายอะไรเลย ใช้ดูว่าการปรับพอร์ตของ AI คุ้มหรือเปล่า</p>${chart(d.history, d.start_capital_thb)}</section>`;
+
+  if (d.warnings && d.warnings.length) h += `<section class="card"><details style="margin:0"><summary style="color:var(--warn)">⚠️ ระบบมีคำเตือน ${d.warnings.length} รายการ</summary><ul class="warnbox">${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul></details></section>`;
+
+  document.getElementById('app').innerHTML = h;
 }
 
 fetch('data/dashboard.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(render).catch(e => { document.getElementById('sub').textContent = 'ยังไม่มีข้อมูล — รอการรันครั้งแรก (' + e.message + ')'; });
+  .then(render).catch(e => { document.getElementById('date').textContent = 'ยังไม่มีข้อมูล — รอการรันครั้งแรก (' + e.message + ')'; });
 </script>
 </body>
 </html>

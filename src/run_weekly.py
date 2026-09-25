@@ -88,14 +88,21 @@ def main(argv=None) -> int:
         for f in rows:
             f["label"] = nw.label_items(f.get("items", ""))
     earnings = nw.earnings_calendar(news_tickers, asof, cfg["earnings_lookahead_days"], warnings)
-    summary = summarize(news, filings, regime, earnings, cfg, warnings, dry)
+    profiles = nw.company_profiles(news_tickers, warnings)
+    summary = summarize(news, filings, regime, earnings, cfg, warnings, dry, profiles)
+
+    # 1-week price change for display
+    for t, p in prices.items():
+        df = hist.get(t)
+        if df is not None and len(df) > 5:
+            p["chg_1w"] = round(float(df["Close"].iloc[-1] / df["Close"].iloc[-6] - 1), 4)
 
     # 5) Save ----------------------------------------------------------------
     state["last_run"] = asof.isoformat()
     weekly = {
         "run_date": asof.isoformat(), "market_date": market_date, "status": state["status"],
         "fx": fx, "prices": prices, "performance": perf, "events": events, "regime": regime,
-        "news": news, "filings": filings, "earnings": earnings, "summary": summary, "warnings": warnings,
+        "news": news, "filings": filings, "profiles": profiles, "earnings": earnings, "summary": summary, "warnings": warnings,
     }
     dashboard = {
         **weekly,

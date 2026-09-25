@@ -30,6 +30,6 @@
   "earnings_lookahead_days": 45,
   "edgar_forms": ["8-K", "10-Q", "10-K", "6-K", "20-F"],
   "summary_model": "claude-haiku-4-5-20251001",
-  "summary_max_tokens": 900,
+  "summary_max_tokens": 1500,
   "dashboard_url": "https://mhamahpapa364-art.github.io/ai-paper-portfolio/"
 }

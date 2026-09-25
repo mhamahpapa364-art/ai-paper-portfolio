@@ -71,6 +71,22 @@ def earnings_calendar(tickers: list[str], asof: date, lookahead: int, warnings: 
     return sorted(rows, key=lambda r: r["date"] or "")
 
 
+def company_profiles(tickers: list[str], warnings: list) -> dict:
+    """Name + industry per ticker (ETFs return nothing on the free tier)."""
+    out = {}
+    for t in tickers:
+        try:
+            p = _finnhub("/stock/profile2", {"symbol": t})
+        except Exception as e:
+            warnings.append(f"ข้อมูลบริษัท {t}: {e}")
+            continue
+        if p and p.get("name"):
+            out[t] = {"name": p["name"], "industry": p.get("finnhubIndustry", ""),
+                      "country": p.get("country", ""), "logo": p.get("logo", "")}
+        time.sleep(0.3)
+    return out
+
+
 # ---------- SEC EDGAR ----------
 _CIK_CACHE: dict[str, str] | None = None
 
