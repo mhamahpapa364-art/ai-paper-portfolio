@@ -56,7 +56,7 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     if not args.force and not market_window(now):
         log("US market closed — nothing to do")
-        return 0
+        return 3  # tells the workflow loop to stop
     cfg = settings()
     state = load_json(STATE_PATH)
     if state.get("status") != "live":

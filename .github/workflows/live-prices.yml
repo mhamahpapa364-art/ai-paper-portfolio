@@ -1,26 +1,26 @@
 name: Live prices
 
+# One long-running job per half-session instead of many short cron runs:
+# GitHub often delays or drops frequent schedules, but a single start per session is reliable.
 on:
   schedule:
-    - cron: "*/15 13-21 * * 1-5"   # ทุก 15 นาที ช่วงตลาด US (สคริปต์เช็คเวลาเปิดตลาดเองอีกชั้น)
+    - cron: "25 13 * * 1-5"   # US open (summer time)
+    - cron: "25 14 * * 1-5"   # US open (winter time) — queued/no-op if already running
+    - cron: "5 19 * * 1-5"    # second half of the session (a job can run max 6 h)
+    - cron: "5 20 * * 1-5"
   workflow_dispatch:
-    inputs:
-      force:
-        description: "อัปเดตทันทีแม้ตลาดปิด"
-        type: boolean
-        default: true
 
 permissions:
   contents: write
 
 concurrency:
   group: live-prices
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -28,20 +28,33 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Snapshot
+      - name: Update every 5 minutes while the US market is open
         env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
+          publish() {
+            rm -rf pub && mkdir pub && cp out/live.json pub/
+            (cd pub && git init -q -b live && git config user.name "ai-portfolio-bot" \
+              && git config user.email "41898282+github-actions[bot]@users.noreply.github.com" \
+              && git add live.json && git commit -qm "live prices" \
+              && git push -qf "https://x-access-token:${TOKEN}@github.com/${REPO}.git" live) || echo "push failed"
+          }
           mkdir -p out
-          if [ "${{ inputs.force }}" = "true" ]; then F=--force; fi
-          python -m src.live_prices out/live.json $F
-      - name: Publish to the 'live' branch (single commit, keeps main history clean)
-        run: |
-          [ -f out/live.json ] || exit 0
-          cd out
-          git init -q -b live
-          git config user.name "ai-portfolio-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add live.json
-          git commit -qm "live prices"
-          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" live
+          start=$(date +%s)
+          set +e
+          python -m src.live_prices out/live.json; rc=$?
+          if [ $rc -eq 3 ]; then
+            # market closed: a manual run still refreshes once, a scheduled run just exits
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then python -m src.live_prices out/live.json --force && publish; fi
+            exit 0
+          fi
+          while true; do
+            [ $rc -eq 0 ] && publish
+            [ $(( $(date +%s) - start )) -gt 20400 ] && break   # hand over to the next job before the 6 h limit
+            sleep 300
+            python -m src.live_prices out/live.json; rc=$?
+            [ $rc -eq 3 ] && break
+          done
+          exit 0
