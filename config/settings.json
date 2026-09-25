@@ -129,7 +129,7 @@
   ],
   "credit": {
     "_comment": "ยอดเครดิต Anthropic ที่เหลือ ณ ตอนที่ยอดใช้สะสมในระบบ = at_total_spend — อัปเดตทุกครั้งที่เติมเงิน",
-    "balance_usd": 4.1,
+    "balance_usd": 3.68,
     "at_total_spend": 0.3004,
     "alert_below_usd": 1.0
   }
