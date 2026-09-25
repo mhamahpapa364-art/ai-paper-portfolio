@@ -2,7 +2,7 @@
   "run_date": "2026-09-25",
   "market_date": "2026-09-24",
   "status": "pre-live",
-  "fx": 33.349998474121094,
+  "fx": 33.36000061035156,
   "prices": {
     "ASML": {
       "price": 1722.5,
@@ -35,7 +35,7 @@
       "source": "yfinance"
     },
     "USDTHB=X": {
-      "price": 33.349998474121094,
+      "price": 33.36000061035156,
       "date": "2026-09-25",
       "source": "yfinance"
     }
@@ -47,7 +47,7 @@
       "market_vs_200dma": 0.0714,
       "sma50_above_sma200": true,
       "market_4w": 0.004218588421821323,
-      "vix": 15.62,
+      "vix": 15.54,
       "us10y": 5.162,
       "us10y_4w_change_pts": 0.523,
       "defensives_leading": false
@@ -300,11 +300,33 @@
       }
     ]
   },
-  "filings": {},
+  "filings": {
+    "COST": [
+      {
+        "form": "8-K",
+        "date": "2026-09-24",
+        "items": "2.02,9.01",
+        "url": "https://www.sec.gov/Archives/edgar/data/909832/000090983226000084/cost-20260924.htm",
+        "label": "ผลประกอบการ"
+      }
+    ]
+  },
   "earnings": [],
-  "summary": null,
-  "warnings": [
-    "EDGAR: 403 Client Error: Forbidden for url: https://www.sec.gov/files/company_tickers.json",
-    "Anthropic API 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_i"
-  ]
+  "summary": {
+    "text": "ภาพรวมสัปดาห์: ตลาดอยู่ในโหมด risk-on ด้วย VIX ต่ำ 15.54 และ SMA50 อยู่เหนือ SMA200 แม้อัตราผลตอบแทนพันธบัตรสหรัฐฯ 10 ปี เพิ่มขึ้น 52.3 bps เป็น 5.162%\n\nASML: ปรับตัวลง 1.8% หลังประกาศการขยายความมาแม่นยำ High-NA tools ที่เพิ่มการยึดตลาด แม้ค่า forward P/E อยู่ที่ 31 เท่า (กลาง)\n\nCOST: ผลงานดีเด่น Q4 FY2026 - ยอดขายเพิ่ม 11.2% เป็น $93.87B และ digital comps โต 19.5% แต่นักวิเคราะห์ SeekingAlpha ให้ rating Sell เนื่องจากมูลค่าหุ้นอาจสูงเกินไป (บวก-กลาง)\n\nETN: ต่อสัญญาณผสม - ได้รับการยอมรับจากผู้บริหาร Coatue Management แต่มีข้อกังวลว่า net margin หดตัว (12.8% ในช่วง 12 เดือน) ขณะที่ P/E อยู่ในเปอร์เซนต์ไทล์สูง การลงทุนขยาย $242M ในอาร์กันซอเป็นบวก (กลาง)\n\nLLY: ปรับตัวขึ้น 3.64% หลังการอนุมัติ Onswik (basal insulin รายสัปดาห์) และ Medicare Bridge participation ชูชะตาตลาด weight-loss ที่มูลค่า $100B ขยายตัวด้วยผู้เล่นใหม่ (บวก)\n\nMA: ได้ประโยชน์จาก KYA interoperability framework ร่วมกับ Visa และ Ant International สำหรับ AI-agent transactions ฝั่งชำระเงิน (บวก)\n\nจับตา: การเพิ่มอัตราดอกเบี้ยสหรัฐฯ ที่ยังคงแรง และการแข่งขันอย่างรุนแรงในตลาด weight-loss ยา/vaccines",
+    "model": "claude-haiku-4-5-20251001",
+    "usage": {
+      "input_tokens": 3001,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 767,
+      "service_tier": "standard",
+      "inference_geo": "not_available"
+    }
+  },
+  "warnings": []
 }
