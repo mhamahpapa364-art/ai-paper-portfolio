@@ -70,8 +70,50 @@ def apply_corporate_actions(book: dict, history: dict, after, upto, withholding:
             else:
                 net = h["shares"] * ev["amount"] * (1 - withholding)
                 book["cash_usd"] += net
-                applied.append({"ticker": t, **ev, "net_usd": round(net, 4)})
+                applied.append({"ticker": t, **ev, "net_usd": round(net, 4), "_net": net})
     return applied
+
+
+def process_events(state: dict, history: dict, upto, withholding: float, warnings: list) -> list[dict]:
+    """Apply dividends/splits with ex-date in (last_events_processed, upto] to all three books.
+    Benchmark and shadow reinvest dividends into the paying stock at the ex-date close (DRIP) — they never
+    'trade', so their cash must not pile up. The AI portfolio keeps dividends as cash (its own decision).
+    If a held ticker's history lacks corporate-action data (fallback source), nothing is applied and the
+    pointer is not moved, so a later run with full data catches up."""
+    from datetime import date as _d
+    last = _d.fromisoformat(state["last_events_processed"])
+    upto = _d.fromisoformat(upto) if isinstance(upto, str) else upto
+    if upto <= last:
+        return []
+    held = set().union(*(set(b["holdings"]) for b in state["books"].values()))
+    weak = [t for t in held if t not in history or history[t].attrs.get("source") == "stooq"]
+    if weak:
+        warnings.append("ข้อมูลปันผล/แตกพาร์ของ " + ", ".join(sorted(weak)) + " ไม่ครบ — เลื่อนไปประมวลผลรอบถัดไป")
+        return []
+    events = []
+    for name, book in state["books"].items():
+        for ev in apply_corporate_actions(book, history, last, upto, withholding):
+            ev["book"] = name
+            events.append(ev)
+            if ev["type"] != "dividend":
+                continue
+            if name == "portfolio":
+                state["totals"]["dividends_usd"] = round(state["totals"]["dividends_usd"] + ev["net_usd"], 4)
+                continue
+            df = history[ev["ticker"]]
+            row = df[df.index.date == _d.fromisoformat(ev["date"])]
+            px = float(row["Close"].iloc[0]) if len(row) else float(df["Close"].iloc[-1])
+            h = book["holdings"][ev["ticker"]]
+            h["shares"] += ev["_net"] / px             # DRIP, no fee
+            h["cost_usd"] += ev["_net"]
+            if "cost_thb" in h and state.get("fx_inception"):
+                h["cost_thb"] += ev["_net"] * state["fx_inception"]
+            book["cash_usd"] -= ev["_net"]
+            ev["reinvested"] = True
+    for ev in events:
+        ev.pop("_net", None)
+    state["last_events_processed"] = upto.isoformat()
+    return events
 
 
 def seed_books(state: dict, target_weights: dict[str, float], prices: dict, fx: float,

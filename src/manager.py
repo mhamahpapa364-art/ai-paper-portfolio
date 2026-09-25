@@ -81,7 +81,10 @@ def apply_reviews(state: dict, graded: list, due: list, on: str) -> list:
         d = due_by_id.get(g.get("id"))
         if not d or g.get("verdict") not in ("correct", "wrong", "too_early"):
             continue
-        card.append({**d, "verdict": g["verdict"], "note": g.get("note", ""), "graded_on": on})
+        beat = None
+        if d.get("return_since_entry") is not None and d.get("voo_return_same_period") is not None:
+            beat = d["return_since_entry"] > d["voo_return_same_period"]
+        card.append({**d, "verdict": g["verdict"], "note": g.get("note", ""), "graded_on": on, "beat_voo": beat})
         done.append(d["id"])
     state["pending_reviews"] = [r for r in state.get("pending_reviews", []) if r["id"] not in done]
     save_json(SCORECARD_PATH, card)
@@ -91,8 +94,11 @@ def apply_reviews(state: dict, graded: list, due: list, on: str) -> list:
 def hit_rate(card: list) -> dict:
     c = sum(1 for x in card if x["verdict"] == "correct")
     w = sum(1 for x in card if x["verdict"] == "wrong")
+    objective = [x["beat_voo"] for x in card if x.get("beat_voo") is not None]
     return {"correct": c, "wrong": w, "too_early": sum(1 for x in card if x["verdict"] == "too_early"),
-            "hit_rate": round(c / (c + w), 3) if c + w else None}
+            "hit_rate": round(c / (c + w), 3) if c + w else None,
+            "beat_voo": sum(objective), "measured": len(objective),
+            "beat_voo_rate": round(sum(objective) / len(objective), 3) if objective else None}
 
 
 # ---------- human-review flags ----------

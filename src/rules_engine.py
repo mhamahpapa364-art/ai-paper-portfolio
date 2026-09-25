@@ -15,7 +15,7 @@ def weeks_held(opened: str, asof: date) -> float:
 
 
 def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, asof: date,
-             initial: bool = False, sector_of=None) -> tuple[list[str], dict]:
+             initial: bool = False, sector_of=None, turnover_used: float = 0.0) -> tuple[list[str], dict]:
     """Return (errors, plan). plan = {ticker: target_weight}, only meaningful when errors is empty.
 
     `eligible(ticker) -> (bool, reason)` checks the universe (US-listed, not leveraged, has price).
@@ -98,8 +98,9 @@ def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, a
                     errors.append(f"{t}: held {held:.1f} weeks < minimum {flex['min_holding_weeks']} "
                                   f"(only allowed if thesis_broken=true)")
         turnover = sum(abs(plan.get(t, 0) - cur_w.get(t, 0)) for t in set(plan) | set(cur_w)) / 2
-        if turnover > iron["max_weekly_turnover"] + 1e-6:
-            errors.append(f"turnover {turnover:.1%} exceeds weekly max {iron['max_weekly_turnover']:.0%}")
+        if turnover + turnover_used > iron["max_weekly_turnover"] + 1e-6:
+            extra = f" (+{turnover_used:.1%} already traded in the last 7 days)" if turnover_used else ""
+            errors.append(f"turnover {turnover:.1%}{extra} exceeds weekly max {iron['max_weekly_turnover']:.0%}")
     # Sector concentration (iron)
     cap = iron.get("max_sector_weight")
     if cap and sector_of and plan:
@@ -143,6 +144,16 @@ def execute(state: dict, plan: dict[str, float], prices: dict, fee_rate: float, 
                        "usd": round(usd, 2), "fee": round(f, 4)})
     state["totals"]["fees_usd"] = round(state["totals"]["fees_usd"] + fees, 4)
     return trades
+
+
+def turnover_of(trades: list[dict], total_usd: float) -> float:
+    return sum(t["usd"] for t in trades) / total_usd / 2 if total_usd else 0.0
+
+
+def turnover_used(state: dict, asof) -> float:
+    from datetime import timedelta
+    since = (asof - timedelta(days=7)).isoformat()
+    return round(sum(x["turnover"] for x in state.get("turnover_log", []) if x["date"] > since), 4)
 
 
 def validate_rule_changes(changes: dict, rules: dict, asof: date) -> tuple[list[str], dict]:

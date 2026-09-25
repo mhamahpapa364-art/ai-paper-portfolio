@@ -103,14 +103,7 @@ def main(argv=None) -> int:
         for book in state["books"].values():  # migration: THB cost basis for positions opened before it existed
             for h in book["holdings"].values():
                 h.setdefault("cost_thb", h["cost_usd"] * state["fx_inception"])
-        after, mdate = date.fromisoformat(state["last_events_processed"]), date.fromisoformat(market_date)
-        for name, book in state["books"].items():
-            for ev in pf.apply_corporate_actions(book, hist, after, mdate, cfg["dividend_withholding"]):
-                ev["book"] = name
-                events.append(ev)
-                if name == "portfolio" and ev["type"] == "dividend":
-                    state["totals"]["dividends_usd"] = round(state["totals"]["dividends_usd"] + ev["net_usd"], 4)
-        state["last_events_processed"] = market_date
+        events = pf.process_events(state, hist, market_date, cfg["dividend_withholding"], warnings)
 
     # 3) Regime, news, filings, earnings -------------------------------------
     regime = read_regime(hist, cfg)
@@ -151,7 +144,12 @@ def main(argv=None) -> int:
         history_log.append({"date": market_date, "fx": fx,
                             **{k: perf[k]["value_thb"] for k in ("portfolio", "benchmark", "shadow")},
                             "portfolio_usd": perf["portfolio"]["value_usd"]})
-        perf["max_drawdown"] = pf.max_drawdown([state["start_capital_thb"]] + [h["portfolio"] for h in history_log])
+        daily_vals = load_json(STATE_PATH.parent / "daily_values.json", default=[])
+        series = sorted({**{h["date"]: h["portfolio"] for h in daily_vals},
+                         **{h["date"]: h["portfolio"] for h in history_log}}.items())
+        perf["max_drawdown"] = pf.max_drawdown([state["start_capital_thb"]] + [v for _, v in series])
+        perf["drawdown_from_peak"] = min(perf["drawdown_from_peak"],
+                                         perf["portfolio"]["value_thb"] / max([state["start_capital_thb"]] + [v for _, v in series]) - 1)
         flags = mg.human_flags(perf, history_log, rules)
         warnings += flags
 
@@ -195,6 +193,7 @@ def main(argv=None) -> int:
         "lessons_md": mg.lessons(),
         "scorecard_recent": card[-6:],
         "pending_orders": state.get("pending_orders"),
+        "daily_values": load_json(STATE_PATH.parent / "daily_values.json", default=[])[-400:],
     }
     save_json(STATE_PATH, state)
     save_json(HISTORY_PATH, history_log)
@@ -247,6 +246,7 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         if mode != "initial" else None,
         "upcoming_earnings": earnings if mode != "initial" else None,
         "triggers": triggers,
+        "turnover_used_last_7_days": reng.turnover_used(state, asof) if mode != "initial" else None,
         "emergency_triggers_since_last_review": state.get("recent_triggers") or None,
         "unexecuted_pending_orders": state.get("pending_orders"),
     }
@@ -271,7 +271,8 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
                     p["chg_1w"] = round(float(df["Close"].iloc[-1] / df["Close"].iloc[-6] - 1), 4)
             prices.update(extra)
         errs, plan = reng.validate(d, state, prices, rules, tools.eligible, asof,
-                                   initial=(mode == "initial"), sector_of=tools.sector_of)
+                                   initial=(mode == "initial"), sector_of=tools.sector_of,
+                                   turnover_used=reng.turnover_used(state, asof) if mode != "initial" else 0.0)
         if not errs or month_spend(state, month) >= cfg["monthly_ai_budget_usd"]:
             break
         log(f"attempt {attempt} rejected: {errs}")

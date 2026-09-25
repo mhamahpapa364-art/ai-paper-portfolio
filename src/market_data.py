@@ -20,8 +20,34 @@ def _yf():
     return yfinance
 
 
+STOOQ_MAP = {"USDTHB=X": "usdthb", "^TNX": "10usy.b"}
+
+
+def stooq_history(t: str, period: str) -> pd.DataFrame | None:
+    """Free daily OHLC fallback (no dividends/splits). Returns None if unavailable."""
+    sym = STOOQ_MAP.get(t) or (None if t.startswith("^") or "=" in t else f"{t.lower().replace('.', '-')}.us")
+    if not sym:
+        return None
+    try:
+        r = requests.get("https://stooq.com/q/d/l/", params={"s": sym, "i": "d"}, timeout=30)
+        if r.status_code != 200 or not r.text.startswith("Date"):
+            return None
+        from io import StringIO
+        df = pd.read_csv(StringIO(r.text), parse_dates=["Date"]).set_index("Date").sort_index()
+    except Exception as e:  # noqa: BLE001
+        log(f"stooq {t}: {e}")
+        return None
+    years = {"1mo": 1 / 12, "3mo": .25, "6mo": .5, "1y": 1, "2y": 2}.get(period, 2)
+    df = df[df.index >= df.index[-1] - pd.Timedelta(days=int(366 * years))]
+    df["Dividends"], df["Stock Splits"] = 0.0, 0.0
+    df = df[["Open", "Close", "Dividends", "Stock Splits"]].dropna(subset=["Close"])
+    df.attrs["source"] = "stooq"
+    return df if not df.empty else None
+
+
 def fetch_history(tickers: list[str], period: str = "2y", retries: int = 3) -> dict[str, pd.DataFrame]:
-    """Return {ticker: DataFrame[Close, Dividends, Stock Splits]} indexed by date. Missing tickers are omitted."""
+    """Return {ticker: DataFrame[Open, Close, Dividends, Stock Splits]} indexed by date. Missing tickers are omitted.
+    yfinance first (has dividends/splits); Stooq as fallback when Yahoo blocks the runner."""
     out: dict[str, pd.DataFrame] = {}
     for t in tickers:
         for attempt in range(1, retries + 1):
@@ -35,11 +61,17 @@ def fetch_history(tickers: list[str], period: str = "2y", retries: int = 3) -> d
                             df[col] = 0.0
                     cols = [c for c in ("Open", "Close", "Dividends", "Stock Splits") if c in df]
                     out[t] = df[cols].dropna(subset=["Close"])
+                    out[t].attrs["source"] = "yfinance"
                     break
                 log(f"yfinance: empty history for {t} (attempt {attempt})")
             except Exception as e:  # yfinance raises many types (rate limits etc.)
                 log(f"yfinance error for {t} (attempt {attempt}): {e}")
             time.sleep(2 * attempt)
+        if t not in out:
+            fb = stooq_history(t, period)
+            if fb is not None:
+                log(f"{t}: using Stooq fallback")
+                out[t] = fb
     return out
 
 

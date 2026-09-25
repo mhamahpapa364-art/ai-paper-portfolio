@@ -278,7 +278,7 @@ function render(d) {
       ${tr.map(t => `<div class="trade"><span><span class="side ${t.side}">${t.side === 'buy' ? 'ซื้อ' : 'ขาย'}</span>${esc(t.ticker)}</span><span class="w">${t.side === 'sell' && sells[t.ticker] ? esc(sells[t.ticker]) + ' · ' : ''}$${Math.round(t.usd).toLocaleString('en-US')}</span></div>`).join('')}
       ${dec.errors ? `<details><summary style="color:var(--neg)">ทำไมแผนถูกปฏิเสธ</summary><ul class="note">${dec.errors.map(e => `<li>${esc(e)}</li>`).join('')}</ul></details>` : ''}
       ${dec.market_view || dec.journal ? `<details><summary>ความคิดของ AI สัปดาห์นี้</summary><p class="note">${esc(dec.market_view || '')}</p><p class="note">${esc(dec.journal || '')}</p></details>` : ''}
-      ${sc.hit_rate != null ? `<p class="hint" style="margin:10px 0 0">ความแม่นของการคาดการณ์: ถูก ${sc.correct} / ผิด ${sc.wrong} (${Math.round(sc.hit_rate * 100)}%)</p>` : ''}
+      ${sc.hit_rate != null ? `<p class="hint" style="margin:10px 0 0">AI ให้คะแนนตัวเอง: ถูก ${sc.correct} / ผิด ${sc.wrong} (${Math.round(sc.hit_rate * 100)}%)${sc.measured ? ` · วัดผลจริง: ชนะ VOO ${sc.beat_voo}/${sc.measured} (${Math.round(sc.beat_voo_rate * 100)}%)` : ''}</p>` : ''}
     </section>`;
   }
 
@@ -316,7 +316,7 @@ function render(d) {
     h += `<section class="card"><h2>งบที่กำลังจะประกาศ</h2><p class="hint">วันที่ตามเวลาสหรัฐฯ</p><div class="chips">${d.earnings.map(e => `<div class="ech"><b>${esc(e.ticker)}</b>${th(e.date)}</div>`).join('')}</div></section>`;
   }
 
-  if (live) h += `<section class="card"><h2>เทียบผลตอบแทน</h2><p class="hint">พอร์ตเงา = หุ้นชุดแรกที่ถือไว้เฉยๆ ไม่ซื้อขายอะไรเลย ใช้ดูว่าการปรับพอร์ตของ AI คุ้มหรือเปล่า</p>${chart(d.history, d.start_capital_thb)}</section>`;
+  if (live) h += `<section class="card"><h2>เทียบผลตอบแทน</h2><p class="hint">พอร์ตเงา = หุ้นชุดแรกที่ถือไว้เฉยๆ ไม่ซื้อขายอะไรเลย ใช้ดูว่าการปรับพอร์ตของ AI คุ้มหรือเปล่า</p>${chart((d.daily_values && d.daily_values.length >= 2) ? d.daily_values : d.history, d.start_capital_thb)}</section>`;
 
   if (d.warnings && d.warnings.length) h += `<section class="card"><details style="margin:0"><summary style="color:var(--warn)">⚠️ ระบบมีคำเตือน ${d.warnings.length} รายการ</summary><ul class="warnbox">${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul></details></section>`;
 
@@ -328,7 +328,7 @@ function render(d) {
       x.replace(/^\s*[-*] /, '') !== x ? `<li>${esc(x.replace(/^\s*[-*] /, ''))}</li>` : `<p class="note">${esc(x)}</p>`).join('');
     const V = {correct: ['✅', 'ถูก'], wrong: ['❌', 'ผิด'], too_early: ['⏳', 'ยังเร็วไป']};
     h += `<section class="card"><h2>AI เรียนรู้อะไรบ้าง</h2><p class="hint">ผลตรวจการคาดการณ์ (4 และ 12 สัปดาห์หลังซื้อ) + บทเรียนที่ AI สรุปเองทุกเดือน</p>
-      ${recent.length ? recent.slice().reverse().map(r => `<div class="trade"><span>${(V[r.verdict] || ['•'])[0]} <b>${esc(r.ticker)}</b> <span class="w">${r.horizon_weeks} สัปดาห์ · ${esc(r.note || '')}</span></span><span class="w">${pct(r.return_since_entry)}</span></div>`).join('')
+      ${recent.length ? recent.slice().reverse().map(r => `<div class="trade"><span>${(V[r.verdict] || ['•'])[0]} <b>${esc(r.ticker)}</b> <span class="w">${r.horizon_weeks} สัปดาห์ · ${esc(r.note || '')}</span></span><span class="w">${pct(r.return_since_entry)}${r.beat_voo != null ? (r.beat_voo ? ' · ชนะ VOO' : ' · แพ้ VOO') : ''}</span></div>`).join('')
         : '<p class="empty">การตรวจผลครั้งแรก: 22 ต.ค. (4 สัปดาห์หลังซื้อ)</p>'}
       ${md ? `<details><summary>บทเรียนรายเดือน</summary><ul class="note" style="padding-left:18px">${md}</ul></details>` : '<p class="empty" style="margin-top:8px">บทเรียนรายเดือนครั้งแรก: ต้นเดือน พ.ย.</p>'}
     </section>`;

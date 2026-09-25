@@ -10,15 +10,19 @@ from src import manager as mg
 from src import portfolio as pf
 from src import run_daily as rd
 
-CFG = {"fee_rate": 0.0025, "review_after_weeks": [4, 12], "benchmark": "VOO",
+CFG = {"fee_rate": 0.0025, "dividend_withholding": 0.15, "review_after_weeks": [4, 12], "benchmark": "VOO",
        "emergency": {"stock_move": 0.10, "market_drop": 0.05, "vix_level": 35},
        "regime_tickers": {"vix": "^VIX"}}
 
 
-def frame(rows, start="2026-09-21"):
+def frame(rows, start="2026-09-21", divs=None):
     idx = pd.bdate_range(start, periods=len(rows))
-    return pd.DataFrame({"Open": [r[0] for r in rows], "Close": [r[1] for r in rows],
-                         "Dividends": 0.0, "Stock Splits": 0.0}, index=idx)
+    df = pd.DataFrame({"Open": [r[0] for r in rows], "Close": [r[1] for r in rows],
+                       "Dividends": 0.0, "Stock Splits": 0.0}, index=idx)
+    for d, v in (divs or {}).items():
+        df.loc[pd.Timestamp(d), "Dividends"] = v
+    df.attrs["source"] = "yfinance"
+    return df
 
 
 def state():
@@ -73,6 +77,50 @@ class Pending(unittest.TestCase):
         trades = rd.fill_pending(s, hist, CFG, 33.0, "VOO", w)
         self.assertNotIn("A", {t["ticker"] for t in trades})
         self.assertTrue(any("A" in x for x in w))
+
+
+    def test_dividend_on_fill_day_goes_to_seller_not_buyer(self):
+        s = state()
+        s["pending_orders"] = {"decided": "2026-09-25", "plan": {"A": 0.0, "B": .4, "C": .5},
+                               "targets": [{"ticker": "C", "thesis": "t", "exit_condition": "e", "expected_outcome": "o"}]}
+        hist = {"VOO": frame([(100, 100)] * 6), "B": frame([(100, 100)] * 6),
+                "A": frame([(100, 100)] * 6, divs={"2026-09-28": 1.0}),      # ex-date = fill day: seller keeps it
+                "C": frame([(100, 100)] * 6, divs={"2026-09-28": 5.0})}      # buyer at the open does NOT get it
+        a_shares = s["books"]["portfolio"]["holdings"]["A"]["shares"]
+        cash0 = s["books"]["portfolio"]["cash_usd"]
+        rd.fill_pending(s, hist, CFG, 33.0, "VOO", [])
+        self.assertAlmostEqual(s["totals"]["dividends_usd"], a_shares * 1.0 * 0.85, places=3)
+        self.assertEqual(s["last_events_processed"], "2026-09-28")
+
+    def test_weekly_turnover_is_cumulative(self):
+        from src import rules_engine as reng
+        s = state()
+        s["turnover_log"] = [{"date": "2026-09-28", "turnover": 0.25}]
+        self.assertAlmostEqual(reng.turnover_used(s, date(2026, 9, 30)), 0.25)
+        self.assertAlmostEqual(reng.turnover_used(s, date(2026, 10, 9)), 0.0)
+
+
+class Drip(unittest.TestCase):
+    def test_benchmark_and_shadow_reinvest_dividends(self):
+        s = state()
+        hist = {"VOO": frame([(100, 100)] * 3, divs={"2026-09-22": 2.0}), "A": frame([(100, 100)] * 3),
+                "B": frame([(100, 100)] * 3)}
+        v0 = s["books"]["benchmark"]["holdings"]["VOO"]["shares"]
+        cash_sh = s["books"]["shadow"]["cash_usd"]
+        ev = pf.process_events(s, hist, date(2026, 9, 23), 0.15, [])
+        self.assertTrue(any(e["book"] == "benchmark" and e.get("reinvested") for e in ev))
+        self.assertAlmostEqual(s["books"]["benchmark"]["cash_usd"], 0.0, places=6)
+        self.assertAlmostEqual(s["books"]["benchmark"]["holdings"]["VOO"]["shares"], v0 * (1 + 2 * .85 / 100))
+        self.assertAlmostEqual(s["books"]["shadow"]["cash_usd"], cash_sh)  # initial cash untouched
+
+    def test_incomplete_data_postpones(self):
+        s = state()
+        hist = {"A": frame([(100, 100)] * 3), "B": frame([(100, 100)] * 3), "VOO": frame([(100, 100)] * 3)}
+        hist["A"].attrs["source"] = "stooq"
+        w = []
+        self.assertEqual(pf.process_events(s, hist, date(2026, 9, 23), 0.15, w), [])
+        self.assertEqual(s["last_events_processed"], "2026-09-21")
+        self.assertTrue(w)
 
 
 class Scan(unittest.TestCase):

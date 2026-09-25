@@ -30,6 +30,26 @@ CRITICAL_8K = {"1.03": "ล้มละลาย/พิทักษ์ทรั�
                "3.01": "ถูกเตือนเรื่องการจดทะเบียน", "4.01": "เปลี่ยนผู้สอบบัญชี", "4.02": "งบเดิมเชื่อถือไม่ได้/แก้งบย้อนหลัง"}
 
 
+DAILY_PATH = STATE_PATH.parent / "daily_values.json"
+
+
+def record_daily_value(state: dict, hist: dict, fx: float, day, cfg: dict) -> None:
+    """End-of-day value of the three books — gives true (not weekly-sampled) drawdowns."""
+    px = {}
+    for b in state["books"].values():
+        for t in b["holdings"]:
+            df = hist.get(t)
+            if df is not None and not df.empty:
+                px[t] = {"price": float(df[df.index.date <= day]["Close"].iloc[-1])}
+    if any(t not in px for b in state["books"].values() for t in b["holdings"]):
+        return
+    rows = [r for r in load_json(DAILY_PATH, default=[]) if r["date"] != day.isoformat()]
+    rows.append({"date": day.isoformat(), "fx": round(fx, 4),
+                 **{k: round(pf.book_value(b, px) * fx, 2) for k, b in state["books"].items()}})
+    save_json(DAILY_PATH, sorted(rows, key=lambda r: r["date"]))
+    state["peak_value_thb"] = max(state.get("peak_value_thb") or 0, rows[-1]["portfolio"])
+
+
 def fill_pending(state: dict, hist: dict, cfg: dict, fx: float, benchmark: str, warnings: list) -> list[dict]:
     po = state.get("pending_orders")
     if not po:
@@ -48,6 +68,8 @@ def fill_pending(state: dict, hist: dict, cfg: dict, fx: float, benchmark: str, 
         state["pending_orders"] = None
         return []
 
+    # corporate actions up to and including the fill day happen BEFORE the open fill
+    pf.process_events(state, hist, day, cfg["dividend_withholding"], warnings)
     book = state["books"]["portfolio"]
     tickers = set(po["plan"]) | set(book["holdings"])
     opens, skipped = {}, []
@@ -73,7 +95,11 @@ def fill_pending(state: dict, hist: dict, cfg: dict, fx: float, benchmark: str, 
             else:
                 plan.pop(t, None)
         warnings.append("ไม่มีราคาเปิดของ " + ", ".join(sorted(skipped)) + " — ข้ามตัวนี้ในรอบนี้")
+    total_before = pf.book_value(book, opens)
     trades = reng.execute(state, plan, opens, cfg["fee_rate"], day.isoformat(), fx)
+    state.setdefault("turnover_log", []).append({"date": day.isoformat(),
+                                                 "turnover": round(reng.turnover_of(trades, total_before), 4)})
+    state["turnover_log"] = state["turnover_log"][-60:]
     for tr in trades:
         tr["fill"] = "open"
     decision = {"targets": po.get("targets") or []}
@@ -155,12 +181,14 @@ def main(argv=None) -> int:
         warnings.append("ดึงค่าเงินบาทไม่ได้ — ใช้ค่าล่าสุดที่มี")
 
     trades = fill_pending(state, hist, cfg, fx, cfg["benchmark"], warnings)
+    last_session = hist[cfg["benchmark"]].index[-1].date()
+    events = pf.process_events(state, hist, last_session, cfg["dividend_withholding"], warnings)
+    record_daily_value(state, hist, fx, last_session, cfg)
     triggers = scan(state, hist, cfg, asof, warnings)
     state.setdefault("recent_triggers", [])
     state["recent_triggers"] = (state["recent_triggers"] + triggers)[-30:]
 
     event_out = None
-    last_session = hist[cfg["benchmark"]].index[-1].date()
     friday_night = last_session.weekday() == 4
     if triggers and not dry and not args.no_ai and not friday_night:
         if month_spend(state, month) >= cfg["monthly_ai_budget_usd"]:
@@ -178,9 +206,9 @@ def main(argv=None) -> int:
             event_out, _ = run_decision("event", state, cfg, rules, hist, prices, fx, regime, None, news, {}, [],
                                         [], asof, last_session.isoformat(), month, warnings, False, triggers)
 
-    if not trades and not triggers and not warnings:
-        log("quiet day — nothing to do")
-        save_json(STATE_PATH, state)  # triggers_seen may have changed
+    if not trades and not triggers and not warnings and not events:
+        log("quiet day — values recorded, nothing else to do")
+        save_json(STATE_PATH, state)
         return 0
 
     # Refresh the dashboard's portfolio section (full refresh happens on Saturday)
