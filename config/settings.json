@@ -1,0 +1,35 @@
+{
+  "_comment": "ค่าตั้งระบบ — แก้ได้ แต่ถ้าแก้หลัง go-live ให้บันทึกเหตุผลใน commit message",
+  "starting_capital_thb": 100000,
+  "benchmark": "VOO",
+  "fx_ticker": "USDTHB=X",
+  "fee_rate": 0.0025,
+  "dividend_withholding": 0.15,
+  "prelive_watchlist": ["ETN", "LLY", "MA", "COST", "ASML", "VOO"],
+  "regime_tickers": {
+    "market": "VOO",
+    "vix": "^VIX",
+    "us10y": "^TNX",
+    "sectors": {
+      "XLK": "Technology",
+      "XLC": "Communication",
+      "XLY": "Consumer Disc.",
+      "XLP": "Consumer Staples",
+      "XLV": "Health Care",
+      "XLF": "Financials",
+      "XLI": "Industrials",
+      "XLE": "Energy",
+      "XLB": "Materials",
+      "XLU": "Utilities",
+      "XLRE": "Real Estate"
+    }
+  },
+  "price_max_age_days": 5,
+  "news_lookback_days": 7,
+  "max_news_per_ticker": 5,
+  "earnings_lookahead_days": 21,
+  "edgar_forms": ["8-K", "10-Q", "10-K", "6-K", "20-F"],
+  "summary_model": "claude-haiku-4-5-20251001",
+  "summary_max_tokens": 900,
+  "dashboard_url": "https://mhamahpapa364-art.github.io/ai-paper-portfolio/"
+}

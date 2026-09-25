@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Paper Portfolio</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1426; --panel:#111d35; --panel-2:#16243f; --line:#223358;
+  --text:#e8ecf4; --muted:#8e9bb5; --gold:#d6ad55; --gold-dim:#8a7040;
+  --pos:#5cc58a; --neg:#ef6f6c; --warn:#e8b64a; --bench:#8fa3c4; --shadow:#6f7f9e;
+  --sans:"IBM Plex Sans","IBM Plex Sans Thai",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace; --serif:"Fraunces",Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+h1{font:700 26px/1.1 var(--serif);margin:0;letter-spacing:-.01em}
+h1 span{color:var(--gold)}
+.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.badge{font:500 12px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.badge.live{border-color:var(--gold-dim);color:var(--gold)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}
+@media (max-width:760px){.c8,.c6,.c4{grid-column:span 12}.c3{grid-column:span 6}}
+h2{font:600 12px var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 10px}
+.big{font:700 34px/1.1 var(--serif)}
+.kpi{font:500 22px/1.2 var(--mono)}
+.label{color:var(--muted);font-size:12px}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.mut{color:var(--muted)}
+.mono{font-family:var(--mono)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-weight:500;color:var(--muted);text-align:left;font-size:12px;padding:6px 4px;border-bottom:1px solid var(--line)}
+td{padding:8px 4px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+tr:last-child td{border-bottom:0}
+.bar{height:6px;background:var(--panel-2);border-radius:3px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--gold)}
+.regime{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dot{width:12px;height:12px;border-radius:50%}
+.sig{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.sig:last-child{border:0}
+.summary{white-space:pre-wrap;font-size:14px}
+.news-t{font-weight:600;color:var(--gold);margin:12px 0 4px;font-family:var(--mono);font-size:13px}
+.news a{color:var(--text);text-decoration:none}.news a:hover{color:var(--gold)}
+.news li{margin:3px 0;font-size:13.5px}.news ul{margin:0;padding-left:18px}
+.warn{border-color:#5a4520;background:#1c1a17}
+.warn li{color:var(--warn);font-size:13px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:6px}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+svg text{fill:var(--muted);font:11px var(--mono)}
+.empty{color:var(--muted);font-size:13px;padding:8px 0}
+footer{color:var(--muted);font-size:12px;margin-top:20px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1>AI Paper <span>Portfolio</span></h1><div class="sub" id="sub">กำลังโหลด…</div></div>
+    <div class="badge" id="status">–</div>
+  </header>
+  <div class="grid" id="app"></div>
+  <footer>พอร์ตจำลอง ไม่ใช่เงินจริง · อัปเดตอัตโนมัติทุกวันเสาร์</footer>
+</div>
+<script>
+const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstChild; };
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = (x, d = 2) => x == null ? '–' : (x > 0 ? '+' : '') + (x * 100).toFixed(d) + '%';
+const cls = (x) => x == null ? 'mut' : x > 0 ? 'pos' : x < 0 ? 'neg' : 'mut';
+const thb = (x) => x == null ? '–' : Math.round(x).toLocaleString('en-US');
+const card = (span, title, body, extra = '') => `<section class="card ${span} ${extra}">${title ? `<h2>${title}</h2>` : ''}${body}</section>`;
+
+function chart(hist, start) {
+  if (!hist || hist.length < 2) return '<div class="empty">กราฟจะขึ้นหลังรันครบ 2 สัปดาห์</div>';
+  const W = 640, H = 220, P = {l: 52, r: 10, t: 10, b: 24};
+  const keys = [['portfolio', 'var(--gold)', ''], ['benchmark', 'var(--bench)', ''], ['shadow', 'var(--shadow)', '5 4']];
+  const all = hist.flatMap(h => keys.map(k => h[k[0]])).concat([start]);
+  let lo = Math.min(...all), hi = Math.max(...all); const pad = (hi - lo) * 0.1 || 1000; lo -= pad; hi += pad;
+  const x = i => P.l + i * (W - P.l - P.r) / (hist.length - 1), y = v => P.t + (hi - v) * (H - P.t - P.b) / (hi - lo);
+  let g = '';
+  for (let k = 0; k <= 3; k++) { const v = lo + (hi - lo) * k / 3;
+    g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" text-anchor="end">${(v / 1000).toFixed(0)}k</text>`; }
+  g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(start)}" y2="${y(start)}" stroke="var(--gold-dim)" stroke-dasharray="2 3"/>`;
+  [0, hist.length - 1].forEach(i => g += `<text x="${x(i)}" y="${H - 6}" text-anchor="${i ? 'end' : 'start'}">${hist[i].date}</text>`);
+  keys.slice().reverse().forEach(([k, c, d]) => {
+    g += `<polyline fill="none" stroke="${c}" stroke-width="${k === 'portfolio' ? 2.5 : 1.6}" stroke-dasharray="${d}" points="${hist.map((h, i) => x(i) + ',' + y(h[k])).join(' ')}"/>`; });
+  return `<div class="legend"><span><i style="background:var(--gold)"></i>พอร์ต AI</span><span><i style="background:var(--bench)"></i>VOO</span><span><i style="background:var(--shadow)"></i>พอร์ตเงา (ถือเฉยๆ)</span></div>
+    <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="มูลค่าพอร์ตเทียบ VOO และพอร์ตเงา">${g}</svg>`;
+}
+
+function render(d) {
+  const live = d.status === 'live', app = document.getElementById('app');
+  document.getElementById('sub').textContent = `ข้อมูลตลาด ${d.market_date} · USD/THB ${d.fx.toFixed(2)}` + (live ? ` · เริ่ม ${d.inception_date}` : '');
+  const st = document.getElementById('status'); st.textContent = live ? 'LIVE' : 'PRE-LIVE'; st.classList.toggle('live', live);
+  let h = '';
+
+  if (live) {
+    const p = d.performance, r = p.returns;
+    h += card('c12', 'มูลค่าพอร์ต', `<div class="big">${thb(p.portfolio.value_thb)} <span class="mut" style="font-size:18px">บาท</span></div>
+      <div class="kpi ${cls(r.portfolio_thb)}" style="margin-top:4px">${pct(r.portfolio_thb)}</div>
+      <div class="label">จากเงินต้น ${thb(d.start_capital_thb)} บาท</div>`);
+    const k = (t, v, note) => card('c3', '', `<div class="label">${t}</div><div class="kpi ${cls(v)}">${pct(v)}</div><div class="label">${note}</div>`);
+    h += k('ชนะ/แพ้ VOO', r.vs_benchmark, `VOO ${pct(r.benchmark_thb)}`);
+    h += k('ชนะ/แพ้ พอร์ตเงา', r.vs_shadow, 'การปรับตัวคุ้มไหม');
+    h += k('ผลจากหุ้น (USD)', r.portfolio_usd, `ค่าเงิน ${pct(r.fx_effect)}`);
+    h += k('ลงจากจุดสูงสุด', p.drawdown_from_peak, `ลึกสุด ${pct(p.max_drawdown)}`);
+    h += card('c12', 'มูลค่าเทียบกัน (บาท)', chart(d.history, d.start_capital_thb));
+
+    const port = d.books.portfolio, rows = Object.entries(port.holdings).map(([t, x]) => {
+      const pr = d.prices[t].price, val = x.shares * pr, pl = val / x.cost_usd - 1, w = d.weights[t] || 0;
+      return {t, pr, val, pl, w}; }).sort((a, b) => b.w - a.w);
+    h += card('c8', 'หุ้นในพอร์ต', `<table><tr><th>Ticker</th><th class="n">ราคา $</th><th class="n">กำไร/ขาดทุน</th><th class="n">สัดส่วน</th></tr>
+      ${rows.map(o => `<tr><td class="mono">${esc(o.t)}</td><td class="n">${o.pr.toFixed(2)}</td><td class="n ${cls(o.pl)}">${pct(o.pl, 1)}</td>
+      <td class="n">${(o.w * 100).toFixed(1)}%<div class="bar"><i style="width:${Math.min(100, o.w * 400)}%"></i></div></td></tr>`).join('')}
+      <tr><td class="mono mut">CASH</td><td></td><td></td><td class="n">${((d.weights.CASH || 0) * 100).toFixed(1)}%</td></tr></table>
+      <div class="label" style="margin-top:8px">ปันผลสะสม $${d.totals.dividends_usd.toFixed(2)} (หักภาษี 15%) · ค่าธรรมเนียมจำลอง $${d.totals.fees_usd.toFixed(2)}</div>`);
+  } else {
+    h += card('c12', 'สถานะ', `<div style="font:600 18px var(--serif)">ยังไม่เริ่มลงทุน</div>
+      <div class="label">ระบบกำลังทดสอบ — AI จะเลือกหุ้นตั้งต้นจากราคาวันที่ go-live</div>`);
+    const w = Object.entries(d.prices).filter(([t]) => !t.includes('='));
+    h += card('c8', 'รายชื่อที่ติดตาม (ทดสอบ)', `<table><tr><th>Ticker</th><th class="n">ราคา $</th><th class="n">ข้อมูลจาก</th></tr>
+      ${w.map(([t, p]) => `<tr><td class="mono">${esc(t)}</td><td class="n">${p.price.toFixed(2)}</td><td class="n mut">${esc(p.source)} ${esc(p.date)}</td></tr>`).join('')}</table>`);
+  }
+
+  const rg = d.regime, s = rg.signals || {}, col = {'risk-on': 'var(--pos)', 'neutral': 'var(--warn)', 'risk-off': 'var(--neg)'}[rg.label] || 'var(--muted)';
+  const sig = (a, b) => `<div class="sig"><span class="mut">${a}</span><span class="mono">${b}</span></div>`;
+  h += card('c4', 'สภาพตลาด', `<div class="regime"><span class="dot" style="background:${col}"></span><span style="font:600 18px var(--serif)">${esc(rg.label)}</span><span class="label mono">score ${rg.score}</span></div>
+    ${sig('VOO vs เส้น 200 วัน', pct(s.market_vs_200dma))}${sig('VOO 4 สัปดาห์', pct(s.market_4w))}${sig('VIX', s.vix ?? '–')}
+    ${sig('พันธบัตร 10 ปี', s.us10y != null ? s.us10y.toFixed(2) + '%' : '–')}${sig('หมวดนำ', (rg.sectors_4w || []).slice(0, 3).map(x => x.etf).join(' · ') || '–')}
+    ${sig('หมวดตาม', (rg.sectors_4w || []).slice(-2).map(x => x.etf).join(' · ') || '–')}`);
+
+  const sum = d.summary && d.summary.text;
+  h += card('c8', 'สรุปข่าวสัปดาห์ (AI)', sum ? `<div class="summary">${esc(sum)}</div>` : '<div class="empty">ไม่มีสรุปรอบนี้</div>');
+  h += card('c4', 'งบที่จะประกาศ', d.earnings.length ? `<table>${d.earnings.map(e => `<tr><td class="mono">${esc(e.ticker)}</td><td class="n">${esc(e.date)}</td><td class="n mut">${esc(e.hour)}</td></tr>`).join('')}</table>` : '<div class="empty">ไม่มีใน 3 สัปดาห์ข้างหน้า</div>');
+
+  const nt = Object.entries(d.news).filter(([, v]) => v.length);
+  h += card('c8', 'ข่าวล่าสุด', nt.length ? `<div class="news">${nt.map(([t, v]) => `<div class="news-t">${esc(t)}</div><ul>${v.map(n =>
+    `<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a> <span class="label">· ${esc(n.source)} ${esc(n.date)}</span></li>`).join('')}</ul>`).join('')}</div>` : '<div class="empty">ไม่มีข่าว</div>');
+  const ft = Object.entries(d.filings);
+  h += card('c4', 'เอกสาร SEC', ft.length ? `<div class="news">${ft.map(([t, v]) => `<div class="news-t">${esc(t)}</div><ul>${v.map(f =>
+    `<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.form)}</a> <span class="label">${esc(f.date)} ${esc(f.label || '')}</span></li>`).join('')}</ul>`).join('')}</div>` : '<div class="empty">ไม่มีเอกสารใหม่</div>');
+
+  if (d.events && d.events.length) h += card('c12', 'ปันผล / แตกพาร์ ที่บันทึกรอบนี้', `<table>${d.events.filter(e => e.book === 'portfolio').map(e =>
+    `<tr><td class="mono">${esc(e.ticker)}</td><td>${e.type === 'split' ? 'แตกพาร์ ' + e.ratio + ':1' : 'ปันผล $' + e.amount}</td><td class="n">${esc(e.date)}</td></tr>`).join('')}</table>`);
+  if (d.warnings.length) h += card('c12', 'คำเตือนจากระบบ', `<ul>${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul>`, 'warn');
+  app.innerHTML = h;
+}
+
+fetch('data/dashboard.json?t=' + Date.now()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(render).catch(e => { document.getElementById('sub').textContent = 'ยังไม่มีข้อมูล — รอการรันครั้งแรก (' + e.message + ')'; });
+</script>
+</body>
+</html>
