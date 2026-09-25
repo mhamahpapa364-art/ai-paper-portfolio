@@ -89,6 +89,9 @@ def main(argv=None) -> int:
     # 2) Corporate actions (live) --------------------------------------------
     events = []
     if state["status"] == "live":
+        for book in state["books"].values():  # migration: THB cost basis for positions opened before it existed
+            for h in book["holdings"].values():
+                h.setdefault("cost_thb", h["cost_usd"] * state["fx_inception"])
         after, mdate = date.fromisoformat(state["last_events_processed"]), date.fromisoformat(market_date)
         for name, book in state["books"].items():
             for ev in pf.apply_corporate_actions(book, hist, after, mdate, cfg["dividend_withholding"]):
@@ -148,6 +151,10 @@ def main(argv=None) -> int:
         if monthly:
             add_spend(state, month, monthly.get("cost", 0))
 
+    left = credit_left(state, cfg)
+    if left is not None and left < cfg["credit"]["alert_below_usd"]:
+        warnings.append(f"เครดิต Anthropic เหลือประมาณ ${left:.2f} — ควรเติมเงินที่ platform.claude.com แล้วอัปเดตยอดใน settings")
+
     # 7) Save ----------------------------------------------------------------
     state["last_run"] = asof.isoformat()
     card = load_json(mg.SCORECARD_PATH, default=[])
@@ -170,6 +177,9 @@ def main(argv=None) -> int:
         "totals": state["totals"], "history": history_log,
         "scorecard": mg.hit_rate(card), "api_spend_month_usd": round(month_spend(state, month), 3),
         "human_flags": flags,
+        "credit_left_usd": credit_left(state, cfg),
+        "lessons_md": mg.lessons(),
+        "scorecard_recent": card[-6:],
     }
     save_json(STATE_PATH, state)
     save_json(HISTORY_PATH, history_log)
@@ -178,6 +188,14 @@ def main(argv=None) -> int:
     log("Files written")
     telegram(format_message(dashboard, cfg), dry)
     return 0
+
+
+def credit_left(state: dict, cfg: dict) -> float | None:
+    c = cfg.get("credit")
+    if not c:
+        return None
+    total = state.get("api_spend_total", sum((state.get("api_spend") or {}).values()))
+    return round(c["balance_usd"] - (total - c["at_total_spend"]), 2)
 
 
 def gather_news(news_tickers, regime, cfg, asof, month, state, warnings, dry):
@@ -256,7 +274,7 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
             trades = [{"date": market_date, "ticker": t, "side": "buy", "price": prices[t]["price"],
                        "usd": round(state["start_capital_usd"] * w, 2)} for t, w in plan.items()]
     elif plan and d.get("action") != "hold":
-        trades = reng.execute(state, plan, prices, cfg["fee_rate"], market_date)
+        trades = reng.execute(state, plan, prices, cfg["fee_rate"], market_date, fx)
         out["status"] = "executed" if trades else "hold"
     else:
         out["status"] = "hold"
@@ -337,6 +355,8 @@ def format_message(d: dict, cfg: dict) -> str:
         lines += ["", "งบที่จะประกาศ: " + ", ".join(f"{e['ticker']} {e['date']}" for e in d["earnings"][:6])]
     if d["summary"] and d["summary"].get("text"):
         lines += ["", "<b>สรุปข่าว</b>", esc(d["summary"]["text"])]
+    if d.get("credit_left_usd") is not None and d["credit_left_usd"] < cfg["credit"]["alert_below_usd"]:
+        lines += ["", f"💳 เครดิต AI เหลือประมาณ ${d['credit_left_usd']:.2f} — ถึงเวลาเติมเงินแล้ว"]
     for f in d.get("human_flags") or []:
         lines += ["", f"🚨 {esc(f)}"]
     other = [w for w in d["warnings"] if w not in (d.get("human_flags") or [])]

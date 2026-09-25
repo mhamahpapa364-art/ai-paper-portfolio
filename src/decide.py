@@ -68,6 +68,7 @@ def _cost(usage: dict, model: str, cfg: dict) -> float:
 
 
 def add_spend(state: dict, month: str, usd: float) -> None:
+    state["api_spend_total"] = round(state.get("api_spend_total", sum((state.get("api_spend") or {}).values())) + usd, 4)
     sp = state.setdefault("api_spend", {})
     sp[month] = round(sp.get(month, 0.0) + usd, 4)
 

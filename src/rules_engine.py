@@ -109,7 +109,8 @@ def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, a
     return errors, plan
 
 
-def execute(state: dict, plan: dict[str, float], prices: dict, fee_rate: float, on: str) -> list[dict]:
+def execute(state: dict, plan: dict[str, float], prices: dict, fee_rate: float, on: str,
+            fx: float | None = None) -> list[dict]:
     """Move the portfolio book to target weights at `prices`. Sells first, then buys (scaled to cash)."""
     book = state["books"]["portfolio"]
     total = pf.book_value(book, prices)
@@ -132,7 +133,7 @@ def execute(state: dict, plan: dict[str, float], prices: dict, fee_rate: float, 
         if usd < 1:
             continue
         px = prices[t]["price"]
-        f = pf.buy(book, t, usd, px, fee_rate, on)
+        f = pf.buy(book, t, usd, px, fee_rate, on, fx)
         fees += f
         trades.append({"date": on, "ticker": t, "side": "buy", "shares": round((usd - f) / px, 6), "price": px,
                        "usd": round(usd, 2), "fee": round(f, 4)})

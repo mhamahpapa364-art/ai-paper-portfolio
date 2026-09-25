@@ -65,8 +65,13 @@ def earnings_calendar(tickers: list[str], asof: date, lookahead: int, warnings: 
         except Exception as e:
             warnings.append(f"ปฏิทินงบ {t}: {e}")
             continue
-        rows += [{"ticker": t, "date": e.get("date"), "hour": e.get("hour", "")}
-                 for e in (j or {}).get("earningsCalendar", []) if e.get("symbol") == t]
+        got = [{"ticker": t, "date": e.get("date"), "hour": e.get("hour", "")}
+               for e in (j or {}).get("earningsCalendar", []) if e.get("symbol") == t]
+        if not got:  # free Finnhub tier misses some names (e.g. ADRs) — fall back to yfinance
+            d = yf_next_earnings(t)
+            if d and asof <= date.fromisoformat(d) <= asof + timedelta(days=lookahead):
+                got = [{"ticker": t, "date": d, "hour": "", "source": "yfinance"}]
+        rows += got
         time.sleep(0.3)
     return sorted(rows, key=lambda r: r["date"] or "")
 
@@ -85,6 +90,18 @@ def company_profiles(tickers: list[str], warnings: list) -> dict:
                       "country": p.get("country", ""), "logo": p.get("logo", "")}
         time.sleep(0.3)
     return out
+
+
+def yf_next_earnings(t: str) -> str | None:
+    try:
+        import yfinance as yf
+        cal = yf.Ticker(t).calendar or {}
+        ds = cal.get("Earnings Date") if isinstance(cal, dict) else None
+        if ds:
+            return sorted(str(x)[:10] for x in ds)[0]
+    except Exception as e:  # noqa: BLE001
+        log(f"yfinance calendar {t}: {e}")
+    return None
 
 
 # ---------- SEC EDGAR ----------

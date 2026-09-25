@@ -80,6 +80,8 @@ class StockTools:
             dates = sorted(x["date"] for x in (e or {}).get("earningsCalendar", []) if x.get("date"))
             if dates:
                 out["next_earnings"] = dates[0]
+            elif (yd := nw.yf_next_earnings(t)):
+                out["next_earnings"] = yd
         except Exception:  # noqa: BLE001
             pass
         ok, why = self._universe_check(out)

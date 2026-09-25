@@ -25,7 +25,7 @@ def weights(book: dict, prices: dict) -> dict[str, float]:
     return w
 
 
-def buy(book: dict, ticker: str, usd: float, price: float, fee_rate: float, on: str) -> float:
+def buy(book: dict, ticker: str, usd: float, price: float, fee_rate: float, on: str, fx: float | None = None) -> float:
     """Spend `usd` (fee included) on ticker. Returns fee paid."""
     if usd <= 0:
         return 0.0
@@ -36,6 +36,8 @@ def buy(book: dict, ticker: str, usd: float, price: float, fee_rate: float, on: 
     h = book["holdings"].setdefault(ticker, {"shares": 0.0, "cost_usd": 0.0, "opened": on})
     h["shares"] += shares
     h["cost_usd"] += usd
+    if fx:
+        h["cost_thb"] = h.get("cost_thb", 0.0) + usd * fx
     book["cash_usd"] -= usd
     return fee
 
@@ -48,6 +50,8 @@ def sell(book: dict, ticker: str, shares: float, price: float, fee_rate: float) 
     fee = gross * fee_rate
     frac = shares / h["shares"] if h["shares"] else 1
     h["cost_usd"] -= h["cost_usd"] * frac
+    if "cost_thb" in h:
+        h["cost_thb"] -= h["cost_thb"] * frac
     h["shares"] -= shares
     book["cash_usd"] += gross - fee
     if h["shares"] <= 1e-9:
@@ -82,9 +86,9 @@ def seed_books(state: dict, target_weights: dict[str, float], prices: dict, fx: 
     for t, w in target_weights.items():
         if t == "CASH" or w <= 0:
             continue
-        fees += buy(port, t, cap_usd * w, prices[t]["price"], fee_rate, on)
+        fees += buy(port, t, cap_usd * w, prices[t]["price"], fee_rate, on, fx)
     bench = {"cash_usd": cap_usd, "holdings": {}}
-    buy(bench, benchmark, cap_usd, prices[benchmark]["price"], fee_rate, on)
+    buy(bench, benchmark, cap_usd, prices[benchmark]["price"], fee_rate, on, fx)
     state["books"] = {"portfolio": port, "benchmark": bench, "shadow": copy.deepcopy(port)}
     state["status"] = "live"
     state["inception_date"] = on

@@ -202,7 +202,7 @@ function holdingRow(t, d) {
   const h = d.books.portfolio.holdings[t], th = h.thesis || {}, prof = (d.profiles || {})[t] || {};
   const lq = d.live && d.live.quotes[t], fx = d.live ? d.live.fx : d.fx;
   const price = lq ? lq.price : d.prices[t].price, day = lq ? lq.chg_day : null;
-  const valUsd = h.shares * price, valThb = valUsd * fx, pl = valUsd / h.cost_usd - 1, plThb = (valUsd - h.cost_usd) * fx;
+  const valUsd = h.shares * price, valThb = valUsd * fx, pl = valUsd / h.cost_usd - 1, plThb = h.cost_thb != null ? valThb - h.cost_thb : (valUsd - h.cost_usd) * fx;
   const tot = d.books.portfolio.cash_usd + Object.entries(d.books.portfolio.holdings).reduce((a, [k, x]) => a + x.shares * ((d.live && d.live.quotes[k]) ? d.live.quotes[k].price : d.prices[k].price), 0);
   const w = valUsd / tot, cls = pl > 0.0005 ? 'up' : pl < -0.0005 ? 'down' : 'flat';
   const av = prof.logo ? `<img src="${esc(prof.logo)}" alt="" data-t="${esc(t.slice(0, 4))}" onerror="this.parentNode.textContent=this.dataset.t">` : esc(t.slice(0, 4));
@@ -216,6 +216,7 @@ function holdingRow(t, d) {
       <div><span>ราคา (USD)${day != null ? ' · วันนี้' : ''}</span><b>${n(price)}</b>${day != null ? ` <span class="pl ${day > 0 ? 'up' : day < 0 ? 'down' : ''}" style="display:inline">${pct(day, 2)}</span>` : ''}</div>
       <div><span>ต้นทุนต่อหุ้น (USD)</span><b>${n(h.cost_usd / h.shares)}</b></div>
       <div><span>ต้นทุนรวม (USD)</span><b>${n(h.cost_usd)}</b></div>
+      ${h.cost_thb != null ? `<div><span>ต้นทุนรวม (บาท)</span><b>${n(h.cost_thb)}</b></div><div><span>มูลค่าปัจจุบัน (บาท)</span><b>${n(valThb)}</b></div>` : ''}
       <div><span>มูลค่าปัจจุบัน (USD)</span><b>${n(valUsd)}</b></div>
       <div><span>ถือตั้งแต่</span><b>${since}</b></div>
       ${th.thesis ? `<div class="full"><span>ทำไมถือ</span><b>${esc(th.thesis)}</b></div>` : ''}
@@ -311,7 +312,20 @@ function render(d) {
 
   if (d.warnings && d.warnings.length) h += `<section class="card"><details style="margin:0"><summary style="color:var(--warn)">⚠️ ระบบมีคำเตือน ${d.warnings.length} รายการ</summary><ul class="warnbox">${d.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul></details></section>`;
 
-  if (d.api_spend_month_usd != null) h += `<p class="hint" style="text-align:center">ค่า AI เดือนนี้ $${d.api_spend_month_usd.toFixed(2)}</p>`;
+  // Lessons & scorecard
+  const recent = d.scorecard_recent || [];
+  if (live) {
+    const md = (d.lessons_md || '').split('\n').filter(x => x.trim() && !x.startsWith('# ')).map(x =>
+      x.startsWith('## ') ? `<p style="margin:12px 0 4px;font-weight:700">${esc(x.slice(3))}</p>` :
+      x.replace(/^\s*[-*] /, '') !== x ? `<li>${esc(x.replace(/^\s*[-*] /, ''))}</li>` : `<p class="note">${esc(x)}</p>`).join('');
+    const V = {correct: ['✅', 'ถูก'], wrong: ['❌', 'ผิด'], too_early: ['⏳', 'ยังเร็วไป']};
+    h += `<section class="card"><h2>AI เรียนรู้อะไรบ้าง</h2><p class="hint">ผลตรวจการคาดการณ์ (4 และ 12 สัปดาห์หลังซื้อ) + บทเรียนที่ AI สรุปเองทุกเดือน</p>
+      ${recent.length ? recent.slice().reverse().map(r => `<div class="trade"><span>${(V[r.verdict] || ['•'])[0]} <b>${esc(r.ticker)}</b> <span class="w">${r.horizon_weeks} สัปดาห์ · ${esc(r.note || '')}</span></span><span class="w">${pct(r.return_since_entry)}</span></div>`).join('')
+        : '<p class="empty">การตรวจผลครั้งแรก: 22 ต.ค. (4 สัปดาห์หลังซื้อ)</p>'}
+      ${md ? `<details><summary>บทเรียนรายเดือน</summary><ul class="note" style="padding-left:18px">${md}</ul></details>` : '<p class="empty" style="margin-top:8px">บทเรียนรายเดือนครั้งแรก: ต้นเดือน พ.ย.</p>'}
+    </section>`;
+  }
+  if (d.api_spend_month_usd != null) h += `<p class="hint" style="text-align:center">ค่า AI เดือนนี้ $${d.api_spend_month_usd.toFixed(2)}${d.credit_left_usd != null ? ` · เครดิตคงเหลือประมาณ $${d.credit_left_usd.toFixed(2)}` : ''}</p>`;
   document.getElementById('app').innerHTML = h;
 }
 
