@@ -38,7 +38,7 @@ def tracked_tickers(state: dict, cfg: dict) -> list[str]:
 
 def annotate(level: str, msg: str) -> None:
     """GitHub Actions annotation (visible in the run summary)."""
-    print(f"::{level} title=AI Portfolio::{msg.replace(chr(10), ' ')[:900]}", flush=True)
+    print(f"::{level} title=AI Portfolio::{msg.replace(chr(10), ' ')[:3500]}", flush=True)
 
 
 def main(argv=None) -> int:
@@ -200,22 +200,32 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         if mode == "weekly" else None,
         "upcoming_earnings": earnings if mode == "weekly" else None,
     }
-    d, cost, tool_log = decide(mode, ctx, cfg, tools, warnings)
-    add_spend(state, month, cost)
-    out = {"mode": mode, "cost_usd": round(cost, 4), "tools_used": len(tool_log), "status": "no_answer"}
-    if d is None:
-        return out, []
+    out = {"mode": mode, "cost_usd": 0.0, "tools_used": 0, "status": "no_answer"}
+    d, errs, plan = None, [], {}
+    for attempt in (1, 2):  # one chance to fix a proposal that broke a rule
+        d, cost, tool_log = decide(mode, ctx, cfg, tools, warnings)
+        add_spend(state, month, cost)
+        out["cost_usd"] = round(out["cost_usd"] + cost, 4)
+        out["tools_used"] += len(tool_log)
+        if d is None:
+            return out, []
+        new = [str(t.get("ticker", "")).upper() for t in d.get("targets") or []
+               if str(t.get("ticker", "")).upper() not in prices]
+        for t in new:
+            tools.stock_data(t)
+        if new:
+            extra, _ = md.latest_prices(new, tools.history, cfg["price_max_age_days"], asof)
+            prices.update(extra)
+        errs, plan = reng.validate(d, state, prices, rules, tools.eligible, asof,
+                                   initial=(mode == "initial"), sector_of=tools.sector_of)
+        if not errs or month_spend(state, month) >= cfg["monthly_ai_budget_usd"]:
+            break
+        log(f"attempt {attempt} rejected: {errs}")
+        out["first_attempt_errors"] = errs
+        ctx["previous_attempt"] = {"your_targets": d.get("targets"), "rejected_because": errs,
+                                   "instruction": "Fix ONLY what broke the rules and return the full JSON again."}
     out.update({k: d.get(k) for k in ("market_view", "action", "summary_th", "journal", "targets", "sells")})
 
-    # Prices for any new ticker the AI wants
-    new = [str(t.get("ticker", "")).upper() for t in d.get("targets") or [] if str(t.get("ticker", "")).upper() not in prices]
-    for t in new:
-        tools.stock_data(t)
-    if new:
-        extra, _ = md.latest_prices(new, tools.history, cfg["price_max_age_days"], asof)
-        prices.update(extra)
-
-    errs, plan = reng.validate(d, state, prices, rules, tools.eligible, asof, initial=(mode == "initial"))
     trades: list = []
     if errs:
         out.update(status="rejected", errors=errs)
@@ -257,7 +267,9 @@ def report_preview(dec: dict | None, prices: dict, profiles: dict, cfg: dict, dr
     if dec.get("market_view"):
         lines += ["", esc(dec["market_view"])]
         annotate("notice", "มุมมองตลาด: " + dec["market_view"])
-    for t in sorted(dec.get("targets") or [], key=lambda x: -float(x.get("weight", 0))):
+    tg_sorted = sorted(dec.get("targets") or [], key=lambda x: -float(x.get("weight", 0)))
+    annotate("notice", "พอร์ต: " + ", ".join(f"{t['ticker']} {float(t.get('weight', 0)):.0%}" for t in tg_sorted))
+    for t in tg_sorted:
         w = float(t.get("weight", 0))
         lines.append(f"\n<b>{esc(t['ticker'])}</b> {w:.0%} — {esc(t.get('about', ''))}\n• {esc(t.get('thesis', ''))}\n"
                      f"• ขายเมื่อ: {esc(t.get('exit_condition', ''))}")

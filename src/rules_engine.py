@@ -15,7 +15,7 @@ def weeks_held(opened: str, asof: date) -> float:
 
 
 def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, asof: date,
-             initial: bool = False) -> tuple[list[str], dict]:
+             initial: bool = False, sector_of=None) -> tuple[list[str], dict]:
     """Return (errors, plan). plan = {ticker: target_weight}, only meaningful when errors is empty.
 
     `eligible(ticker) -> (bool, reason)` checks the universe (US-listed, not leveraged, has price).
@@ -96,6 +96,16 @@ def validate(decision: dict, state: dict, prices: dict, rules: dict, eligible, a
         turnover = sum(abs(plan.get(t, 0) - cur_w.get(t, 0)) for t in set(plan) | set(cur_w)) / 2
         if turnover > iron["max_weekly_turnover"] + 1e-6:
             errors.append(f"turnover {turnover:.1%} exceeds weekly max {iron['max_weekly_turnover']:.0%}")
+    # Sector concentration (iron)
+    cap = iron.get("max_sector_weight")
+    if cap and sector_of and plan:
+        by_sector: dict[str, float] = {}
+        for t, w in plan.items():
+            sec = sector_of(t) or f"other:{t}"
+            by_sector[sec] = by_sector.get(sec, 0) + w
+        for sec, w in by_sector.items():
+            if w > cap + 1e-6:
+                errors.append(f"sector {sec} = {w:.0%} exceeds max {cap:.0%}")
     return errors, plan
 
 

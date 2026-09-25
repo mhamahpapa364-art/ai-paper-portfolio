@@ -84,6 +84,18 @@ class Validate(unittest.TestCase):
         self.assertTrue(any("turnover" in e for e in errs))
 
 
+class SectorCap(unittest.TestCase):
+    def test_sector_cap(self):
+        s, p = live_state()
+        s["books"]["portfolio"] = {"cash_usd": 3000, "holdings": {}}
+        d = {"targets": [tgt(t, .18) for t in "ABCDE"]}
+        tech = lambda t: "Technology" if t in "ABC" else "Health"  # noqa: E731
+        errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 2), initial=True, sector_of=tech)
+        self.assertTrue(any("sector Technology" in e for e in errs))
+        errs, _ = reng.validate(d, s, p, RULES, OK, date(2026, 1, 2), initial=True, sector_of=lambda t: t)
+        self.assertEqual(errs, [])
+
+
 class Execute(unittest.TestCase):
     def test_rebalance_keeps_cash_nonnegative_and_charges_fees(self):
         s, p = live_state()

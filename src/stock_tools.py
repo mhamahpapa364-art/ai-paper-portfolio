@@ -105,6 +105,12 @@ class StockTools:
             return False, "leveraged/inverse product"
         return True, ""
 
+    def sector_of(self, ticker: str) -> str | None:
+        d = self.stock_data(ticker)
+        if str(d.get("type", "")).upper() == "ETF":
+            return f"ETF:{d['ticker']}"
+        return d.get("sector")
+
     def eligible(self, ticker: str) -> tuple[bool, str]:
         d = self.stock_data(ticker)
         return d["eligible"], d.get("not_eligible_reason", "")

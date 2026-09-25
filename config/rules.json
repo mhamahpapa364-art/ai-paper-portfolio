@@ -11,6 +11,8 @@
       "crypto"
     ],
     "max_position_weight": 0.25,
+    "max_sector_weight": 0.4,
+    "sector_definition": "GICS-style sector from get_stock_data (field 'sector'); ETFs count as their own group",
     "max_weekly_turnover": 0.3,
     "cash_never_negative": true,
     "every_buy_needs": [

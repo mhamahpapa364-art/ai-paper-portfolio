@@ -187,7 +187,7 @@ def build_prompt(mode: str, ctx: dict) -> str:
     parts.append("LESSONS (your own, from monthly reviews):\n" + (ctx.get("lessons") or "(none yet)"))
     parts.append("JOURNAL (your recent entries, newest last):\n" + json.dumps(ctx.get("journal", []), ensure_ascii=False))
     for k in ("portfolio", "performance", "regime", "reviews_due", "news_summary", "headlines", "sec_filings",
-              "upcoming_earnings"):
+              "upcoming_earnings", "previous_attempt"):
         if ctx.get(k) not in (None, [], {}):
             parts.append(f"{k.upper()}:\n" + json.dumps(ctx[k], ensure_ascii=False, default=str))
     return "\n\n".join(parts)
