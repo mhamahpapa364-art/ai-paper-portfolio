@@ -27,7 +27,7 @@
   "price_max_age_days": 5,
   "news_lookback_days": 7,
   "max_news_per_ticker": 5,
-  "earnings_lookahead_days": 21,
+  "earnings_lookahead_days": 45,
   "edgar_forms": ["8-K", "10-Q", "10-K", "6-K", "20-F"],
   "summary_model": "claude-haiku-4-5-20251001",
   "summary_max_tokens": 900,

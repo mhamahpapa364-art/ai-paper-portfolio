@@ -137,7 +137,7 @@ function render(d) {
 
   const sum = d.summary && d.summary.text;
   h += card('c8', 'สรุปข่าวสัปดาห์ (AI)', sum ? `<div class="summary">${esc(sum)}</div>` : '<div class="empty">ไม่มีสรุปรอบนี้</div>');
-  h += card('c4', 'งบที่จะประกาศ', d.earnings.length ? `<table>${d.earnings.map(e => `<tr><td class="mono">${esc(e.ticker)}</td><td class="n">${esc(e.date)}</td><td class="n mut">${esc(e.hour)}</td></tr>`).join('')}</table>` : '<div class="empty">ไม่มีใน 3 สัปดาห์ข้างหน้า</div>');
+  h += card('c4', 'งบที่จะประกาศ', d.earnings.length ? `<table>${d.earnings.map(e => `<tr><td class="mono">${esc(e.ticker)}</td><td class="n">${esc(e.date)}</td><td class="n mut">${esc(e.hour)}</td></tr>`).join('')}</table>` : '<div class="empty">ไม่มีใน 45 วันข้างหน้า</div>');
 
   const nt = Object.entries(d.news).filter(([, v]) => v.length);
   h += card('c8', 'ข่าวล่าสุด', nt.length ? `<div class="news">${nt.map(([t, v]) => `<div class="news-t">${esc(t)}</div><ul>${v.map(n =>
