@@ -75,6 +75,41 @@ def fetch_history(tickers: list[str], period: str = "2y", retries: int = 3) -> d
     return out
 
 
+def patch_with_quotes(history: dict, tickers) -> list[str]:
+    """If Yahoo/Stooq history lags (missing the latest session), append that session's bar from Finnhub's
+    quote (open/close). Returns the tickers patched. Needs FINNHUB_API_KEY; no-op otherwise."""
+    key = env("FINNHUB_API_KEY")
+    if not key:
+        return []
+    patched = []
+    for t in tickers:
+        df = history.get(t)
+        if df is None or df.empty or t.startswith("^") or "=" in t:
+            continue
+        try:
+            j = requests.get("https://finnhub.io/api/v1/quote", params={"symbol": t, "token": key}, timeout=20).json()
+        except (requests.RequestException, ValueError):
+            continue
+        if not j.get("c") or not j.get("t"):
+            continue
+        qd = pd.Timestamp(datetime.fromtimestamp(j["t"], tz=timezone.utc).astimezone(
+            __import__("zoneinfo").ZoneInfo("America/New_York")).date())
+        if qd <= df.index[-1]:
+            continue
+        row = {c: 0.0 for c in df.columns}
+        row["Close"] = float(j["c"])
+        if "Open" in df.columns:
+            row["Open"] = float(j.get("o") or j["c"])
+        new = pd.concat([df, pd.DataFrame([row], index=[qd])])
+        new.attrs = dict(df.attrs)
+        history[t] = new
+        patched.append(t)
+        time.sleep(0.2)
+    if patched:
+        log(f"history lagged — patched latest session from Finnhub for {len(patched)} tickers")
+    return patched
+
+
 def finnhub_quote(ticker: str) -> dict | None:
     key = env("FINNHUB_API_KEY")
     if not key or ticker.startswith("^") or "=" in ticker:

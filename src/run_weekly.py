@@ -73,6 +73,7 @@ def main(argv=None) -> int:
     syms = sorted(set(tickers + regime_syms + [fx_sym]))
     log(f"Fetching history for {len(syms)} symbols")
     hist = md.fetch_history(syms)
+    lagged = md.patch_with_quotes(hist, syms)
     prices, errors = md.latest_prices(tickers + [fx_sym], hist, cfg["price_max_age_days"], asof)
     held = set().union(*(set(b["holdings"]) for b in state["books"].values()))
     prev_dash = load_json(DOCS_DATA / "dashboard.json", default={}) or {}

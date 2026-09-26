@@ -171,6 +171,7 @@ def main(argv=None) -> int:
     syms = sorted(held | set(po.get("plan", {})) | {cfg["benchmark"], cfg["fx_ticker"], rt["vix"], rt["us10y"]}
                   | set(rt["sectors"]) | set().union(*(set(b["holdings"]) for b in state["books"].values())))
     hist = md.fetch_history(syms, period="1y")
+    md.patch_with_quotes(hist, syms)
     if cfg["benchmark"] not in hist:
         fail("รายวัน: ดึงราคาตลาดไม่ได้", dry)
     fxdf = hist.get(cfg["fx_ticker"])
