@@ -73,6 +73,7 @@ OUTPUT: after any tool use, reply with ONE JSON object only (no prose around it)
       "theme": "short English theme label, e.g. 'AI infrastructure', 'payments', 'healthcare'"}}
   ],
   "themes": {{"TICKER": "theme label for EVERY current holding (keep labels consistent week to week)"}},
+  "outcome_updates": [ {{"ticker": "XXX", "expected_outcome": "ภาษาไทย ผลทางธุรกิจที่ตรวจได้จากงบ"}} ],   // ONLY for tickers in OUTCOME_REFRESH
   "checked": [ {{"ticker": "XXX", "what": "สิ่งที่ตรวจ", "finding": "ผลที่พบ 1 ประโยค"}} ],
   "sells": [ {{"ticker": "XXX", "reason": "ภาษาไทย", "thesis_broken": true,
               "evidence": ["url หรือชื่อแหล่ง 1", "url หรือชื่อแหล่ง 2"]}} ],   // every reduced/removed holding
@@ -216,9 +217,15 @@ def build_prompt(mode: str, ctx: dict) -> str:
         parts.append("TASK: Weekly review. First verify the news that matters with your tools (see VERIFY BEFORE YOU "
                      "DECIDE), then decide hold or rebalance. Also grade every thesis review that is due. "
                      "Trades you decide now are filled at the next session's opening price.")
+    if ctx.get("outcome_refresh"):
+        parts.append("ONE-TIME TASK: the holdings in OUTCOME_REFRESH have expected outcomes written as price targets. "
+                     "Rewrite each one in 'outcome_updates' as a business result checkable at that company's next "
+                     "earnings (use UPCOMING_EARNINGS dates; e.g. revenue/segment growth, margin, guidance). Keep the "
+                     "original thesis and your original view — this is a restatement of what you already expected, "
+                     "not a chance to lower the bar. This alone is not a reason to trade.")
     parts.append("LESSONS (your own, from monthly reviews):\n" + (ctx.get("lessons") or "(none yet)"))
     parts.append("JOURNAL (your recent entries, newest last):\n" + json.dumps(ctx.get("journal", []), ensure_ascii=False))
-    for k in ("portfolio", "risk", "performance", "regime", "reviews_due", "headlines", "sec_filings",
+    for k in ("outcome_refresh", "portfolio", "risk", "performance", "regime", "reviews_due", "headlines", "sec_filings",
               "upcoming_earnings", "triggers", "turnover_used_last_7_days", "emergency_triggers_since_last_review", "unexecuted_pending_orders",
               "previous_attempt"):
         if ctx.get(k) not in (None, [], {}):

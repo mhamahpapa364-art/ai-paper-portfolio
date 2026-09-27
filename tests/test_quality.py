@@ -99,5 +99,26 @@ class VerifyRetryTest(unittest.TestCase):
         self.assertEqual(state["themes"], {"A": "AI infrastructure"})
 
 
+
+class OutcomeRefreshTest(unittest.TestCase):
+    def test_only_listed_tickers_change_and_original_kept(self):
+        state = {"outcome_refresh": ["A", "B"],
+                 "books": {"portfolio": {"holdings": {
+                     "A": {"thesis": {"expected_outcome": "ราคาไป $550"}},
+                     "B": {"thesis": {"expected_outcome": "ราคาเหนือ $270"}},
+                     "C": {"thesis": {"expected_outcome": "เดิม"}}}}},
+                 "pending_reviews": [{"ticker": "A", "expected_outcome": "ราคาไป $550"}]}
+        done = rw.apply_outcome_updates(state, [
+            {"ticker": "A", "expected_outcome": "งบ 15 ต.ค. รายได้โตเกิน 30% และ gross margin เกิน 55%"},
+            {"ticker": "C", "expected_outcome": "พยายามแก้ตัวที่ไม่ได้อยู่ในรายการ ต้องไม่เปลี่ยน"},
+            {"ticker": "B", "expected_outcome": "สั้น"}], "2026-10-02")
+        h = state["books"]["portfolio"]["holdings"]
+        self.assertEqual([x["ticker"] for x in done], ["A"])
+        self.assertEqual(h["A"]["thesis"]["expected_outcome_original"], "ราคาไป $550")
+        self.assertIn("gross margin", state["pending_reviews"][0]["expected_outcome"])
+        self.assertEqual(h["C"]["thesis"]["expected_outcome"], "เดิม")
+        self.assertEqual(state["outcome_refresh"], ["B"])   # B still pending (answer too short)
+
+
 if __name__ == "__main__":
     unittest.main()

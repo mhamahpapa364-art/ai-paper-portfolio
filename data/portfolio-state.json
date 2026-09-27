@@ -403,5 +403,16 @@
   "recent_triggers": [],
   "api_spend_total": 0.3929,
   "pending_orders": null,
-  "last_weekly_ok": "2026-09-26"
+  "last_weekly_ok": "2026-09-26",
+  "outcome_refresh": [
+    "AMZN",
+    "ETN",
+    "GOOGL",
+    "JPM",
+    "LLY",
+    "MA",
+    "MSFT",
+    "NVDA",
+    "TSM"
+  ]
 }

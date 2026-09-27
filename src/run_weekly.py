@@ -245,6 +245,28 @@ def portfolio_risk(state: dict, prices: dict, hist: dict, cfg: dict) -> dict | N
         return None
 
 
+def apply_outcome_updates(state: dict, updates, on: str) -> list:
+    """One-time restatement of price-target outcomes as business outcomes. Only tickers listed in
+    state['outcome_refresh'] can change; the original text is kept for the record."""
+    allowed, done = set(state.get("outcome_refresh") or []), []
+    book = state["books"]["portfolio"]["holdings"]
+    for u in updates or []:
+        t, new = str(u.get("ticker", "")).upper(), str(u.get("expected_outcome") or "").strip()
+        if t not in allowed or t not in book or len(new) < 15:
+            continue
+        th = book[t].setdefault("thesis", {})
+        th.setdefault("expected_outcome_original", th.get("expected_outcome"))
+        th["expected_outcome"], th["outcome_restated"] = new, on
+        for r in state.get("pending_reviews", []):
+            if r.get("ticker") == t:
+                r.setdefault("expected_outcome_original", r.get("expected_outcome"))
+                r["expected_outcome"] = new
+        allowed.discard(t)
+        done.append({"ticker": t, "expected_outcome": new})
+    state["outcome_refresh"] = sorted(allowed) or None
+    return done
+
+
 def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, news, filings, earnings,
                  history_log, asof, market_date, month, warnings, preview, triggers=None):
     tools = StockTools(asof, cfg["price_max_age_days"], cfg["leveraged_denylist"])
@@ -269,6 +291,10 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         "turnover_used_last_7_days": reng.turnover_used(state, asof) if mode != "initial" else None,
         "emergency_triggers_since_last_review": state.get("recent_triggers") or None,
         "unexecuted_pending_orders": state.get("pending_orders"),
+        "outcome_refresh": [{"ticker": t, "current_expected_outcome": (state["books"]["portfolio"]["holdings"][t]
+                                                                        .get("thesis") or {}).get("expected_outcome")}
+                            for t in state.get("outcome_refresh") or []
+                            if t in state["books"]["portfolio"]["holdings"]] if mode == "weekly" else None,
     }
     out = {"mode": mode, "cost_usd": 0.0, "tools_used": 0, "status": "no_answer"}
     d, errs, plan = None, [], {}
@@ -312,6 +338,8 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
                                    "instruction": "Fix ONLY what broke the rules and return the full JSON again."}
     out.update({k: d.get(k) for k in ("market_view", "action", "summary_th", "journal", "targets", "sells", "checked")})
     out["risk"] = ctx.get("risk")
+    if not preview and mode == "weekly" and state.get("outcome_refresh"):
+        out["outcome_updates"] = apply_outcome_updates(state, d.get("outcome_updates"), market_date)
     if not preview:  # AI-assigned theme labels (used for the theme-concentration read-out)
         themes = state.setdefault("themes", {})
         for t, lab in (d.get("themes") or {}).items():
