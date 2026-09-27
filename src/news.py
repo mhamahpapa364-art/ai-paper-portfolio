@@ -4,6 +4,7 @@ News failures are non-fatal: they are recorded as warnings and the run continues
 """
 from __future__ import annotations
 
+import re
 import time
 from datetime import date, datetime, timedelta, timezone
 
@@ -26,10 +27,46 @@ def _finnhub(path: str, params: dict):
     return r.json()
 
 
+_NAME_CACHE: dict[str, str] = {}
+_STOP = {"inc", "corp", "corporation", "co", "company", "ltd", "limited", "plc", "holdings", "holding", "group",
+         "the", "and", "&", "sa", "nv", "ag", "se", "class", "manufacturing", "international", "technologies", "semiconductor",
+         "systems", "services", "financial", "energy", "global", "industries", "brands", "pharmaceuticals"}
+# extra names people use for a company (brands, CEOs) — generic fallback is the legal name
+ALIASES = {"GOOGL": ["google", "youtube", "waymo"], "GOOG": ["google", "youtube"], "TSM": ["tsmc"],
+           "META": ["facebook", "instagram", "whatsapp", "zuckerberg"], "LLY": ["lilly"], "JPM": ["jpmorgan", "dimon"],
+           "AMZN": ["aws", "amazon"], "MSFT": ["azure", "openai"], "NVDA": ["nvidia", "jensen huang"],
+           "BRK-B": ["berkshire", "buffett"], "V": ["visa"], "MA": ["mastercard"]}
+
+
+def _company_name(t: str) -> str:
+    if t not in _NAME_CACHE:
+        try:
+            _NAME_CACHE[t] = (_finnhub("/stock/profile2", {"symbol": t}) or {}).get("name", "") or ""
+        except Exception:  # noqa: BLE001
+            _NAME_CACHE[t] = ""
+    return _NAME_CACHE[t]
+
+
+def name_keys(t: str, name: str) -> list[str]:
+    words = [w.strip(".,()").lower().removesuffix(".com") for w in (name or "").split()]
+    return sorted({w for w in words if len(w) >= 4 and w not in _STOP} | set(ALIASES.get(t, [])))
+
+
+def is_relevant(item: dict, t: str, keys: list[str]) -> bool:
+    """Finnhub tags many market-wide stories to every big ticker; keep a story only if it names the company."""
+    text = f"{item.get('headline', '')} {item.get('summary', '')}"
+    if re.search(rf"(?<![A-Za-z]){re.escape(t)}(?![a-z])", text) and (len(t) > 2 or re.search(
+            rf"[(:$]{re.escape(t)}\b", text)):
+        return True
+    low = text.lower()
+    return any(re.search(rf"\b{re.escape(k)}\b", low) for k in keys)
+
+
 def company_news(tickers: list[str], asof: date, lookback: int, per_ticker: int, warnings: list) -> dict:
     out = {}
     frm = (asof - timedelta(days=lookback)).isoformat()
     for t in tickers:
+        keys = name_keys(t, _company_name(t))
         try:
             items = _finnhub("/company-news", {"symbol": t, "from": frm, "to": asof.isoformat()})
         except Exception as e:
@@ -39,6 +76,8 @@ def company_news(tickers: list[str], asof: date, lookback: int, per_ticker: int,
         for it in sorted(items or [], key=lambda x: x.get("datetime", 0), reverse=True):
             head = (it.get("headline") or "").strip()
             if not head or head.lower() in seen:
+                continue
+            if keys and not is_relevant(it, t, keys):
                 continue
             seen.add(head.lower())
             rows.append({

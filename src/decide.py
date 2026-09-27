@@ -35,6 +35,17 @@ HOW TO THINK
 - Valuation discipline: a great business at any price is not a great investment. Check valuation with get_stock_data.
 - Use get_stock_data before buying any ticker (it also tells you if the ticker is eligible).
   Use web_search sparingly for important context the tools lack.
+- VERIFY BEFORE YOU DECIDE (every weekly/emergency review): you only see headlines. Before concluding that news
+  does or does not matter, call get_news on every holding that has a negative or thesis-relevant headline, and
+  on any holding reporting earnings within 14 days. If nothing qualifies, still spot-check the largest position.
+  A review that uses no tools at all is rejected and you will be asked again. List what you checked in "checked".
+- RISK: the RISK block shows correlated groups (holdings that move together even across sectors), beta, volatility,
+  a 1-in-20 bad week and sensitivity to the 10-year yield. If one correlated group or one theme exceeds 50% of the
+  portfolio, say explicitly in the journal whether you accept that concentration and why — or reduce it.
+  This is judgment, not a hard rule.
+- EXPECTED OUTCOMES must be about the business and checkable at the next earnings (e.g. revenue growth > X%,
+  margin, segment growth, guidance), optionally plus "beat VOO". Avoid absolute price targets — prices are noisy
+  and would make a correct thesis look wrong.
 - Cash earns 0% in this simulation. If you want a cash-like holding that earns interest, you may buy a
   short-term US Treasury ETF (e.g. SGOV, BIL) — it counts as a normal position under the rules.
 - Trades are filled at the NEXT session's opening price, not at the prices you see. A new decision replaces
@@ -58,8 +69,11 @@ OUTPUT: after any tool use, reply with ONE JSON object only (no prose around it)
       "thesis": "ภาษาไทย ทำไมถือ (required when weight increases or new)",
       "exit_condition": "ภาษาไทย ขายเมื่อไหร่ (required when weight increases or new)",
       "expected_outcome": "ภาษาไทย วัดผลได้ภายใน 12 สัปดาห์ (required when weight increases or new)",
-      "about": "ภาษาไทย บริษัททำอะไร 1 วลีสั้น"}}
+      "about": "ภาษาไทย บริษัททำอะไร 1 วลีสั้น",
+      "theme": "short English theme label, e.g. 'AI infrastructure', 'payments', 'healthcare'"}}
   ],
+  "themes": {{"TICKER": "theme label for EVERY current holding (keep labels consistent week to week)"}},
+  "checked": [ {{"ticker": "XXX", "what": "สิ่งที่ตรวจ", "finding": "ผลที่พบ 1 ประโยค"}} ],
   "sells": [ {{"ticker": "XXX", "reason": "ภาษาไทย", "thesis_broken": true,
               "evidence": ["url หรือชื่อแหล่ง 1", "url หรือชื่อแหล่ง 2"]}} ],   // every reduced/removed holding
   "reviews": [ {{"id": "...", "verdict": "correct | wrong | too_early", "note": "ภาษาไทย 1 ประโยค"}} ],
@@ -179,7 +193,7 @@ def portfolio_view(state: dict, prices: dict, fx: float, asof: date) -> dict:
             "weeks_held": round((asof - date.fromisoformat(h["opened"])).days / 7, 1),
             "price_1w_change": prices[t].get("chg_1w"),
             "thesis": th.get("thesis"), "exit_condition": th.get("exit_condition"),
-            "expected_outcome": th.get("expected_outcome"),
+            "expected_outcome": th.get("expected_outcome"), "theme": (state.get("themes") or {}).get(t),
         })
     return {"value_thb": round(pf.book_value(book, prices) * fx), "cash_weight": round(w.get("CASH", 1.0), 4),
             "holdings": rows}
@@ -199,11 +213,12 @@ def build_prompt(mode: str, ctx: dict) -> str:
                      "thesis or a risk rule requires it. Check the facts first (get_news / web_search). "
                      "Any trade will be filled at the next session's opening price.")
     else:
-        parts.append("TASK: Weekly review. Decide hold or rebalance. Also grade every thesis review that is due. "
+        parts.append("TASK: Weekly review. First verify the news that matters with your tools (see VERIFY BEFORE YOU "
+                     "DECIDE), then decide hold or rebalance. Also grade every thesis review that is due. "
                      "Trades you decide now are filled at the next session's opening price.")
     parts.append("LESSONS (your own, from monthly reviews):\n" + (ctx.get("lessons") or "(none yet)"))
     parts.append("JOURNAL (your recent entries, newest last):\n" + json.dumps(ctx.get("journal", []), ensure_ascii=False))
-    for k in ("portfolio", "performance", "regime", "reviews_due", "news_summary", "headlines", "sec_filings",
+    for k in ("portfolio", "risk", "performance", "regime", "reviews_due", "headlines", "sec_filings",
               "upcoming_earnings", "triggers", "turnover_used_last_7_days", "emergency_triggers_since_last_review", "unexecuted_pending_orders",
               "previous_attempt"):
         if ctx.get(k) not in (None, [], {}):

@@ -16,6 +16,7 @@ from . import manager as mg
 from . import market_data as md
 from . import news as nw
 from . import portfolio as pf
+from . import risk as rk
 from . import rules_engine as reng
 from .common import (CONFIG, DOCS_DATA, HISTORY_PATH, STATE_PATH, WEEKLY_DIR, DataError, esc, fail,
                      load_json, log, save_json, settings, telegram, today)
@@ -190,6 +191,8 @@ def main(argv=None) -> int:
         "totals": state["totals"], "history": history_log,
         "scorecard": mg.hit_rate(card), "api_spend_month_usd": round(month_spend(state, month), 3),
         "human_flags": flags,
+        "risk": portfolio_risk(state, prices, hist, cfg) if state["status"] == "live" else None,
+        "themes": state.get("themes", {}),
         "credit_left_usd": credit_left(state, cfg),
         "lessons_md": mg.lessons(),
         "scorecard_recent": card[-6:],
@@ -227,6 +230,21 @@ def gather_news(news_tickers, regime, cfg, asof, month, state, warnings, dry):
     return news, filings, earnings, profiles, summary
 
 
+def headlines_for_ai(news: dict, per_ticker: int = 5) -> dict:
+    return {t: [f"{n.get('date', '')} [{n.get('tier', 'other')}] {n['headline']} ({n['source']})"
+                + (f" — {n['summary'][:160]}" if n.get("summary") else "") for n in v[:per_ticker]]
+            for t, v in news.items() if v}
+
+
+def portfolio_risk(state: dict, prices: dict, hist: dict, cfg: dict) -> dict | None:
+    try:
+        w = {t: v for t, v in pf.weights(state["books"]["portfolio"], prices).items() if t != "CASH"}
+        return rk.exposure(w, hist, cfg["benchmark"], cfg["regime_tickers"]["us10y"], state.get("themes"))
+    except Exception as e:  # noqa: BLE001 — a risk read-out must never stop the run
+        log(f"risk read-out failed: {e}")
+        return None
+
+
 def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, news, filings, earnings,
                  history_log, asof, market_date, month, warnings, preview, triggers=None):
     tools = StockTools(asof, cfg["price_max_age_days"], cfg["leveraged_denylist"])
@@ -241,8 +259,9 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         "regime": {"label": regime["label"], "signals": regime["signals"], "sectors_4w": regime.get("sectors_4w"),
                    "cash_guidance": rules["flexible"]["regime_cash_guidance"].get(regime["label"])},
         "reviews_due": due,
-        "news_summary": (summary or {}).get("structured"),
-        "headlines": {t: [f"[{n.get('tier', 'other')}] {n['headline']} ({n['source']})" for n in v[:4]] for t, v in news.items()} if mode != "initial" else None,
+        # raw headlines (not the Haiku/Sonnet digest) so the decision model never inherits a summariser's mistakes
+        "headlines": headlines_for_ai(news) if mode != "initial" else None,
+        "risk": portfolio_risk(state, prices, hist, cfg) if mode != "initial" else None,
         "sec_filings": {t: [f"{f['form']} {f['date']} {f.get('label', '')}" for f in v] for t, v in filings.items()}
         if mode != "initial" else None,
         "upcoming_earnings": earnings if mode != "initial" else None,
@@ -260,6 +279,17 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         out["tools_used"] += len(tool_log)
         if d is None:
             return out, []
+        if mode != "initial" and not tool_log and attempt == 1 \
+                and month_spend(state, month) < cfg["monthly_ai_budget_usd"]:
+            log("attempt 1 used no tools — asking the AI to verify first")
+            out["unverified_first_attempt"] = True
+            ctx["previous_attempt"] = {"your_answer": {k: d.get(k) for k in ("action", "summary_th", "journal")},
+                                       "rejected_because": ["you decided without verifying anything (no tool calls)"],
+                                       "instruction": "Follow VERIFY BEFORE YOU DECIDE: check the relevant news with "
+                                                      "get_news (and web_search if needed), then return the full JSON "
+                                                      "again with a filled 'checked' list. You may reach the same "
+                                                      "decision if the facts support it."}
+            continue
         new = [str(t.get("ticker", "")).upper() for t in d.get("targets") or []
                if str(t.get("ticker", "")).upper() not in prices]
         for t in new:
@@ -280,7 +310,16 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         out["first_attempt_errors"] = errs
         ctx["previous_attempt"] = {"your_targets": d.get("targets"), "rejected_because": errs,
                                    "instruction": "Fix ONLY what broke the rules and return the full JSON again."}
-    out.update({k: d.get(k) for k in ("market_view", "action", "summary_th", "journal", "targets", "sells")})
+    out.update({k: d.get(k) for k in ("market_view", "action", "summary_th", "journal", "targets", "sells", "checked")})
+    out["risk"] = ctx.get("risk")
+    if not preview:  # AI-assigned theme labels (used for the theme-concentration read-out)
+        themes = state.setdefault("themes", {})
+        for t, lab in (d.get("themes") or {}).items():
+            if isinstance(lab, str) and lab.strip():
+                themes[str(t).upper()] = lab.strip()[:40]
+        for tg in d.get("targets") or []:
+            if isinstance(tg.get("theme"), str) and tg["theme"].strip():
+                themes[str(tg.get("ticker", "")).upper()] = tg["theme"].strip()[:40]
 
     trades: list = []
     if mode != "initial" and not preview and not errs:

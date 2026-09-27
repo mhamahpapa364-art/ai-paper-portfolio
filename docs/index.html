@@ -257,6 +257,19 @@ function render(d) {
     if (secs.length) h += `<section class="card"><h2>กระจายตามกลุ่มอุตสาหกรรม</h2><p class="hint">กฎเหล็ก: กลุ่มเดียวกันรวมกันไม่เกิน ${Math.round(cap * 100)}% (เส้นเทา)</p>
       ${secs.map(([k, w]) => `<div class="sec"><div class="sec-top"><span>${esc(k)}</span><b>${(w * 100).toFixed(0)}%</b></div>
         <div class="sec-bar"><i class="${w > cap * 0.95 ? 'over' : ''}" style="width:${Math.min(100, w * 100 / 0.5 * 1)}%"></i><u style="left:${cap / 0.5 * 100}%"></u></div></div>`).join('')}</section>`;
+    const rk = d.risk;
+    if (rk) {
+      const gs = rk.correlated_groups || [], tw = Object.entries(rk.theme_weights || {});
+      const bar = (w, warn) => `<div class="sec-bar"><i class="${warn ? 'over' : ''}" style="width:${Math.min(100, w * 100)}%"></i><u style="left:50%"></u></div>`;
+      h += `<section class="card"><h2>ความเสี่ยงของพอร์ต</h2><p class="hint">คำนวณจากราคาย้อนหลัง ~6 เดือน ด้วยน้ำหนักหุ้นตอนนี้ (เส้นเทา = 50%)</p>
+        ${gs.length ? `<p class="note" style="margin:4px 0"><b>หุ้นที่ขึ้นลงไปด้วยกัน</b> — ต่างกลุ่มอุตสาหกรรมแต่เคลื่อนไหวคล้ายกัน</p>` + gs.map(g => `<div class="sec"><div class="sec-top"><span>${g.tickers.map(esc).join(' · ')}</span><b>${(g.weight * 100).toFixed(0)}%</b></div>${bar(g.weight, g.weight > 0.5)}</div>`).join('') : ''}
+        ${tw.length ? `<p class="note" style="margin:10px 0 4px"><b>ธีมที่ AI จัดให้</b></p>` + tw.map(([k, w]) => `<div class="sec"><div class="sec-top"><span>${esc(k)}</span><b>${(w * 100).toFixed(0)}%</b></div>${bar(w, w > 0.5)}</div>`).join('') : ''}
+        <div class="trade"><span>ความแรงเทียบตลาด (beta)</span><span class="w">${rk.beta_voo ?? '–'} เท่าของ VOO</span></div>
+        <div class="trade"><span>ความผันผวนต่อปี</span><span class="w">${pct(rk.vol_annual, 0)} (VOO ${pct(rk.voo_vol_annual, 0)})</span></div>
+        ${rk.bad_week_1_in_20 != null ? `<div class="trade"><span>สัปดาห์แย่ (เกิด 1 ใน 20 สัปดาห์)</span><span class="w">${pct(rk.bad_week_1_in_20)}</span></div>` : ''}
+        ${rk.rate_move_per_25bp != null ? `<div class="trade"><span>ถ้า yield 10 ปี ขึ้น 0.25%</span><span class="w">พอร์ตเคยขยับ ${pct(rk.rate_move_per_25bp)}</span></div>` : ''}
+      </section>`;
+    }
   } else {
     h += `<section class="card"><h2>ยังไม่เริ่มลงทุน</h2><p class="hint" style="margin:0">ตอนนี้ระบบรันทดสอบอยู่ พอเปิดใช้งานจริง AI จะเลือกหุ้นชุดแรกเองโดยใช้ราคาของวันนั้น (เงินต้น ${thb(d.start_capital_thb)} บาท)</p></section>`;
     const t = Object.keys(d.prices).filter(k => !k.includes('=') && k !== 'VOO');
@@ -277,6 +290,7 @@ function render(d) {
       ${po ? Object.entries(po.changes || {}).sort((a, b) => a[1] - b[1]).map(([t, c]) => `<div class="trade"><span><span class="side ${c > 0 ? 'buy' : 'sell'}">${c > 0 ? 'เพิ่ม' : 'ลด'}</span>${esc(t)}</span><span class="w">${c > 0 ? '+' : ''}${(c * 100).toFixed(1)}% ของพอร์ต</span></div>`).join('') + `<p class="hint" style="margin:6px 0 0">จะซื้อขายที่ราคาเปิดของวันทำการถัดไป (ตัดสินใจ ${esc(po.decided)})</p>` : ''}
       ${tr.map(t => `<div class="trade"><span><span class="side ${t.side}">${t.side === 'buy' ? 'ซื้อ' : 'ขาย'}</span>${esc(t.ticker)}</span><span class="w">${t.side === 'sell' && sells[t.ticker] ? esc(sells[t.ticker]) + ' · ' : ''}$${Math.round(t.usd).toLocaleString('en-US')}</span></div>`).join('')}
       ${dec.errors ? `<details><summary style="color:var(--neg)">ทำไมแผนถูกปฏิเสธ</summary><ul class="note">${dec.errors.map(e => `<li>${esc(e)}</li>`).join('')}</ul></details>` : ''}
+      ${(dec.checked || []).length ? `<details><summary>AI ตรวจข้อมูลอะไรก่อนตัดสินใจ (${dec.checked.length})</summary><ul class="note">${dec.checked.map(c => `<li><b>${esc(c.ticker || '')}</b> ${esc(c.what || '')} → ${esc(c.finding || '')}</li>`).join('')}</ul></details>` : ''}
       ${dec.market_view || dec.journal ? `<details><summary>ความคิดของ AI สัปดาห์นี้</summary><p class="note">${esc(dec.market_view || '')}</p><p class="note">${esc(dec.journal || '')}</p></details>` : ''}
       ${sc.hit_rate != null ? `<p class="hint" style="margin:10px 0 0">AI ให้คะแนนตัวเอง: ถูก ${sc.correct} / ผิด ${sc.wrong} (${Math.round(sc.hit_rate * 100)}%)${sc.measured ? ` · วัดผลจริง: ชนะ VOO ${sc.beat_voo}/${sc.measured} (${Math.round(sc.beat_voo_rate * 100)}%)` : ''}</p>` : ''}
     </section>`;
