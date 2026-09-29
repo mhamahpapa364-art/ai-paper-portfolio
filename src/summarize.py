@@ -88,6 +88,9 @@ def summarize(news: dict, filings: dict, regime: dict, earnings: list, cfg: dict
     body = {
         "model": cfg["summary_model"],
         "max_tokens": cfg["summary_max_tokens"],
+        # Sonnet 5.5 thinks adaptively by default and thinking tokens count toward max_tokens;
+        # summarising needs little reasoning, so keep effort low to leave room for the JSON answer.
+        "output_config": {"effort": cfg.get("summary_effort", "low")},
         "system": SYSTEM,
         "messages": [{"role": "user", "content":
                       "<untrusted_data>\n" + json.dumps(payload, ensure_ascii=False) + "\n</untrusted_data>"}],
@@ -102,6 +105,8 @@ def summarize(news: dict, filings: dict, regime: dict, earnings: list, cfg: dict
         j = r.json()
         raw = "".join(b.get("text", "") for b in j.get("content", []) if b.get("type") == "text").strip()
         structured = _parse(raw)
+        if j.get("stop_reason") == "max_tokens":
+            warnings.append("AI สรุปข่าวถูกตัดกลางคัน (max_tokens) — ควรเพิ่ม summary_max_tokens")
         if structured is None:
             warnings.append("AI สรุปข่าวไม่ได้ตอบเป็น JSON — แสดงข้อความดิบแทน")
         for f in (structured or {}).get("flags", []):

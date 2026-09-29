@@ -42,7 +42,7 @@
     "6-K",
     "20-F"
   ],
-  "summary_model": "claude-sonnet-5",
+  "summary_model": "claude-sonnet-5-5",
   "summary_max_tokens": 2000,
   "dashboard_url": "https://mhamahpapa364-art.github.io/ai-paper-portfolio/",
   "decision_model": "claude-opus-5-5",
@@ -58,7 +58,7 @@
       1,
       5
     ],
-    "claude-sonnet-5": [
+    "claude-sonnet-5-5": [
       2,
       10
     ]
