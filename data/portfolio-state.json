@@ -5,7 +5,7 @@
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
   "last_run": "2026-09-26",
-  "last_events_processed": "2026-09-25",
+  "last_events_processed": "2026-09-28",
   "books": {
     "portfolio": {
       "cash_usd": 209.89506207719427,
@@ -142,10 +142,10 @@
       "cash_usd": 0.0,
       "holdings": {
         "VOO": {
-          "shares": 4.230618079342927,
-          "cost_usd": 2998.500886817069,
+          "shares": 4.239935107783861,
+          "cost_usd": 3005.056441061915,
           "opened": "2026-09-24",
-          "cost_thb": 100000.0
+          "cost_thb": 100218.62772406262
         }
       }
     },
@@ -213,7 +213,7 @@
     "dividends_usd": 0.0,
     "fees_usd": 6.9715
   },
-  "peak_value_thb": 100494.37,
+  "peak_value_thb": 100792.18,
   "pending_reviews": [
     {
       "id": "GOOGL-2026-09-24-4w",
