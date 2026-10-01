@@ -5,9 +5,14 @@ name: Live prices
 on:
   # GitHub delays scheduled starts by up to ~3 h at busy times, so jobs start EARLY and wait for the open.
   # Only one job runs at a time; a queued job takes over when the previous one hands off (~5h40m).
+  # Observed 28 Sep–1 Oct: starts arrived 6–8 h late, so the session's first ~3 h were missed.
+  # Several early starts now: whichever lands first waits for the open (up to ~5h40m, then hands over);
+  # GitHub keeps one queued run per group, which takes over when the running job hands off.
   schedule:
-    - cron: "7 10 * * 1-5"    # ~17:07 Bangkok: start waiting for the open
-    - cron: "37 12 * * 1-5"   # backup start
+    - cron: "7 5 * * 1-5"     # ~12:07 Bangkok
+    - cron: "7 7 * * 1-5"     # ~14:07 Bangkok
+    - cron: "7 9 * * 1-5"     # ~16:07 Bangkok
+    - cron: "7 11 * * 1-5"    # ~18:07 Bangkok
     - cron: "7 16 * * 1-5"    # takes over the second half of the session
   workflow_dispatch:
 
@@ -45,8 +50,9 @@ jobs:
           mkdir -p out
           start=$(date +%s)
           set +e
-          # wait (up to ~4 h) if we started before the open
-          while [ "$(python -m src.live_prices --status)" = "pre" ] && [ $(( $(date +%s) - start )) -lt 14400 ]; do sleep 60; done
+          # wait for the open, but hand over to the queued job before the 6 h limit
+          while [ "$(python -m src.live_prices --status)" = "pre" ] && [ $(( $(date +%s) - start )) -lt 20400 ]; do sleep 60; done
+          if [ "$(python -m src.live_prices --status)" = "pre" ]; then echo "still before the open — handing over"; exit 0; fi
           python -m src.live_prices out/live.json; rc=$?
           if [ $rc -eq 3 ]; then
             # market closed: a manual run still refreshes once, a scheduled run just exits

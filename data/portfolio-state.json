@@ -451,5 +451,8 @@
     "MA": "payments",
     "JPM": "banking",
     "ETN": "AI power infrastructure"
-  }
+  },
+  "valuation_recheck": [
+    "GOOGL"
+  ]
 }

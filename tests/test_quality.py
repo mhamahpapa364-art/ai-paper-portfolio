@@ -122,3 +122,26 @@ class OutcomeRefreshTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EarningsQualityAndRecheck(unittest.TestCase):
+    def test_trailing_pe_far_below_forward_is_flagged(self):
+        from src.stock_tools import earnings_quality
+        self.assertTrue(earnings_quality({"pe_ttm": 17.3, "pe_forward": 25.6}))
+        self.assertEqual(earnings_quality({"pe_ttm": 28.9, "pe_forward": 19.0}), [])
+        self.assertEqual(earnings_quality({"pe_ttm": -5, "pe_forward": 20}), [])
+
+    def test_thesis_update_only_for_recheck_tickers_and_clears(self):
+        from src.run_weekly import apply_thesis_updates
+        s = {"valuation_recheck": ["GOOGL"],
+             "books": {"portfolio": {"holdings": {"GOOGL": {"thesis": {"thesis": "old", "exit_condition": "x"}},
+                                                  "MSFT": {"thesis": {"thesis": "keep"}}}}},
+             "pending_reviews": [{"ticker": "GOOGL", "thesis": "old"}]}
+        done = apply_thesis_updates(s, [{"ticker": "GOOGL", "thesis": "แก้ thesis ใหม่ด้วย forward PE"},
+                                        {"ticker": "MSFT", "thesis": "should not change at all"}], "2026-10-03")
+        g = s["books"]["portfolio"]["holdings"]["GOOGL"]["thesis"]
+        self.assertEqual([d["ticker"] for d in done], ["GOOGL"])
+        self.assertEqual((g["thesis_original"], g["exit_condition"]), ("old", "x"))
+        self.assertEqual(s["books"]["portfolio"]["holdings"]["MSFT"]["thesis"]["thesis"], "keep")
+        self.assertEqual(s["pending_reviews"][0]["thesis_original"], "old")
+        self.assertIsNone(s["valuation_recheck"])

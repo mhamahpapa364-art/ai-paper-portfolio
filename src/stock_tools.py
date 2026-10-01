@@ -54,6 +54,18 @@ def cross_check(yf_out: dict, fm: dict, tol: float = 0.25) -> list[str]:
     return warn
 
 
+def earnings_quality(out: dict, gap: float = 0.8) -> list[str]:
+    """Trailing PE far below forward PE means trailing EPS is higher than next year's — usually one-off or
+    non-operating gains (e.g. mark-ups on equity stakes), not a cheap stock. Flag it so the AI values on forward
+    / operating figures instead."""
+    pt, pf_ = out.get("pe_ttm"), out.get("pe_forward")
+    if isinstance(pt, (int, float)) and isinstance(pf_, (int, float)) and pt > 0 and pf_ > 0 and pt < gap * pf_:
+        return [f"pe_ttm {pt:.1f} ต่ำกว่า pe_forward {pf_:.1f} มาก — กำไรย้อนหลังน่าจะมีกำไรพิเศษ/กำไรนอกธุรกิจหลัก "
+                "(เช่น กำไรจากเงินลงทุน) อย่าใช้ trailing PE หรือ net margin เป็นเหตุผลว่าหุ้นถูก ให้ใช้ forward PE "
+                "และ operating margin แทน"]
+    return []
+
+
 class StockTools:
     def __init__(self, asof: date, max_age_days: int = 5, denylist: list[str] | None = None):
         self.asof = asof
@@ -109,6 +121,8 @@ class StockTools:
                 out["next_earnings"] = yd
         except Exception:  # noqa: BLE001
             pass
+        if (eq := earnings_quality(out)):
+            out["data_warnings"] = out.get("data_warnings", []) + eq
         ok, why = self._universe_check(out)
         out["eligible"] = ok
         if not ok:

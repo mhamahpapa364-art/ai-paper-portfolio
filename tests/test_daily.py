@@ -165,3 +165,36 @@ class Stale(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Backfill(unittest.TestCase):
+    def setUp(self):
+        import tempfile, pathlib
+        self.tmp = tempfile.TemporaryDirectory()
+        self._p = rd.DAILY_PATH
+        rd.DAILY_PATH = pathlib.Path(self.tmp.name) / "daily.json"
+
+    def tearDown(self):
+        rd.DAILY_PATH = self._p
+        self.tmp.cleanup()
+
+    def test_fills_missing_day_and_unwinds_drip(self):
+        s = state()
+        hist = {"A": frame([(100, 100), (101, 102), (103, 104), (104, 105)]),
+                "B": frame([(100, 100), (99, 98), (97, 96), (95, 94)]),
+                "VOO": frame([(100, 100), (100, 101), (101, 100), (100, 102)], divs={"2026-09-23": 2.0}),
+                "USDTHB=X": frame([(33, 33), (33.2, 33.2), (33.1, 33.1), (33.3, 33.3)])}
+        voo_before = s["books"]["benchmark"]["holdings"]["VOO"]["shares"]
+        cfg = {**CFG, "fx_ticker": "USDTHB=X"}
+        pf.process_events(s, hist, date(2026, 9, 24), cfg["dividend_withholding"], [])
+        self.assertGreater(s["books"]["benchmark"]["holdings"]["VOO"]["shares"], voo_before)  # DRIP applied
+        rd.save_json(rd.DAILY_PATH, [{"date": "2026-09-24", "fx": 33.3, "portfolio": 0, "benchmark": 0, "shadow": 0}])
+        filled = rd.backfill_gaps(s, hist, cfg, date(2026, 9, 24))
+        self.assertEqual(filled, ["2026-09-22", "2026-09-23"])
+        rows = {r["date"]: r for r in rd.load_json(rd.DAILY_PATH)}
+        self.assertAlmostEqual(rows["2026-09-22"]["benchmark"], round(voo_before * 101 * 33.2, 2), places=2)
+        bench = s["books"]["benchmark"]
+        self.assertAlmostEqual(rows["2026-09-23"]["benchmark"],
+                               round((bench["cash_usd"] + bench["holdings"]["VOO"]["shares"] * 100) * 33.1, 2), places=2)
+        # nothing to do on a second run, and no fills before a later trade
+        self.assertEqual(rd.backfill_gaps(s, hist, cfg, date(2026, 9, 24)), [])

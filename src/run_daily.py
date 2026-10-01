@@ -50,6 +50,65 @@ def record_daily_value(state: dict, hist: dict, fx: float, day, cfg: dict) -> No
     state["peak_value_thb"] = max(state.get("peak_value_thb") or 0, rows[-1]["portfolio"])
 
 
+def unwind_book(book: dict, hist: dict, day, upto, withholding: float, drip: bool) -> dict:
+    """Copy of a book as it stood at the close of `day`: reverses corporate actions with ex-date in (day, upto].
+    Only valid when no trade happened after `day`."""
+    b = {"cash_usd": book["cash_usd"], "holdings": {t: {"shares": h["shares"]} for t, h in book["holdings"].items()}}
+    for t, h in b["holdings"].items():
+        df = hist.get(t)
+        for ev in reversed(md.corporate_actions(df, day, upto)):
+            if ev["type"] == "split":
+                h["shares"] /= ev["ratio"]
+            elif drip:
+                row = df[df.index.date == date.fromisoformat(ev["date"])]
+                px = float(row["Close"].iloc[0])
+                h["shares"] /= 1 + ev["amount"] * (1 - withholding) / px
+            else:
+                b["cash_usd"] -= h["shares"] * ev["amount"] * (1 - withholding)
+    return b
+
+
+def backfill_gaps(state: dict, hist: dict, cfg: dict, upto) -> list[str]:
+    """Record trading days missing from daily_values (a lagging price feed skipped 2026-09-25 once).
+    Skips days before the latest trade (positions differed) and tickers without corporate-action data."""
+    bench, fxdf = hist.get(cfg["benchmark"]), hist.get(cfg["fx_ticker"])
+    if bench is None or bench.empty or fxdf is None or fxdf.empty:
+        return []
+    held = set().union(*(set(b["holdings"]) for b in state["books"].values()))
+    if any(t not in hist or hist[t].attrs.get("source") == "stooq" for t in held):
+        return []
+    rows = load_json(DAILY_PATH, default=[])
+    have = {r["date"] for r in rows}
+    start = date.fromisoformat(state["inception_date"])
+    last_trade = date.fromisoformat((state.get("last_execution") or {}).get("date") or state["inception_date"])
+    applied = date.fromisoformat(state["last_events_processed"])
+    filled = []
+    for ts in bench.index:
+        d = ts.date()
+        if d <= start or d < last_trade or d >= upto or d > applied or d.isoformat() in have:
+            continue
+        px = {}
+        for t in held:
+            bar = hist[t][hist[t].index.date == d]
+            if len(bar):
+                px[t] = {"price": float(bar["Close"].iloc[0])}
+        fxbar = fxdf[fxdf.index.date <= d]
+        if len(px) < len(held) or fxbar.empty:
+            continue
+        fx = float(fxbar["Close"].iloc[-1])
+        row = {"date": d.isoformat(), "fx": round(fx, 4)}
+        for name, book in state["books"].items():
+            b = unwind_book(book, hist, d, applied, cfg["dividend_withholding"], drip=name != "portfolio")
+            row[name] = round(pf.book_value(b, px) * fx, 2)
+        rows.append(row)
+        filled.append(d.isoformat())
+        state["peak_value_thb"] = max(state.get("peak_value_thb") or 0, row["portfolio"])
+    if filled:
+        save_json(DAILY_PATH, sorted(rows, key=lambda r: r["date"]))
+        log("backfilled daily values: " + ", ".join(filled))
+    return filled
+
+
 def fill_pending(state: dict, hist: dict, cfg: dict, fx: float, benchmark: str, warnings: list) -> list[dict]:
     po = state.get("pending_orders")
     if not po:
@@ -185,6 +244,7 @@ def main(argv=None) -> int:
     last_session = hist[cfg["benchmark"]].index[-1].date()
     events = pf.process_events(state, hist, last_session, cfg["dividend_withholding"], warnings)
     record_daily_value(state, hist, fx, last_session, cfg)
+    backfill_gaps(state, hist, cfg, last_session)
     triggers = scan(state, hist, cfg, asof, warnings)
     state.setdefault("recent_triggers", [])
     state["recent_triggers"] = (state["recent_triggers"] + triggers)[-30:]
