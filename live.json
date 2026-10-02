@@ -1,0 +1,76 @@
+{
+ "updated_utc": "2026-10-02T20:19+00:00",
+ "fx": 33.53,
+ "quotes": {
+  "AMZN": {
+   "price": 251.52,
+   "chg_day": 0.01325,
+   "source": "finnhub"
+  },
+  "ETN": {
+   "price": 436.11,
+   "chg_day": -0.00268,
+   "source": "finnhub"
+  },
+  "GOOGL": {
+   "price": 343.5,
+   "chg_day": 0.01555,
+   "source": "finnhub"
+  },
+  "JPM": {
+   "price": 332.38,
+   "chg_day": -0.0024,
+   "source": "finnhub"
+  },
+  "LLY": {
+   "price": 1142.85,
+   "chg_day": -0.00609,
+   "source": "finnhub"
+  },
+  "MA": {
+   "price": 552.26,
+   "chg_day": 0.00411,
+   "source": "finnhub"
+  },
+  "MSFT": {
+   "price": 517.53,
+   "chg_day": 0.00922,
+   "source": "finnhub"
+  },
+  "NVDA": {
+   "price": 233.95,
+   "chg_day": 0.01338,
+   "source": "finnhub"
+  },
+  "TSM": {
+   "price": 472.78,
+   "chg_day": 0.02957,
+   "source": "finnhub"
+  },
+  "VOO": {
+   "price": 707.54,
+   "chg_day": 0.00739,
+   "source": "finnhub"
+  }
+ },
+ "books": {
+  "portfolio": {
+   "value_thb": 101255.95,
+   "return_thb": 0.01256,
+   "chg_day": 0.00922
+  },
+  "benchmark": {
+   "value_thb": 100587.44,
+   "return_thb": 0.00587,
+   "chg_day": 0.00739
+  },
+  "shadow": {
+   "value_thb": 101255.95,
+   "return_thb": 0.01256,
+   "chg_day": 0.00922
+  }
+ },
+ "missing": [],
+ "vs_benchmark": 0.00669,
+ "vs_shadow": 0.0
+}
