@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 from datetime import date
 
+from . import goals as goals_mod
 from . import manager as mg
 from . import market_data as md
 from . import news as nw
@@ -191,6 +192,8 @@ def main(argv=None) -> int:
         "totals": state["totals"], "history": history_log,
         "scorecard": mg.hit_rate(card), "api_spend_month_usd": round(month_spend(state, month), 3),
         "human_flags": flags,
+        "goals": goals_mod.evaluate(cfg, perf and perf["returns"], perf and perf["drawdown_from_peak"],
+                                    mg.hit_rate(card), state.get("inception_date"), asof),
         "risk": portfolio_risk(state, prices, hist, cfg) if state["status"] == "live" else None,
         "themes": state.get("themes", {}),
         "credit_left_usd": credit_left(state, cfg),
@@ -300,6 +303,10 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
         "lessons": mg.lessons(), "journal": mg.journal()[-cfg["journal_entries_in_prompt"]:],
         "portfolio": portfolio_view(state, prices, fx, asof) if mode != "initial" else None,
         "performance": perf_now and {"returns": perf_now["returns"], "drawdown": perf_now["drawdown_from_peak"]},
+        "goals": goals_mod.prompt_text(
+            perf_now and goals_mod.evaluate(cfg, perf_now["returns"], perf_now["drawdown_from_peak"],
+                                            mg.hit_rate(load_json(mg.SCORECARD_PATH, default=[])),
+                                            state.get("inception_date"), asof), cfg),
         "regime": {"label": regime["label"], "signals": regime["signals"], "sectors_4w": regime.get("sectors_4w"),
                    "cash_guidance": rules["flexible"]["regime_cash_guidance"].get(regime["label"])},
         "reviews_due": due,
@@ -465,6 +472,7 @@ def format_message(d: dict, cfg: dict) -> str:
         lines += ["", f"มูลค่า: <b>{p['portfolio']['value_thb']:,.0f} บาท</b> ({pct(r['portfolio_thb'])})",
                   f"vs VOO: {pct(r['vs_benchmark'])} · vs พอร์ตเงา: {pct(r['vs_shadow'])}",
                   f"ลงจากจุดสูงสุด: {pct(p['drawdown_from_peak'])}"]
+        lines += goals_mod.telegram_lines(d.get("goals"))
     else:
         lines += ["", "สถานะ: <b>ยังไม่เริ่มลงทุน</b>"]
     dec = d.get("decision")

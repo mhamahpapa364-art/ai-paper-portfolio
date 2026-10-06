@@ -238,7 +238,7 @@ def build_prompt(mode: str, ctx: dict) -> str:
                      "corrected premise alone is not a reason to trade.")
     parts.append("LESSONS (your own, from monthly reviews):\n" + (ctx.get("lessons") or "(none yet)"))
     parts.append("JOURNAL (your recent entries, newest last):\n" + json.dumps(ctx.get("journal", []), ensure_ascii=False))
-    for k in ("outcome_refresh", "valuation_recheck", "portfolio", "risk", "performance", "regime", "reviews_due", "headlines", "sec_filings",
+    for k in ("goals", "outcome_refresh", "valuation_recheck", "portfolio", "risk", "performance", "regime", "reviews_due", "headlines", "sec_filings",
               "upcoming_earnings", "triggers", "turnover_used_last_7_days", "emergency_triggers_since_last_review", "unexecuted_pending_orders",
               "previous_attempt"):
         if ctx.get(k) not in (None, [], {}):

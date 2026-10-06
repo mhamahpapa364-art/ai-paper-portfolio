@@ -1,6 +1,14 @@
 {
   "_comment": "ค่าตั้งระบบ — แก้ได้ แต่ถ้าแก้หลัง go-live ให้บันทึกเหตุผลใน commit message",
   "starting_capital_thb": 100000,
+  "goals": {
+    "horizon_months": 12,
+    "beat_benchmark": true,
+    "beat_shadow": true,
+    "max_drawdown": 0.15,
+    "min_hit_rate": 0.5,
+    "min_graded_reviews": 4
+  },
   "benchmark": "VOO",
   "fx_ticker": "USDTHB=X",
   "fee_rate": 0.0025,
