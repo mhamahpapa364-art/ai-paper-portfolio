@@ -8,7 +8,7 @@
                                                        auditor change, restatement, impairment, acquisition)
    A trigger wakes the AI in "event" mode (default HOLD, same rule book). Its trades are filled at the next open.
    On Friday night no AI is called: the weekly review runs a few hours later and receives the triggers.
-Telegram is only used when something happened. Exit code != 0 = do not commit.
+Notifications are only sent when something happened. Exit code != 0 = do not commit.
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from . import market_data as md
 from . import news as nw
 from . import portfolio as pf
 from . import rules_engine as reng
-from .common import CONFIG, DOCS_DATA, STATE_PATH, esc, fail, load_json, log, save_json, settings, telegram, today
+from .common import CONFIG, DOCS_DATA, STATE_PATH, esc, fail, load_json, log, save_json, settings, notify, today
 from .decide import month_spend
 from .regime import read_regime
 from .run_weekly import credit_left, run_decision
@@ -314,7 +314,7 @@ def main(argv=None) -> int:
     if warnings:
         lines += ["", "⚠️ " + esc("; ".join(warnings[:3]))]
     lines += ["", cfg["dashboard_url"]]
-    telegram("\n".join(lines), dry)
+    notify("\n".join(lines), dry)
     return 0
 
 

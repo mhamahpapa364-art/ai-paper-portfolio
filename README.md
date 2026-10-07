@@ -5,14 +5,14 @@
 **Dashboard:** https://mhamahpapa364-art.github.io/ai-paper-portfolio/
 
 ## ระบบทำอะไรทุกสัปดาห์
-1. ดึงราคาจาก yfinance (ถ้าดึงไม่ได้ ใช้ Finnhub แทน) ถ้าราคาหาย ผิดปกติ หรือเก่าเกิน 5 วัน → **หยุดทันที ไม่บันทึกอะไร** แล้วแจ้งเตือนทาง Telegram
+1. ดึงราคาจาก yfinance (ถ้าดึงไม่ได้ ใช้ Finnhub แทน) ถ้าราคาหาย ผิดปกติ หรือเก่าเกิน 5 วัน → **หยุดทันที ไม่บันทึกอะไร** แล้วแจ้งเตือนทาง Discord/Telegram
 2. บันทึกปันผล (หักภาษี 15%) และการแตกพาร์
 3. คำนวณผลตอบแทน 3 พอร์ต: **พอร์ต AI** · **VOO** (ใช้เป็นคู่เทียบ) · **พอร์ตเงา** (ถือหุ้นชุดแรกไว้เฉยๆ ไม่แตะเลย)
 4. แยกผลตอบแทนเป็น 2 ส่วน: ส่วนที่มาจากหุ้น (USD) และส่วนที่มาจากค่าเงิน
 5. อ่านสภาพตลาด (risk-on / neutral / risk-off) จาก VOO เทียบเส้น 200 วัน, VIX, พันธบัตร 10 ปี และหมวดอุตสาหกรรมที่นำตลาด
 6. ข่าวจาก Finnhub + เอกสารทางการจาก SEC EDGAR + ปฏิทินประกาศงบ
 7. Claude Haiku สรุปข่าวเป็นภาษาไทย (เนื้อหาข่าวถือเป็นข้อมูลเท่านั้น AI จะไม่ทำตามคำสั่งที่แฝงมาในข่าว)
-8. บันทึกผลลง `data/` แล้ว commit (ประวัติ git = log การตัดสินใจอัตโนมัติ) → อัปเดต dashboard → ส่งสรุปทาง Telegram
+8. บันทึกผลลง `data/` แล้ว commit (ประวัติ git = log การตัดสินใจอัตโนมัติ) → อัปเดต dashboard → ส่งสรุปทาง Discord (หรือ Telegram)
 
 ## โครงสร้างไฟล์
 | ไฟล์ | หน้าที่ |
@@ -59,4 +59,13 @@
 - `go-live-preview` ให้ AI เสนอพอร์ตตั้งต้น (ไม่บันทึก) · `go-live` เริ่มการทดลองจริง (ทำได้ครั้งเดียว)
 
 ## Secrets ที่ต้องมี
-`FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `TELEGRAM_BOT_TOKEN` · `TELEGRAM_CHAT_ID` · `SEC_USER_AGENT` (ชื่อ + อีเมล ตามที่ SEC กำหนด)
+`FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `DISCORD_WEBHOOK_URL` (หรือ `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — ตั้งอย่างใดอย่างหนึ่งหรือทั้งคู่) · `SEC_USER_AGENT` (ชื่อ + อีเมล ตามที่ SEC กำหนด)
+
+## แจ้งเตือนเข้า Discord
+ระบบส่งข่าว/สรุปพอร์ตเข้า Discord ผ่าน **Webhook** (ไม่ต้องมีบอท ไม่ต้องมีเครื่องรันค้างไว้) ตั้งค่าอย่างเดียวพอ:
+1. ใน Discord คลิกขวาช่องที่จะรับข่าว (เช่น `#portfolio-alerts`) → **Edit Channel → Integrations → Webhooks → New Webhook** ตั้งชื่อ/รูป (เช่น `AI Portfolio`) → **Copy Webhook URL**
+2. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret** ชื่อ `DISCORD_WEBHOOK_URL` ค่า = URL ที่คัดลอก
+3. แท็บ **Actions → Test Discord → Run workflow** ต้องมีข้อความทดสอบเด้งในช่อง
+4. เห็นข้อความแล้ว จะลบ secret `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` ก็ได้ ระบบส่งไปทุกช่องทางที่ตั้งไว้ ถ้าเหลือ Discord อย่างเดียวก็ส่งแค่ Discord
+
+> URL ของ webhook = รหัสผ่านของช่องนั้น ใครมีก็โพสต์ได้ ห้ามโพสต์ในแชท/commit ถ้าหลุดให้ลบ webhook แล้วสร้างใหม่
