@@ -40,21 +40,39 @@
 4. เปิด URL ที่ได้ → เลือก server → Authorize
 5. Server Settings → Roles → **ลากยศของบอทขึ้นบนสุด** (ต้องสูงกว่ายศทุกยศที่มันจะลบ/แก้)
 
-### 2) รันบอทแล้วจัด server ใหม่
+### 2) จัด server ใหม่ — เลือกทางใดทางหนึ่ง
+
+**ทางที่ 1 (ง่ายสุด): กดรันจากเว็บ GitHub ไม่ต้องลงอะไรในเครื่อง**
+1. GitHub repo → **Settings → Secrets and variables → Actions** → เพิ่ม secret `DISCORD_BOT_TOKEN` (ค่า = token ของบอท)
+2. แท็บ **Actions → Discord organizer → Run workflow**
+   - `mode` = **preview**, `guild_id` = Server ID (Discord: Settings → Advanced → เปิด Developer Mode → คลิกขวาไอคอน server → Copy Server ID)
+3. เปิด log ของ run ดูรายการที่จะเกิดขึ้น (ยังไม่ทำอะไรจริง)
+4. ถ้าโอเค รันอีกครั้งด้วย `mode` = **reorganize**, `confirm` = `RESET`, และ `admin_user_id` = User ID ของคุณ (คลิกขวาชื่อตัวเอง → Copy User ID)
+   ระบบปฏิเสธเองถ้าไม่ใส่ `RESET` หรือไม่ใส่ user id
+
+| mode | ทำอะไร |
+|---|---|
+| `preview` | แสดงแผนจัดใหม่ทั้งหมด ไม่ทำจริง |
+| `setup` | สร้างเฉพาะของที่ขาด ไม่แตะของเดิม |
+| `reorganize` | จัดใหม่จริง (ดูข้อควรรู้ด้านล่าง) |
+
+**ทางที่ 2: รันในเครื่อง ใช้คำสั่งใน Discord**
 ```bash
 pip install -r discord_bot/requirements.txt
 export DISCORD_BOT_TOKEN='วาง token ที่นี่'
-export DISCORD_GUILD_ID='id server'   # ไม่บังคับ แต่ให้คำสั่งขึ้นทันที (Developer Mode → คลิกขวาไอคอน server → Copy Server ID)
+export DISCORD_GUILD_ID='id server'   # ไม่บังคับ แต่ให้คำสั่งขึ้นทันที
 python -m discord_bot.bot
 ```
 ใน Discord (เฉพาะแอดมิน):
 
 | คำสั่ง | ทำอะไร |
 |---|---|
-| `/reorganize` | **ดูตัวอย่าง** ทุกอย่างที่จะเกิดขึ้น (ยังไม่ทำจริง) |
-| `/reorganize preview:False confirm:RESET` | ทำจริง: สร้างยศ/หมวด/ห้องตามแม่แบบ, ย้ายห้องเดิมที่ตรงชื่อเข้าหมวดใหม่, **ย้ายห้องเดิมที่เหลือไป 📦 Archive**, ลบหมวดเดิมที่ว่าง, **ลบยศเดิมทั้งหมด** (สมาชิกเสียยศเหล่านั้นทันที ย้อนคืนไม่ได้) |
-| `/setup` | แบบเบา: สร้างเฉพาะของที่ขาด ไม่แตะของเดิม |
+| `/reorganize` | **ดูตัวอย่าง** (ยังไม่ทำจริง) |
+| `/reorganize preview:False confirm:RESET` | จัดใหม่จริง |
+| `/setup` | แบบเบา: สร้างเฉพาะของที่ขาด |
 | `/audit` | ตรวจความรก: หมวดว่าง ช่องไม่อยู่ในหมวด ช่องไม่มี topic ช่องเงียบ |
+
+`reorganize` จะ: สร้างยศ/หมวด/ห้องตามแม่แบบ, ย้ายห้องเดิมที่ตรงชื่อเข้าหมวดใหม่, **ย้ายห้องเดิมที่เหลือไป 📦 Archive**, ลบหมวดเดิมที่ว่าง, **ลบยศเดิมทั้งหมด** (สมาชิกเสียยศเหล่านั้นทันที ย้อนคืนไม่ได้)
 
 ข้อควรรู้ก่อนกดรันจริง
 - **ไม่ลบห้องแชท/voice** ห้องเดิมถูกย้ายไป Archive ให้คุณลบเองทีหลัง ส่วนยศเดิมถูกลบจริง

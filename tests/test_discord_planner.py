@@ -176,3 +176,19 @@ class AuditTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GateTests(unittest.TestCase):
+    def test_preview_and_setup_need_nothing(self):
+        self.assertIsNone(planner.gate("preview", "", ""))
+        self.assertIsNone(planner.gate("setup", "", ""))
+
+    def test_reorganize_needs_confirm_and_admin_id(self):
+        self.assertIn("RESET", planner.gate("reorganize", "", "123"))
+        self.assertIn("RESET", planner.gate("reorganize", "reset", "123"))
+        self.assertIn("admin_user_id", planner.gate("reorganize", "RESET", ""))
+        self.assertIn("admin_user_id", planner.gate("reorganize", "RESET", "abc"))
+        self.assertIsNone(planner.gate("reorganize", "RESET", " 123456789 "))
+
+    def test_unknown_mode_refused(self):
+        self.assertIsNotNone(planner.gate("nuke", "RESET", "1"))

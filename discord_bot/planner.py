@@ -249,6 +249,21 @@ def plan(t: dict, s: GuildState, full: bool = False) -> list[Action]:
     return acts
 
 
+def gate(mode: str, confirm: str, admin_user_id: str) -> str | None:
+    """Why a real (non-preview) one-shot run must be refused, or None if it may proceed.
+
+    mode: preview | setup | reorganize. Only `reorganize` is destructive (deletes old roles).
+    """
+    if mode not in ("preview", "setup", "reorganize"):
+        return f"mode ไม่ถูกต้อง: {mode!r}"
+    if mode == "reorganize":
+        if confirm != "RESET":
+            return "ต้องพิมพ์ confirm = RESET (ตัวพิมพ์ใหญ่) ถึงจะจัด server ใหม่จริง"
+        if not (admin_user_id or "").strip().isdigit():
+            return "ต้องใส่ admin_user_id (Discord user id ของคุณ) เพื่อให้ยศ Admin ใหม่กับคุณ ไม่งั้นอาจล็อกตัวเองออก"
+    return None
+
+
 def audit(channels: list[dict], now: datetime | None = None, inactive_days: int = 30) -> list[str]:
     """Findings about clutter. Each channel dict: name, type, category (or None), topic, last_activity (datetime|None)."""
     now = now or datetime.now(timezone.utc)
