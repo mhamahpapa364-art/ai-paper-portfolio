@@ -72,7 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     token = os.environ.get("DISCORD_BOT_TOKEN", "").strip()
     if not token:
-        print("❌ ไม่พบ DISCORD_BOT_TOKEN (ใส่เป็น GitHub secret)")
+        print("❌ ไม่พบ DISCORD_BOT_TOKEN — ตั้งเป็น environment variable ก่อนรัน (ดู README ข้อ 3; ถ้ารันผ่าน GitHub Actions ให้ใส่เป็น secret)")
         return 1
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(message)s")
     client = OneShot(args)
