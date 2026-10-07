@@ -61,5 +61,11 @@
 ## Secrets ที่ต้องมี
 `FINNHUB_API_KEY` · `ANTHROPIC_API_KEY` · `DISCORD_WEBHOOK_URL` (หรือ `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — ตั้งอย่างใดอย่างหนึ่งหรือทั้งคู่) · `SEC_USER_AGENT` (ชื่อ + อีเมล ตามที่ SEC กำหนด)
 
-## Discord
-วิธีตั้งค่าแจ้งเตือนผ่าน webhook และบอทจัดระเบียบ server: ดู [`discord_bot/README.md`](discord_bot/README.md)
+## แจ้งเตือนเข้า Discord
+ระบบส่งข่าว/สรุปพอร์ตเข้า Discord ผ่าน **Webhook** (ไม่ต้องมีบอท ไม่ต้องมีเครื่องรันค้างไว้) ตั้งค่าอย่างเดียวพอ:
+1. ใน Discord คลิกขวาช่องที่จะรับข่าว (เช่น `#portfolio-alerts`) → **Edit Channel → Integrations → Webhooks → New Webhook** ตั้งชื่อ/รูป (เช่น `AI Portfolio`) → **Copy Webhook URL**
+2. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret** ชื่อ `DISCORD_WEBHOOK_URL` ค่า = URL ที่คัดลอก
+3. แท็บ **Actions → Test Discord → Run workflow** ต้องมีข้อความทดสอบเด้งในช่อง
+4. เห็นข้อความแล้ว จะลบ secret `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` ก็ได้ ระบบส่งไปทุกช่องทางที่ตั้งไว้ ถ้าเหลือ Discord อย่างเดียวก็ส่งแค่ Discord
+
+> URL ของ webhook = รหัสผ่านของช่องนั้น ใครมีก็โพสต์ได้ ห้ามโพสต์ในแชท/commit ถ้าหลุดให้ลบ webhook แล้วสร้างใหม่
