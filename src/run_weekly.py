@@ -1,8 +1,8 @@
-"""Weekly run: data → corporate actions → regime → news → AI decision → trades → performance → files → Telegram.
+"""Weekly run: data → corporate actions → regime → news → AI decision → trades → performance → files → notify.
 
 Usage:
   python -m src.run_weekly                    weekly run (AI decides if live)
-  python -m src.run_weekly --dry-run          no AI / no Telegram
+  python -m src.run_weekly --dry-run          no AI / no notification
   python -m src.run_weekly --go-live --preview   AI proposes the starting portfolio; nothing is saved
   python -m src.run_weekly --go-live          AI builds the starting portfolio and the experiment starts
 Exit code != 0 means a critical problem: the workflow must not commit.
@@ -20,7 +20,7 @@ from . import portfolio as pf
 from . import risk as rk
 from . import rules_engine as reng
 from .common import (CONFIG, DOCS_DATA, HISTORY_PATH, STATE_PATH, WEEKLY_DIR, DataError, esc, fail,
-                     load_json, log, save_json, settings, telegram, today)
+                     load_json, log, save_json, settings, notify, today)
 from .decide import _cost, add_spend, decide, month_spend, portfolio_view
 from .regime import read_regime
 from .stock_tools import StockTools
@@ -45,7 +45,7 @@ def annotate(level: str, msg: str) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true", help="no Anthropic/Telegram calls")
+    ap.add_argument("--dry-run", action="store_true", help="no Anthropic/notification calls")
     ap.add_argument("--go-live", action="store_true", help="AI builds the starting portfolio")
     ap.add_argument("--preview", action="store_true", help="with --go-live: show the proposal, save nothing")
     ap.add_argument("--retry", action="store_true", help="Sunday safety run: only runs if Saturday's run failed")
@@ -207,7 +207,7 @@ def main(argv=None) -> int:
     save_json(WEEKLY_DIR / f"{asof.isoformat()}.json", weekly)
     save_json(DOCS_DATA / "dashboard.json", dashboard)
     log("Files written")
-    telegram(format_message(dashboard, cfg), dry)
+    notify(format_message(dashboard, cfg), dry)
     return 0
 
 
@@ -432,7 +432,7 @@ def run_decision(mode, state, cfg, rules, hist, prices, fx, regime, summary, new
 def report_preview(dec: dict | None, prices: dict, profiles: dict, cfg: dict, dry: bool) -> None:
     if not dec or dec.get("status") not in ("proposed", "rejected"):
         annotate("error", f"AI ไม่ได้เสนอพอร์ต: {dec}")
-        telegram("⚠️ <b>Preview</b>: AI ไม่ได้เสนอพอร์ต ดูรายละเอียดใน GitHub Actions", dry)
+        notify("⚠️ <b>Preview</b>: AI ไม่ได้เสนอพอร์ต ดูรายละเอียดใน GitHub Actions", dry)
         return
     lines = [f"🔎 <b>Preview พอร์ตตั้งต้น</b> (ยังไม่ได้ซื้อจริง) · ค่า AI ${dec['cost_usd']:.2f}"]
     annotate("notice", f"สถานะ {dec['status']} · cost ${dec['cost_usd']} · tools {dec['tools_used']}")
@@ -454,7 +454,7 @@ def report_preview(dec: dict | None, prices: dict, profiles: dict, cfg: dict, dr
         lines += ["", "❌ ผิดกฎ: " + esc("; ".join(dec["errors"]))]
         for e in dec["errors"]:
             annotate("warning", "ผิดกฎ: " + e)
-    telegram("\n".join(lines), dry)
+    notify("\n".join(lines), dry)
 
 
 def pct(x, signed=True) -> str:

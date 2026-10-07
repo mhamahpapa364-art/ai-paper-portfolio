@@ -1,0 +1,39 @@
+{
+  "default_role": "Member",
+  "welcome_channel": "welcome",
+  "welcome_message": "ยินดีต้อนรับ {mention} สู่ {server}! อ่านกติกาที่ #rules แล้วเลือกยศของคุณที่ #get-roles",
+  "roles": [
+    {"name": "Admin", "color": "#e74c3c", "hoist": true},
+    {"name": "Mod", "color": "#e67e22", "hoist": true},
+    {"name": "Member", "color": "#3498db"},
+    {"name": "Investor", "color": "#2ecc71", "self_assignable": true},
+    {"name": "Dev", "color": "#9b59b6", "self_assignable": true},
+    {"name": "Gamer", "color": "#f1c40f", "self_assignable": true}
+  ],
+  "categories": [
+    {
+      "name": "📢 ข้อมูล",
+      "channels": [
+        {"name": "welcome", "type": "text", "topic": "ยินดีต้อนรับสมาชิกใหม่", "read_only": true},
+        {"name": "rules", "type": "text", "topic": "กติกาของเซิร์ฟเวอร์", "read_only": true},
+        {"name": "announcements", "type": "text", "topic": "ประกาศสำคัญ", "read_only": true},
+        {"name": "get-roles", "type": "text", "topic": "กดปุ่มเพื่อรับ/เอายศออก", "read_only": true}
+      ]
+    },
+    {
+      "name": "💬 ทั่วไป",
+      "channels": [
+        {"name": "general", "type": "text", "topic": "คุยเล่นทั่วไป"},
+        {"name": "help", "type": "text", "topic": "ถามคำถาม ขอความช่วยเหลือ"},
+        {"name": "General Voice", "type": "voice"}
+      ]
+    },
+    {
+      "name": "📈 AI Portfolio",
+      "channels": [
+        {"name": "portfolio-alerts", "type": "text", "topic": "แจ้งเตือนจากระบบ AI Paper Portfolio (webhook)", "read_only": true},
+        {"name": "portfolio-discussion", "type": "text", "topic": "คุยเรื่องพอร์ตและหุ้น"}
+      ]
+    }
+  ]
+}
