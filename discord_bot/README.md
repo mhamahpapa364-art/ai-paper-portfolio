@@ -9,6 +9,11 @@
 
 ไม่มีส่วนไหนเรียก Claude API ถามตอบทำในแชท Claude
 
+ใน Discord จะเห็นเป็น **บอท 2 ตัวแยกกัน** (ป้าย APP คนละชื่อ คนละรูป คนละสิทธิ์):
+ตัวแจ้งเตือนโพสต์ได้แค่ช่องเดียว ตัวจัดการ server ไม่เกี่ยวกับการแจ้งเตือน
+ตั้งชื่อ/รูป webhook ได้ที่ Edit Channel → Integrations → Webhooks (เช่น `AI Portfolio`)
+และตั้งชื่อ/รูปของบอทจัดการได้ที่ Developer Portal → General Information (เช่น `Server Manager`)
+
 ## A. แจ้งเตือนพอร์ตเข้า Discord (Webhook)
 1. ใน Discord คลิกขวาช่องที่จะรับข่าว (เช่น `#portfolio-alerts`) → **Edit Channel → Integrations → Webhooks → New Webhook** → **Copy Webhook URL**
 2. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**
