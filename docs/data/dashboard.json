@@ -1,111 +1,111 @@
 {
   "run_date": "2026-10-07",
-  "market_date": "2026-10-06",
+  "market_date": "2026-10-07",
   "status": "live",
-  "fx": 33.650001525878906,
+  "fx": 33.70000076293945,
   "prices": {
     "AMZN": {
-      "price": 256.2900085449219,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.039
-    },
-    "ETN": {
-      "price": 445.0899963378906,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0273
-    },
-    "GOOGL": {
-      "price": 347.67999267578125,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0198
-    },
-    "JPM": {
-      "price": 331.2799987792969,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": -0.011
-    },
-    "LLY": {
-      "price": 1157.489990234375,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": -0.0229
-    },
-    "MA": {
-      "price": 566.5800170898438,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0053
-    },
-    "MSFT": {
-      "price": 529.2999877929688,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.04
-    },
-    "NVDA": {
-      "price": 239.24000549316406,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0529
-    },
-    "TSM": {
-      "price": 482.29998779296875,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0555
-    },
-    "VOO": {
-      "price": 716.2000122070312,
-      "date": "2026-10-06",
-      "source": "yfinance",
-      "chg_1w": 0.0196
-    },
-    "USDTHB=X": {
-      "price": 33.650001525878906,
+      "price": 254.77999877929688,
       "date": "2026-10-07",
       "source": "yfinance",
-      "chg_1w": 0.0027
+      "chg_1w": 0.0226
+    },
+    "ETN": {
+      "price": 426.03009033203125,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": -0.0086
+    },
+    "GOOGL": {
+      "price": 343.92999267578125,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": -0.0004
+    },
+    "JPM": {
+      "price": 327.010009765625,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": -0.0115
+    },
+    "LLY": {
+      "price": 1181.64501953125,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0212
+    },
+    "MA": {
+      "price": 571.510009765625,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0363
+    },
+    "MSFT": {
+      "price": 526.625,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0268
+    },
+    "NVDA": {
+      "price": 238.3000030517578,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0434
+    },
+    "TSM": {
+      "price": 473.6000061035156,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0382
+    },
+    "VOO": {
+      "price": 711.8499755859375,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0157
+    },
+    "USDTHB=X": {
+      "price": 33.70000076293945,
+      "date": "2026-10-07",
+      "source": "yfinance",
+      "chg_1w": 0.0042
     }
   },
   "performance": {
-    "fx": 33.650001525878906,
+    "fx": 33.70000076293945,
     "portfolio": {
-      "value_usd": 3069.45,
-      "value_thb": 103287.07
+      "value_usd": 3048.81,
+      "value_thb": 102744.96
     },
     "benchmark": {
-      "value_usd": 3036.64,
-      "value_thb": 102182.99
+      "value_usd": 3018.2,
+      "value_thb": 101713.26
     },
     "shadow": {
-      "value_usd": 3069.45,
-      "value_thb": 103287.07
+      "value_usd": 3048.8,
+      "value_thb": 102744.53
     },
     "returns": {
-      "portfolio_thb": 0.03287068130050219,
-      "portfolio_usd": 0.023662231303166692,
-      "fx_effect": 0.008995594167436227,
-      "benchmark_thb": 0.021829936643261272,
-      "shadow_thb": 0.03287068130050219,
-      "vs_benchmark": 0.01104074465724092,
-      "vs_shadow": 0.0
+      "portfolio_thb": 0.02744964472282696,
+      "portfolio_usd": 0.016778733175131677,
+      "fx_effect": 0.010494821734098547,
+      "benchmark_thb": 0.017132648925181515,
+      "shadow_thb": 0.02744533910228486,
+      "vs_benchmark": 0.010316995797645445,
+      "vs_shadow": 4.3056205420999305e-06
     },
-    "drawdown_from_peak": 0.0,
-    "max_drawdown": -0.0026459393972825263
+    "drawdown_from_peak": -0.005248575644560383,
+    "max_drawdown": -0.005248575644560383
   },
   "events": [],
   "regime": {
     "signals": {
-      "market_vs_200dma": 0.0795,
+      "market_vs_200dma": 0.0722,
       "sma50_above_sma200": true,
-      "market_4w": 0.017228407341071117,
-      "vix": 15.25,
-      "us10y": 5.269,
-      "us10y_4w_change_pts": 0.463,
+      "market_4w": 0.015666215625216084,
+      "vix": 15.73,
+      "us10y": 5.328,
+      "us10y_4w_change_pts": 0.491,
       "defensives_leading": false
     },
     "score": 2,
@@ -115,101 +115,101 @@
       {
         "etf": "XLK",
         "name": "Technology",
-        "ret_4w": 0.0752
-      },
-      {
-        "etf": "XLC",
-        "name": "Communication",
-        "ret_4w": 0.0012
+        "ret_4w": 0.0669
       },
       {
         "etf": "XLV",
         "name": "Health Care",
-        "ret_4w": -0.0002
+        "ret_4w": 0.0141
       },
       {
-        "etf": "XLE",
-        "name": "Energy",
-        "ret_4w": -0.0157
-      },
-      {
-        "etf": "XLI",
-        "name": "Industrials",
-        "ret_4w": -0.0163
-      },
-      {
-        "etf": "XLY",
-        "name": "Consumer Disc.",
-        "ret_4w": -0.0199
+        "etf": "XLC",
+        "name": "Communication",
+        "ret_4w": -0.0022
       },
       {
         "etf": "XLP",
         "name": "Consumer Staples",
-        "ret_4w": -0.0264
+        "ret_4w": -0.0126
+      },
+      {
+        "etf": "XLY",
+        "name": "Consumer Disc.",
+        "ret_4w": -0.0155
+      },
+      {
+        "etf": "XLI",
+        "name": "Industrials",
+        "ret_4w": -0.0213
+      },
+      {
+        "etf": "XLE",
+        "name": "Energy",
+        "ret_4w": -0.0248
       },
       {
         "etf": "XLB",
         "name": "Materials",
-        "ret_4w": -0.0425
+        "ret_4w": -0.044
       },
       {
         "etf": "XLU",
         "name": "Utilities",
-        "ret_4w": -0.0527
+        "ret_4w": -0.0474
       },
       {
         "etf": "XLF",
         "name": "Financials",
-        "ret_4w": -0.0574
+        "ret_4w": -0.0611
       },
       {
         "etf": "XLRE",
         "name": "Real Estate",
-        "ret_4w": -0.0638
+        "ret_4w": -0.062
       }
     ]
   },
   "news": {
     "AMZN": [
       {
-        "headline": "eDreams ODIGEO and Amazon Alexa Collaborate to Bring AI Travel Search to Alexa+",
-        "summary": "BARCELONA, Spain, October 07, 2026--eDreams ODIGEO (the \"Company\" or \"eDO\") (BME: EDR) (OTC: EDDRF), the world’s leading travel subscription platform, today announced a strategic collaboration with Alexa+, Amazon’s next-generation AI assistant, to power travel discovery and booking for the AI assistant.",
+        "headline": "Q3 2026 insider stock sales: Nvidia's Mark Stevens tops AI sellers",
+        "summary": "Stevens sold nearly $947 million in Nvidia stock, with Amazon's Jeff Bezos and Arista Networks CEO Jayshree Ullal also among the top 10 sellers",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=3967b9380759f5d534b5b924a222d05480e56faa2dee48159a58572aa849dcf3",
+        "url": "https://finnhub.io/api/news?id=486d66355993474d2fb1305320ffacb383bc07cdff39045a2c1c05ff3eb6a8d5",
         "date": "2026-10-07"
       },
       {
-        "headline": "Amazon found the trick that makes you order more often",
-        "summary": "It’s working in every city where it has launched, and the companies losing out aren’t Walmart.",
+        "headline": "SpaceX eyes overtaking Taiwan Semiconductor and Amazon in the trillion-dollar market-cap club",
+        "summary": "SpaceX could soon crack the top five largest publicly traded companies by market cap.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=17e5afe4a68ce510825c754023156892edf2e5ef21ab477578ce55ff57736b9c",
+        "url": "https://finnhub.io/api/news?id=06de3fa920cda8017a6b6ab94016c5891a76012ff46b01a01b70f109c5fb0ccc",
         "date": "2026-10-07"
       },
       {
-        "headline": "XLK Does Not Own Alphabet, Amazon, Meta, Netflix or Tesla. Three Stocks Are 35.87% of It",
-        "summary": "Millions of investors bought XLK expecting broad exposure to the companies reshaping the economy, but a closer look at its SEC filing reveals several of the most recognizable names in tech are nowhere inside it, and the ones that are create a concentration few buyers anticipate.",
+        "headline": "Cloud 2027: Can Oracle’s Fastest-Growing Engine Bridge the AWS Gap?",
+        "summary": "Oracle's cloud arm is growing at triple the rate of AWS, yet the gap in raw revenue remains enormous and Oracle is burning cash fast. What happens when both bets on 2027 datacenter capacity finally come due?",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=e89cf9ca966b15c06f25ef68871e73a4c203607efcaa3cec2e74e247d5ad4c89",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=136f57ab58047bc2ce32be465d8582d05e2b16da1395cd331c090a61576c84d6",
+        "date": "2026-10-07"
       },
       {
-        "headline": "‘$1 or $2 a day’: How broke Stallone was before ‘Rocky’",
-        "summary": "Sylvester Stallone’s poverty inspired “Rocky,” an Amazon IP that’s still growing 50 years later.",
+        "headline": "Is Alliance Laundry Holdings Inc. (ALH) Stock Outpacing Its Retail-Wholesale Peers This Year?",
+        "summary": "Here is how Alliance Laundry Holdings (ALH) and Amazon (AMZN) have performed compared to their sector so far this year.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=60638feb49088638f50ab0be1a8e3e3303a250c8e44bb09172316e74b4c6d366",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=dac030b9e63459a02f808299511ab25265e6088ca6f885126e4ee199d01c65d7",
+        "date": "2026-10-07"
       },
       {
-        "headline": "Amazon (AMZN) Surpasses Market Returns: Some Facts Worth Knowing",
-        "summary": "In the most recent trading session, Amazon (AMZN) closed at $256.29, indicating a +1.95% shift from the previous trading day.",
+        "headline": "Boston Dynamics names Rohit Prasad as new CEO",
+        "summary": "Rohit Prasad, who spent 12 years at Amazon building and expanding Alexa, takes over as the robotics company pushes deeper into industrial AI",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=0b271c37746f3e8affe9a3cff856e1623aaa0c94208fd8dae197bdd9bfb09278",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=55a788d3ac63892a8b613bd3b5dce7ff3a3ddb68d898e3d5ab120836eb68d084",
+        "date": "2026-10-07"
       }
     ],
     "ETN": [
@@ -256,47 +256,71 @@
     ],
     "GOOGL": [
       {
-        "headline": "Google Signs Nuclear Deal With Constellation Energy",
-        "summary": "The utility company will supply 3.59 gigawatts of power to the tech giant under long-term agreements.",
+        "headline": "Google Faces £1 Billion Antitrust Lawsuit in London Over Play Store Fees",
+        "summary": "Key Stats for Alphabet StockPrice change for Alphabet stock in last 6 months: 14%$GOOGL Stock Price as of Oct. 6: $34852-Week High: $409$GOOGL Stock Price Target: $429What Happened?A mass consumer lawsuit against Google (GOOGL:NASDAQ) began in London on Tuesday.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=133cdde5521581150f3b593a457df6b43ffeec18d3ee2ee6ccc686a4c62e4e9b",
+        "url": "https://finnhub.io/api/news?id=c8086aa98892eb4c2551c4aa3d23add7373feecddeeb5126bbcdc0031d6f40fb",
         "date": "2026-10-07"
       },
       {
-        "headline": "Has Nuclear Energy Trade Seen Its Bottom? What Jan Van Eck Sees In The Constellation-Google Deal",
-        "summary": "Van Eek Funds CEO, Jan van Eck, said that the AI 2.0 trade, which includes the power infrastructure, is headed for a reversal after a lackluster performance so far in 2026.",
+        "headline": "Alphabet Partners with Constellation Energy in Massive New Nuclear Power Deal",
+        "summary": "Key Stats for Constellation Energy StockPrice change for Constellation Energy stock: 12%$CEG Stock Price as of Oct. 6: $30052-Week High: $413$CEG Stock Price Target: $342What Happened?Constellation Energy (CEG:NASDAQ) shares rose more than 12% on Tuesday.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=01fcf0da6b91e7d306f8b7d7bd1b00c046868352f17b8e75be3557bedf43387d",
+        "url": "https://finnhub.io/api/news?id=700e4898510d715acd6463fbde517929aa13c7a6e6440585e98a6da4feb4aed2",
         "date": "2026-10-07"
       },
       {
-        "headline": "Is NuScale Power (SMR) Undervalued After Google Fueled Fresh Interest In NRC Certified SMRs?",
-        "summary": "Google’s recent agreement with Constellation Energy to fund efficiency upgrades at existing nuclear reactors has drawn renewed attention to small modular reactors. NuScale Power (SMR) now sits in focus as the only NRC certified SMR developer. NuScale Power has attracted fresh attention in this nuclear upswing, yet the share price tells a mixed story. A 1-day share price return of 4.43% and a 7-day",
+        "headline": "Unity Climbs 4% as Google Partnership Opens Game Creation to Non-Coders; Roblox Drops 4%, Take-Two Holds Steady",
+        "summary": "Google just handed Unity a free game builder that needs zero coding skills, and the ripple across gaming stocks reveals exactly which business models investors think survive a world where anyone can make a game.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=845f834f728c5fd6740806288e720e71528f1750aeeed0a50007d690942fe616",
+        "url": "https://finnhub.io/api/news?id=456efe5bbe03e18caf4399b69dbcf92fcd176930c0e817357187ca2d4951786f",
         "date": "2026-10-07"
       },
       {
-        "headline": "XLK Does Not Own Alphabet, Amazon, Meta, Netflix or Tesla. Three Stocks Are 35.87% of It",
-        "summary": "Millions of investors bought XLK expecting broad exposure to the companies reshaping the economy, but a closer look at its SEC filing reveals several of the most recognizable names in tech are nowhere inside it, and the ones that are create a concentration few buyers anticipate.",
+        "headline": "Roblox shares fall as Google and Unity launch AI-powered game creation platform",
+        "summary": "Investing.com -- Roblox Corp shares fell as much as 8% in pre-market trading Wednesday and were recently down about 5% after Google and Unity Software Inc announced a partnership to build an AI-powered game creation platform.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=e89cf9ca966b15c06f25ef68871e73a4c203607efcaa3cec2e74e247d5ad4c89",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=e35eba0af09e0706f77dce4ce3829c76a03c82b7dac039f5a09438f09ee2c44d",
+        "date": "2026-10-07"
       },
       {
-        "headline": "Google inks deal with Constellation Energy for 3.6 GW of power in PJM",
-        "summary": "Google has struck agreements with Constellation covering 3.6 GW of electricity across the PJM power market. A 20-year, 890 MW nuclear power purchase agreement will support $4.3 billion of upgrades…",
+        "headline": "Google's Power Deal Fuels Fresh Interest in Nuclear Stocks",
+        "summary": "Google's 20-year nuclear power deal sparked fresh interest in TLN, OKLO and SMR as investors weighed data-center demand and future nuclear growth.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=3b20800c7109f51107d627a5943713fc3e9d0715721aa94b0c65db2dc4389673",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=6f329272c5a2c07f20dec6a0b23a65c8c05d1e8c19c34096824a499f6f351699",
+        "date": "2026-10-07"
       }
     ],
     "JPM": [
+      {
+        "headline": "JPMorgan Just Raised Its Dividend 10%. These 4 Stocks Also Can Afford to Pay Much Bigger Dividends",
+        "summary": "JPMorgan just handed shareholders a 10% raise, and it barely dented what the bank actually earns. Four other companies sit in the same position, carrying payout ratios low enough to fund aggressive dividend growth for years to come.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=be1399ef11a5b756482af145dc3957a040204b627d760bf8897dd9442af9e0ca",
+        "date": "2026-10-07"
+      },
+      {
+        "headline": "Chase for Business Expands Its Integrated Digital Experience with Chase Payroll, Powered by Gusto",
+        "summary": "NEW YORK, October 07, 2026--Small business owners increasingly want the tools they use to run their businesses to work together and be managed in one place. In recent Chase research, 89% of business owners said they would find it valuable to manage payroll within the same platform they use for business banking and payments, highlighting growing demand for a more connected business experience. Addi",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=b3e5dd71076b5f7d836a217602f4211c49e547572ad393cce8802c0cdcf3edd4",
+        "date": "2026-10-07"
+      },
+      {
+        "headline": "JPMorgan Hires Former Goldman Sachs Executive Rob Sweeney for Top Banking Leadership Role",
+        "summary": "Key Stats for JPMorgan StockPrice change for JPMorgan stock in the last 6 months: 11%$JPM Stock Price as of Oct. 6: $33152-Week High: $367$JPM Stock Price Target: $373What Happened?JPMorgan Chase (JPM:NYSE) has hired Rob Sweeney as a global chair of investment banking.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=572f9ee8b093a4c6ec1bf925b3c0734cd560af5f08c300262a104ab215238b24",
+        "date": "2026-10-07"
+      },
       {
         "headline": "Jamie Dimon Warns AI Cyber Risks Are ‘Real’ As JPMorgan Banks Anthropic And The AI Boom",
         "summary": "Jamie Dimon worries about escalating cyber risks from artificial intelligence, even as the bank he oversees, JPMorgan Chase & Co., continues to finance the burgeoning tech. The bank boss pointed to Anthropic and its Mythos AI model, emphasizing growing concerns...",
@@ -312,33 +336,17 @@
         "tier": "aggregator",
         "url": "https://finnhub.io/api/news?id=6f0b4129a65cca5e7460cd8f4162bfc67dd54ec9a4d439adaaf15114ede522d7",
         "date": "2026-10-06"
-      },
-      {
-        "headline": "Jamie Dimon Says AI Boom Is Competing With Government Borrowing for Capital: ‘Rates Are Going Up’",
-        "summary": "JPMorgan Chase & Co. (NYSE:JPM) CEO Jamie Dimon says the AI spending boom is competing with heavy government borrowing for capital as interest rates rise. \"Rates are going up. A lot of demand for capital, a lot of government financing,\"...",
-        "source": "Yahoo",
-        "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=22a04c81368249e486ae18b2678d6af5b9fd55e4b4a165c5f23c183cbe922124",
-        "date": "2026-10-06"
-      },
-      {
-        "headline": "Deeply Distressed US Loans Rise to Highest Level Since Pandemic, JPMorgan Says",
-        "summary": "The deeply distressed tail of the leveraged loan universe has grown to levels not seen since the beginning of the pandemic, with technology the single biggest sector under pressure.",
-        "source": "Yahoo",
-        "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=1de7779c0031f8da5812d4226d15051089e0e1c19180323770f69b72b632b80a",
-        "date": "2026-10-06"
-      },
-      {
-        "headline": "JPMorgan tops Evident AI banking index for fifth straight year",
-        "summary": "Capital One and Royal Bank of Canada held second and third place as AI deployment across the 50 banks assessed accelerated at its fastest pace since the index launched",
-        "source": "Yahoo",
-        "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=f120ab1bf3ee94ac803dba7da6fc2d842f78e483b462be165f4ffb9d933a97c7",
-        "date": "2026-10-06"
       }
     ],
     "LLY": [
+      {
+        "headline": "Lilly’s Worst Entry Points Were Its Most Hyped Approvals Mounjaro and Zepbound",
+        "summary": "Eli Lilly's two blockbuster drug approvals that transformed the company into a pharmaceutical giant turned out to be the worst moments to buy the stock. The entry point that crushed every other came during a moment most investors wanted nothing to do with the market.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=0bb9e781adb83d61936fd95898c2dbe356f34baa3e0f3f9e9c500b3f2bac1983",
+        "date": "2026-10-07"
+      },
       {
         "headline": "The \"Trumpflation\" Trade Could Get Worse Before It Gets Better. History Says These 2 Stocks Are the Place to Hide.",
         "summary": "People have long been willing to pay for healthcare despite rising costs, with Medtronic and Eli Lilly offering two different angles on the space.",
@@ -370,17 +378,17 @@
         "tier": "aggregator",
         "url": "https://finnhub.io/api/news?id=8cdfc347f5b893e46403fea35b187a84a2efcb7c97941d8dad673bdfeff33b04",
         "date": "2026-10-06"
-      },
-      {
-        "headline": "Eli Lilly and vs. Novo Nordisk A/S: Which Healthcare Stock Is a Better Buy in 2026?",
-        "summary": "Eli Lilly's revenue surged 44.7% in 2025, but Novo Nordisk trades at less than a quarter of its valuation multiple, a stark contrast that reshapes the risk-reward calculus.",
-        "source": "Yahoo",
-        "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=a79264aca14b600f8fd73874c113158161ffe44d0b27110d763f44af3d82f8bc",
-        "date": "2026-10-06"
       }
     ],
     "MA": [
+      {
+        "headline": "State Affairs Convenes Inaugural Customer Advisory Board of Government Affairs Leaders From Walmart, Carvana, and Other Major Enterprises",
+        "summary": "State Affairs, the technology company combining daily exclusive reporting, original data gathering and AI, hosted its inaugural Customer Advisory Board (CAB) on September 16 in Washington, D.C. The board brings together 11 government affairs and public policy leaders from Carvana, Churchill Downs, Fiserv, Home Builders Institute, Mastercard, Siemens, UKG, Walmart, and others.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=533a26123f8531b1258380774eb8fe75c82896d1ef3bf202c4af82b033b713b5",
+        "date": "2026-10-07"
+      },
       {
         "headline": "How to Monetize Mastercard’s Weakness Before It Reports Earnings",
         "summary": "It’s easy to make a case that stocks are poised for a sharp decline, just as it is for them to see a surge or stay in a narrow trading range. A plan of action.",
@@ -412,97 +420,89 @@
         "tier": "aggregator",
         "url": "https://finnhub.io/api/news?id=57d052b1fd922fde564810d2a50c158b2ad6cc7dff9ce1536f47a49fe1709207",
         "date": "2026-10-05"
-      },
-      {
-        "headline": "Rezolve Ai Inks Reseller Deal With Mastercard To Create a New Distribution Channel For Rezolve Ai’s Technology As Business Prepare For AI-Driven Commerce",
-        "summary": "Rezolve Ai (NASDAQ: RZLV), a global leader in AI-powered commerce and engagement, today announced a worldwide reseller agreement with Mastercard, establishing a new distribution channel for Rezolve Ai’s technology as",
-        "source": "Benzinga",
-        "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=c0202cd2d653c9f47ccb5c972e32d36e919785443f71dba3b4d3cf6f3dda3532",
-        "date": "2026-10-05"
       }
     ],
     "MSFT": [
       {
-        "headline": "Microsoft Stock Is on Track to Trail the S&P 500 for a 3rd Straight Year. History Says What Happened After Its Last 2 Streaks.",
-        "summary": "The software giant's past two lagging streaks ended very differently. Which one does this one look like?",
+        "headline": "Azure Momentum and Copilot Usage Data Drive Fundamental Strength for Microsoft (MSFT)",
+        "summary": "ClearBridge Investments, a global equity manager, recently published third-quarter 2026 commentary for its “Large Cap Growth Strategy”. The letter can be downloaded here. In the third quarter, leadership among large growth stocks shifted from high-momentum semiconductor names to companies with clearer AI monetization paths. The ClearBridge Large Cap Growth Strategy outperformed its Russell 1000 Gr",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=8e5299a210fc580610b16c44bc12fcffe38856de1dc1e4cd65fca9e2ba173136",
+        "url": "https://finnhub.io/api/news?id=512318653b0149a5cfb83fabbf48876ddc4670e9d157d1b5ee5d92dbc57e95ac",
         "date": "2026-10-07"
       },
       {
-        "headline": "Will AI Take Your Job? Microsoft's AI Chief Now Points To Nobel Laureate's Research Saying Only 5% Of Human Work Is At Risk",
-        "summary": "Industry leaders push back against extreme predictions around job losses due to AI.",
+        "headline": "96% of Analysts Are Bullish on Microsoft. Here’s the Price That Implies",
+        "summary": "Nearly every analyst covering a $3 trillion company agrees it belongs higher, yet the stock still trades below its 52-week high. The real question is how much higher, and the answer depends on a few risks that bulls are quietly glossing over.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=fc1995fcf4801a8355165a302e93e183d5614c7204dc5c57f3817d3973c9ffd0",
+        "url": "https://finnhub.io/api/news?id=107d50cf02cddb95b70010075a8af33eda1cd106299a323bd6894fed2c0f5f72",
         "date": "2026-10-07"
       },
       {
-        "headline": "MSFT Stock Nears All-Time High: Xbox Moves To Secure Exclusive Rights To Stream Grand Theft Auto VI, Report Says",
-        "summary": "Microsoft is reportedly reshaping Xbox Cloud Gaming with new streaming limits and a pay-as-you-go option ahead of GTA VI’s launch.",
+        "headline": "Beazley Security Strengthens AI Security Capabilities with Microsoft Solutions Partner Designation",
+        "summary": "As organizations accelerate the adoption of AI, Microsoft Copilot, and autonomous agents, security, governance, and data protection have become critical business priorities. As part of a broader AI security strategy designed to help clients navigate this shift, Beazley Security announced it has achieved the Microsoft Solutions Partner for Security designation within the Microsoft AI Cloud Partner ",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=9e39474687c7a24f09cea2cbbcedf126b5c17f77fdd6e08562da7ff8f4a43838",
+        "url": "https://finnhub.io/api/news?id=98a9eb98adf1ab59c7a918f5da3d7f282b78a7e691a02616ded8c6a790016e9e",
         "date": "2026-10-07"
       },
       {
-        "headline": "Google Joins Microsoft, Amazon, and Meta on Constellation’s Energy Roster",
-        "summary": "Google & Constellation join forces for 20 years.",
+        "headline": "Arista Announces Rack-Scale Architectures for Scale-Up and Scale-Out AI Fabrics",
+        "summary": "SANTA CLARA, Calif., October 07, 2026--Arista Networks (NYSE: ANET), a leader in AI fabric networking, today announced its open Ethernet rack-scale portfolio to power high-density scale-up and scale-out AI infrastructure. Engineered in partnership with leading compute technology companies such as AMD, Arm, Broadcom, d-Matrix, Meta, Microsoft, and Qualcomm, see quotes here, this effort leverages th",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=f206aafb473d886268e6c4b6c97cd2605ca995e0dee3b0bf2de7013e2939b798",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=c9ad8f7b5668b48a1e883e1373721a250f8be3f78b08a3a2b385b72d3241ca94",
+        "date": "2026-10-07"
       },
       {
-        "headline": "A $1,000 Bet on Microsoft a Decade Ago Crushed the Market by Over 3x",
-        "summary": "A single Microsoft investment a decade ago left the S&P 500 in the dust, but the reasons behind those gains reveal something surprising about what actually drove the returns and whether the next decade could come close.",
+        "headline": "Beyond Automation: Digitate’s Agentic AIOps Leadership Ushers in the Autonomous IT Era",
+        "summary": "SANTA CLARA, Calif., October 07, 2026--Digitate, a leader in Agentic AIOps, today announced a wave of 2026 momentum toward its vision of Autonomous IT: new analyst recognition, a landmark Microsoft partnership, and expanded ecosystem reach.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=e7de2c0592ab26fcaddec2a42751f66ae3f36f431ef3242963c99459040a4c2f",
-        "date": "2026-10-06"
+        "url": "https://finnhub.io/api/news?id=0a155d23751ca235c7cf49a79f5436d44bea5d306e426f0e2cc08dddbff85fda",
+        "date": "2026-10-07"
       }
     ],
     "NVDA": [
       {
-        "headline": "The $500 Billion Question Causing Waves Across Every AI Stock: How Much Are Nvidia GPUs Actually Worth?",
-        "summary": "Nvidia and the big banks financing its growth disagree about the useful lifespan of its powerful processors.",
+        "headline": "SpaceX Doubles Down on Nvidia AI Chips. What It Says About Both Stocks.",
+        "summary": "SpaceX is raising big money to spend on Nvidia artificial-intelligence chips, according to a report.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=0f159aef1a4322409868056455f96249f76d7e2214a18ec9c93415111d949d5d",
+        "url": "https://finnhub.io/api/news?id=3dce6de08d4a114d73191577565783daf855303eab382afa99b249fea5f0c95f",
         "date": "2026-10-07"
       },
       {
-        "headline": "IonQ (IONQ) Could Be 10% Below Fair Value After FIU Quantum Deal",
-        "summary": "IonQ (IONQ) recently signed a contract to deliver its Superion 256-qubit trapped ion quantum computer to Florida International University, making FIU its flagship academic partner in Florida. IonQ has packed in a series of headlines recently, from the Florida International University Superion deployment to its role at NVIDIA's Accelerated Quantum Research Center and the Congruity360 cybersecurity ",
+        "headline": "Nvidia Stock Falls. It’s Betting on These Start-Ups to Drive AI Gains.",
+        "summary": "Nvidia stock wasn't getting much of a boost from SpaceX's chip buying plans. But there are more buyers waiting in line.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=0c691069151d664086e7d1c03b349788ffd4bdb62fd986f224a8a1f09b7ab8bf",
+        "url": "https://finnhub.io/api/news?id=6ebf578305f2f60893c6f549eb626a41136d355af1987c7c3eb116e01f8ad10f",
         "date": "2026-10-07"
       },
       {
-        "headline": "Zacks Investment Ideas feature highlights: Nvidia's",
-        "summary": "Nvidia's have been highlighted in this Investment Ideas article.",
+        "headline": "Q3 2026 insider stock sales: Nvidia's Mark Stevens tops AI sellers",
+        "summary": "Stevens sold nearly $947 million in Nvidia stock, with Amazon's Jeff Bezos and Arista Networks CEO Jayshree Ullal also among the top 10 sellers",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=8df93d8f64b2eb021af80cdd2850f3646ce411a8b50508dd2dcb3f21162a16e3",
+        "url": "https://finnhub.io/api/news?id=486d66355993474d2fb1305320ffacb383bc07cdff39045a2c1c05ff3eb6a8d5",
         "date": "2026-10-07"
       },
       {
-        "headline": "NVIDIA (NVDA) vs. Apple (AAPL): Which Stock Wins the Valuation Race?",
-        "summary": "NVIDIA Corporation (NASDAQ:NVDA) is now worth more than Apple Inc. (NASDAQ:AAPL), but investors are paying far less for each dollar of its expected earnings. With Nvidia at a $5.77 trillion market cap and 24.88x forward earnings, compared with Apple’s $4.86 trillion valuation and 35.21x multiple, the question is not simply which company is cheaper. It […]",
+        "headline": "Elon Musk's SpaceX seeking to raise $40B to buy Nvidia chips",
+        "summary": "Elon Musk's SpaceX (SPCX) is seeking to issue $40 billion in new debt to purchase Nvidia (NVDA) chips, according to Bloomberg. The 8:30 Hosts Pras Subramanian, Julie Hyman, and Jake Conley report further on this news.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=0f6cbfc5f343c0f1e805f9da7875519c3a98851215b60a9cf408681bbb6d1e21",
+        "url": "https://finnhub.io/api/news?id=6bff7aec12eb7ff82b751a422afe0c61a589d894fbe6921ae60d6442b359e7d2",
         "date": "2026-10-07"
       },
       {
-        "headline": "Why NVDA, AMD, CRWD Stocks Surged To 52-Week Highs Today",
-        "summary": "Nvidia, Advanced Micro Devices, and CrowdStrike shares surged to annual highs on Tuesday amid a jump in AI-related names and rising analyst optimism around the companies.",
+        "headline": "SpaceX Seeks $40 Billion To Buy Nvidia AI Chips, Starlink Wins New FCC Approval",
+        "summary": "SpaceX looks to buy Nvidia chips for its AI buildout. Elon Musk announces Grok Bot changes. FCC approves Starlink satellite launches.",
         "source": "Yahoo",
         "tier": "aggregator",
-        "url": "https://finnhub.io/api/news?id=f71cd315ce713cf74bac46d40855221cc5f4cc2fde04ea68f32696169df0d1a5",
+        "url": "https://finnhub.io/api/news?id=ab1a201e4a9d14f8d7ed962eeefca02869efd15c1e9fe099fcda972dc3707000",
         "date": "2026-10-07"
       }
     ],
@@ -665,33 +665,33 @@
     }
   ],
   "summary": {
-    "text": "ตลาดสัปดาห์นี้อยู่ในโหมด risk-on หุ้น AI ขึ้นแรง แต่ผลตอบแทนพันธบัตร 10 ปีสหรัฐสูงถึง 5.269% และ Jamie Dimon เตือนว่าดอกเบี้ยจะขึ้นต่อ\n🟡 AMZN: eDreams ODIGEO ร่วมกับ Alexa+ ทำระบบค้นหาการเดินทางด้วย AI (ข่าวจากบริษัทพันธมิตร)\n🟢 ETN: มีรายงานว่า Bank of America คาดผล Q3 ใกล้ขอบบนของ guidance ตามที่ CEO ระบุ\n🟢 GOOGL: Google ทำข้อตกลงซื้อไฟฟ้ากับ Constellation Energy รวม 3.59 GW ระยะยาว\n🟡 JPM: Jamie Dimon เตือนความเสี่ยง cyber จาก AI และดอกเบี้ยกำลังสูงขึ้น\n🟡 MA: Rezolve AI ทำสัญญาตัวแทนจำหน่ายซอฟต์แวร์ AI commerce ร่วมกับ Mastercard ทั่วโลก\n🟡 MSFT: มีรายงานว่า Xbox ปรับ Cloud Gaming ก่อน GTA VI เปิดตัว\n🟢 NVDA: หุ้นขึ้นทำจุดสูงสุดรอบ 52 สัปดาห์ท่ามกลางแรงซื้อหุ้น AI\n🟢 TSM: ยอดขายเดือนก.ค.-ส.ค. เป็นไปตามเป้า และมีรายงานว่า SpaceX เจรจากับ TSMC เรื่องผลิตชิป\nจับตา: ผลตอบแทนพันธบัตร 10 ปีที่ 5.269% และดอกเบี้ยขาขึ้น อาจกดดันหุ้นเติบโต · ความเห็นต่างเรื่องอายุการใช้งานจริงของ GPU Nvidia ระหว่างบริษัทกับธนาคารผู้ให้เงินทุน",
+    "text": "ตลาดสัปดาห์นี้อยู่ในโหมด risk-on โดย VIX ต่ำที่ 15.73 แต่ผลตอบแทนพันธบัตรสหรัฐ 10 ปีสูงถึง 5.328% และข่าว AI ยังเป็นประเด็นหลัก\n🟢 ETN: มีรายงานว่า Bank of America คาดผลงานไตรมาส 3 อยู่ช่วงสูงของคำแนะนำ (guidance) ของบริษัท\n🟢 GOOGL: ทำดีลพลังงานนิวเคลียร์ 20 ปีกับ Constellation Energy และจับมือ Unity ทำแพลตฟอร์มสร้างเกมด้วย AI\n🟢 JPM: ขึ้นเงินปันผล 10% และจ้าง Rob Sweeney อดีตผู้บริหาร Goldman Sachs\n🟢 MA: Rezolve AI จะขายซอฟต์แวร์ agentic AI commerce ของตัวเองทั่วโลกผ่าน Mastercard\n🟢 NVDA: มีรายงานว่า SpaceX ต้องการออกหนี้ใหม่ 40 พันล้านดอลลาร์เพื่อซื้อชิป Nvidia\n🟢 TSM: มีรายงานว่า SpaceX อยู่ระหว่างเจรจาขั้นสูงกับ TSMC เรื่องผลิตชิป AI แบบเฉพาะ\nจับตา: ข้อเท็จจริง: ผลตอบแทนพันธบัตร 10 ปีเพิ่มขึ้น 0.491 จุดใน 4 สัปดาห์ เป็น 5.328% อาจกดดันหุ้นเติบโต · ดีลชิป AI ของ SpaceX กับ Nvidia และ TSMC เป็นรายงานข่าว ยังต้องรอการยืนยันจากบริษัท",
     "structured": {
-      "overview": "ตลาดสัปดาห์นี้อยู่ในโหมด risk-on หุ้น AI ขึ้นแรง แต่ผลตอบแทนพันธบัตร 10 ปีสหรัฐสูงถึง 5.269% และ Jamie Dimon เตือนว่าดอกเบี้ยจะขึ้นต่อ",
+      "overview": "ตลาดสัปดาห์นี้อยู่ในโหมด risk-on โดย VIX ต่ำที่ 15.73 แต่ผลตอบแทนพันธบัตรสหรัฐ 10 ปีสูงถึง 5.328% และข่าว AI ยังเป็นประเด็นหลัก",
       "tickers": [
         {
           "ticker": "AMZN",
-          "about": "อีคอมเมิร์ซและ cloud",
+          "about": "อีคอมเมิร์ซและคลาวด์ AWS",
           "sentiment": "neu",
-          "line": "eDreams ODIGEO ร่วมกับ Alexa+ ทำระบบค้นหาการเดินทางด้วย AI (ข่าวจากบริษัทพันธมิตร)"
+          "line": "ไม่มีข่าวสำคัญ"
         },
         {
           "ticker": "ETN",
-          "about": "อุปกรณ์จัดการพลังงานไฟฟ้า",
+          "about": "อุปกรณ์จัดการระบบไฟฟ้า",
           "sentiment": "pos",
-          "line": "มีรายงานว่า Bank of America คาดผล Q3 ใกล้ขอบบนของ guidance ตามที่ CEO ระบุ"
+          "line": "มีรายงานว่า Bank of America คาดผลงานไตรมาส 3 อยู่ช่วงสูงของคำแนะนำ (guidance) ของบริษัท"
         },
         {
           "ticker": "GOOGL",
-          "about": "Google, ค้นหาออนไลน์และ cloud",
+          "about": "Google, โฆษณาออนไลน์และคลาวด์",
           "sentiment": "pos",
-          "line": "Google ทำข้อตกลงซื้อไฟฟ้ากับ Constellation Energy รวม 3.59 GW ระยะยาว"
+          "line": "ทำดีลพลังงานนิวเคลียร์ 20 ปีกับ Constellation Energy และจับมือ Unity ทำแพลตฟอร์มสร้างเกมด้วย AI"
         },
         {
           "ticker": "JPM",
-          "about": "ธนาคารรายใหญ่ของสหรัฐ",
-          "sentiment": "neu",
-          "line": "Jamie Dimon เตือนความเสี่ยง cyber จาก AI และดอกเบี้ยกำลังสูงขึ้น"
+          "about": "ธนาคารขนาดใหญ่ของสหรัฐ",
+          "sentiment": "pos",
+          "line": "ขึ้นเงินปันผล 10% และจ้าง Rob Sweeney อดีตผู้บริหาร Goldman Sachs"
         },
         {
           "ticker": "LLY",
@@ -701,45 +701,45 @@
         },
         {
           "ticker": "MA",
-          "about": "เครือข่ายบัตรชำระเงิน",
-          "sentiment": "neu",
-          "line": "Rezolve AI ทำสัญญาตัวแทนจำหน่ายซอฟต์แวร์ AI commerce ร่วมกับ Mastercard ทั่วโลก"
+          "about": "เครือข่ายบัตรและระบบชำระเงิน",
+          "sentiment": "pos",
+          "line": "Rezolve AI จะขายซอฟต์แวร์ agentic AI commerce ของตัวเองทั่วโลกผ่าน Mastercard"
         },
         {
           "ticker": "MSFT",
-          "about": "ซอฟต์แวร์, cloud และ Xbox",
+          "about": "ซอฟต์แวร์ คลาวด์ Azure และ Copilot",
           "sentiment": "neu",
-          "line": "มีรายงานว่า Xbox ปรับ Cloud Gaming ก่อน GTA VI เปิดตัว"
+          "line": "ไม่มีข่าวสำคัญ"
         },
         {
           "ticker": "NVDA",
           "about": "ชิป GPU สำหรับ AI",
           "sentiment": "pos",
-          "line": "หุ้นขึ้นทำจุดสูงสุดรอบ 52 สัปดาห์ท่ามกลางแรงซื้อหุ้น AI"
+          "line": "มีรายงานว่า SpaceX ต้องการออกหนี้ใหม่ 40 พันล้านดอลลาร์เพื่อซื้อชิป Nvidia"
         },
         {
           "ticker": "TSM",
           "about": "รับจ้างผลิตชิปรายใหญ่ของโลก",
           "sentiment": "pos",
-          "line": "ยอดขายเดือนก.ค.-ส.ค. เป็นไปตามเป้า และมีรายงานว่า SpaceX เจรจากับ TSMC เรื่องผลิตชิป"
+          "line": "มีรายงานว่า SpaceX อยู่ระหว่างเจรจาขั้นสูงกับ TSMC เรื่องผลิตชิป AI แบบเฉพาะ"
         }
       ],
       "watch": [
-        "ผลตอบแทนพันธบัตร 10 ปีที่ 5.269% และดอกเบี้ยขาขึ้น อาจกดดันหุ้นเติบโต",
-        "ความเห็นต่างเรื่องอายุการใช้งานจริงของ GPU Nvidia ระหว่างบริษัทกับธนาคารผู้ให้เงินทุน"
+        "ข้อเท็จจริง: ผลตอบแทนพันธบัตร 10 ปีเพิ่มขึ้น 0.491 จุดใน 4 สัปดาห์ เป็น 5.328% อาจกดดันหุ้นเติบโต",
+        "ดีลชิป AI ของ SpaceX กับ Nvidia และ TSMC เป็นรายงานข่าว ยังต้องรอการยืนยันจากบริษัท"
       ],
       "flags": []
     },
     "model": "claude-sonnet-5-5",
     "usage": {
-      "input_tokens": 9028,
+      "input_tokens": 9340,
       "cache_creation_input_tokens": 0,
       "cache_read_input_tokens": 0,
       "cache_creation": {
         "ephemeral_5m_input_tokens": 0,
         "ephemeral_1h_input_tokens": 0
       },
-      "output_tokens": 1210,
+      "output_tokens": 1187,
       "output_tokens_details": {
         "thinking_tokens": 0
       },
@@ -749,67 +749,67 @@
   },
   "decision": {
     "mode": "weekly",
-    "cost_usd": 0.2562,
+    "cost_usd": 0.2694,
     "tools_used": 4,
     "status": "hold",
-    "market_view": "ตลาดยังอยู่ในโหมด risk-on ดัชนีอยู่เหนือเส้น 200 วันราว 8% และ VIX ต่ำที่ 15.3 แต่ผลตอบแทนพันธบัตรสหรัฐ 10 ปีอยู่ที่ 5.27% (+0.46 จุดใน 4 สัปดาห์) ยังเป็นความเสี่ยงหลัก Jamie Dimon ก็เตือนว่าดอกเบี้ยกำลังขึ้นและสินเชื่อภาคเอกชนเริ่มตึงตัว กลุ่มเทคโนโลยียังนำตลาดเพียงกลุ่มเดียว (+7.5%) ส่วนกลุ่มการเงินและอสังหาฯ อ่อนแรงที่สุด",
+    "market_view": "ตลาดยังอยู่ในโหมด risk-on ดัชนีอยู่เหนือเส้น 200 วันราว 7.2% และ VIX อยู่ที่ 15.7 แต่ผลตอบแทนพันธบัตรสหรัฐ 10 ปีขึ้นเป็น 5.33% (+0.49 จุดใน 4 สัปดาห์) ซึ่งเข้าใกล้ระดับเตือน 5.5% ที่ตั้งไว้ กลุ่มเทคโนโลยียังนำตลาดเพียงกลุ่มเดียว (+6.7%) ส่วนกลุ่มการเงินและอสังหาฯ อ่อนแรงที่สุด (-6%)",
     "action": "hold",
     "summary_th": "ถือพอร์ตเดิมทั้งหมด เพราะข่าวที่ตรวจไม่มีข่าวไหนทำให้ thesis เสีย และรอดูงบ JPM (13 ต.ค.) กับ TSM (15 ต.ค.)",
-    "journal": "สัปดาห์นี้ได้ตรวจข่าวของ JPM และ TSM ที่จะประกาศงบภายใน 14 วัน ตรวจ 8-K ของ ETN และข่าวเรื่องอายุการใช้งาน GPU ของ NVDA ไม่มีข่าวไหนเข้าเงื่อนไขขาย ข่าวลบส่วนใหญ่เป็นความเห็นหรือภาพรวมตลาดจาก aggregator ส่วนข้อมูลจริงของ TSM และ ETN เป็นบวก พอร์ตบวก 3.3% ดีกว่า VOO 1.1% แต่ยังไม่ครบระยะถือขั้นต่ำ 4 สัปดาห์ และไม่มีเหตุผลที่คุ้มค่าธรรมเนียม จึงถือต่อ ธีม AI (NVDA, TSM, MSFT, GOOGL, AMZN, ETN) รวมราว 68% ซึ่งเกิน 50% ขอยอมรับต่อด้วยเหตุผลเดิม คือแต่ละตัวอยู่คนละช่วงของห่วงโซ่ และกลุ่มที่เคลื่อนไหวไปด้วยกันใหญ่สุดมีแค่ 32% แต่จะไม่เพิ่มน้ำหนักธีมนี้อีก เพราะ beta อยู่ที่ 1.17 และถ้า yield ขึ้น 25bp พอร์ตจะลงราว 2.1% สิ่งที่จะทำให้เปลี่ยนใจคืองบ JPM ที่เงินสำรองหนี้สูญเพิ่มเกิน 30% หรือ ROE ต่ำกว่า 14% งบ TSM ที่รายได้โตต่ำกว่า 15% หรือ yield เกิน 5.5% พร้อมกับตลาดหลุดเส้น 200 วัน",
+    "journal": "สัปดาห์นี้ตรวจข่าวของ JPM และ TSM ที่จะประกาศงบภายใน 14 วัน ข่าวคดี antitrust ของ GOOGL ในลอนดอน และข่าวผู้บริหาร NVDA ขายหุ้น ไม่มีข่าวไหนเข้าเงื่อนไขขาย ข่าว TSM และ NVDA ยังเป็นบวก (SpaceX จะกู้เงินมาซื้อชิป) ส่วนคดีของ GOOGL เป็นแค่คดีเรียกค่าเสียหาย ไม่ใช่คำสั่งให้แยกธุรกิจ พอร์ตบวก 2.7% ดีกว่า VOO ราว 1% ยังไม่ครบระยะถือขั้นต่ำ 4 สัปดาห์ และไม่มีเหตุผลที่คุ้มค่าธรรมเนียม จึงถือต่อ ธีม AI รวมราว 68% ซึ่งเกิน 50% ขอยอมรับต่อด้วยเหตุผลเดิม คือแต่ละตัวอยู่คนละช่วงของห่วงโซ่ และกลุ่มที่เคลื่อนไหวไปด้วยกันใหญ่สุดมีแค่ 31.5% แต่จะไม่เพิ่มน้ำหนักธีมนี้ เพราะ beta อยู่ที่ 1.16 สิ่งที่ต้องจับตาคือ yield ที่ขึ้นมาเป็น 5.33% (ถ้าขึ้น 25bp พอร์ตจะลงราว 2%) และสินเชื่อที่มีปัญหาเพิ่มขึ้นตามที่ JPM รายงาน ซึ่งอาจทำให้เงินสำรองหนี้สูญในงบ JPM สูงขึ้น สิ่งที่จะทำให้เปลี่ยนใจคืองบ JPM ที่เงินสำรองหนี้สูญเพิ่มเกิน 30% หรือ ROE ต่ำกว่า 14% งบ TSM ที่รายได้โตต่ำกว่า 15% หรือ yield เกิน 5.5% พร้อมกับตลาดหลุดเส้น 200 วัน ถ้าเกิดกรณีหลังจะพิจารณาเพิ่มเงินสด",
     "targets": [],
     "sells": [],
     "checked": [
       {
         "ticker": "JPM",
-        "what": "ข่าวก่อนงบวันที่ 13 ต.ค. รวมถึงข่าวหนี้เสียของ leveraged loan และคำเตือนของ Dimon",
-        "finding": "ตัวเลขหนี้ที่มีปัญหาหนักเป็นรายงานวิจัยภาพรวมตลาด ไม่ใช่หนี้เสียของ JPM เอง ส่วนคำเตือนเรื่องดอกเบี้ย/ไซเบอร์เป็นความเห็นของ CEO จึงยังไม่เข้าเงื่อนไขขาย แต่ต้องดูเงินสำรองหนี้สูญในงบให้ดี"
+        "what": "ข่าวก่อนงบวันที่ 13 ต.ค. (ประกาศภายใน 14 วัน)",
+        "finding": "ขึ้นปันผล 10% จ้างผู้บริหารใหม่ และ JPM เองรายงานว่าสินเชื่อ leveraged loan ที่มีปัญหาหนักเพิ่มขึ้นสูงสุดตั้งแต่ช่วงโควิด ข่าวนี้เป็นสัญญาณเตือนด้านเครดิตที่ต้องดูในงบ แต่ยังไม่เข้าเงื่อนไขขาย (เงินสำรองหนี้สูญเพิ่มเกิน 30% หรือ ROE ต่ำกว่า 14%)"
       },
       {
         "ticker": "TSM",
-        "what": "ข่าวก่อนงบวันที่ 15 ต.ค.",
-        "finding": "ยอดขายเดือน ก.ค.-ส.ค. เป็นไปตามแผน Barclays ปรับเป้าขึ้นเป็น $665 และมีข่าวลูกค้าใหม่ (SpaceX, AMD ขยายกำลังผลิต) จึงไม่มีสัญญาณลบ"
+        "what": "ข่าวก่อนงบวันที่ 15 ต.ค. (ประกาศภายใน 14 วัน)",
+        "finding": "ยอดขายเดือน ก.ค.-ส.ค. เป็นไปตามเป้า Barclays ขึ้นราคาเป้าหมายเป็น 665 ดอลลาร์ และ AMD เตรียมเพิ่มกำลังผลิตในปี 2027 ข่าวทั้งหมดเป็นบวกต่อ thesis"
       },
       {
-        "ticker": "ETN",
-        "what": "8-K เปลี่ยนผู้บริหาร/กรรมการ และข่าวล่าสุด",
-        "finding": "ไม่มีข่าวไหนชี้ว่าการเปลี่ยนตัวผู้บริหารเป็นปัญหา และ CEO บอกว่าเดือน ก.ค.-ส.ค. แข็งแรงมาก คาดว่างบ Q3 จะอยู่ที่ช่วงบนของเป้า"
+        "ticker": "GOOGL",
+        "what": "ข่าวลบเรื่องคดี antitrust ที่ลอนดอนมูลค่า 1 พันล้านปอนด์ เกี่ยวกับค่าธรรมเนียม Play Store",
+        "finding": "เป็นคดีแพ่งค่าเสียหายที่เล็กเมื่อเทียบกับขนาดบริษัท ไม่ใช่คำสั่งให้แยกธุรกิจและไม่กระทบรายได้ Search จึงไม่เข้าเงื่อนไขขาย ส่วนข่าวสัญญาพลังงานนิวเคลียร์และความร่วมมือกับ Unity เป็นกลางถึงบวก"
       },
       {
         "ticker": "NVDA",
-        "what": "ข่าวคำถามเรื่องอายุการใช้งานของ GPU (ค่าเสื่อม) ซึ่ง NVDA เป็นตำแหน่งที่เคลื่อนไหวแรงที่สุดในพอร์ต",
-        "finding": "เป็นบทความวิเคราะห์จาก aggregator ไม่ใช่ข้อมูลว่าความต้องการลดลง ขณะที่ราคาขึ้นทำจุดสูงสุดใหม่ และ SpaceX วางแผนซื้อชิปมูลค่า 40 พันล้านดอลลาร์ thesis จึงยังใช้ได้"
+        "what": "ข่าวผู้บริหารขายหุ้นและราคาหุ้นลดลง (ตำแหน่งที่ใหญ่เป็นอันดับต้นๆ ของพอร์ต)",
+        "finding": "การขายหุ้นของกรรมการเป็นเรื่องปกติและไม่บอกอะไรเกี่ยวกับธุรกิจ ขณะที่ SpaceX จะระดมเงินกู้ 40 พันล้านดอลลาร์เพื่อซื้อชิป NVDA ซึ่งยืนยันว่าความต้องการยังแข็งแรง"
       }
     ],
     "risk": {
       "window_days": 126,
-      "beta_voo": 1.17,
-      "vol_annual": 0.1715,
-      "voo_vol_annual": 0.1253,
-      "bad_week_1_in_20": -0.0254,
-      "worst_week": -0.037,
-      "rate_move_per_25bp": -0.0213,
+      "beta_voo": 1.16,
+      "vol_annual": 0.1664,
+      "voo_vol_annual": 0.121,
+      "bad_week_1_in_20": -0.0255,
+      "worst_week": -0.0364,
+      "rate_move_per_25bp": -0.0199,
       "most_rate_sensitive": [
         [
           "GOOGL",
-          -0.0365
+          -0.0348
         ],
         [
           "TSM",
-          -0.0358
+          -0.0334
         ],
         [
           "ETN",
-          -0.0313
+          -0.0311
         ]
       ],
       "correlated_groups": [
         {
           "tickers": [
-            "TSM",
             "NVDA",
+            "TSM",
             "ETN"
           ],
-          "weight": 0.3186,
+          "weight": 0.315,
           "avg_corr": 0.55
         },
         {
@@ -817,19 +817,19 @@
             "GOOGL",
             "AMZN"
           ],
-          "weight": 0.2387,
-          "avg_corr": 0.62
+          "weight": 0.2382,
+          "avg_corr": 0.61
         }
       ],
       "theme_weights": {
-        "AI semiconductors": 0.2496,
-        "cloud & digital ads": 0.1385,
-        "cloud & AI software": 0.1243,
-        "cloud & e-commerce": 0.1001,
-        "healthcare": 0.0954,
-        "payments": 0.078,
-        "banking": 0.0763,
-        "AI power infrastructure": 0.069
+        "AI semiconductors": 0.2485,
+        "cloud & digital ads": 0.138,
+        "cloud & AI software": 0.1245,
+        "cloud & e-commerce": 0.1002,
+        "healthcare": 0.0981,
+        "payments": 0.0792,
+        "banking": 0.0758,
+        "AI power infrastructure": 0.0665
       }
     },
     "sectors": {}
@@ -1097,16 +1097,16 @@
   },
   "max_sector_weight": 0.4,
   "weights": {
-    "NVDA": 0.12456619339135382,
-    "TSM": 0.12500683670616808,
-    "MSFT": 0.12429998256083398,
-    "GOOGL": 0.1385418430169463,
-    "AMZN": 0.100144308208731,
-    "LLY": 0.09543252283354321,
-    "MA": 0.07802425672512417,
-    "JPM": 0.07627913936021079,
-    "ETN": 0.06900005251183704,
-    "CASH": 0.06870486468525167
+    "NVDA": 0.12491674619286074,
+    "TSM": 0.12358291642944032,
+    "MSFT": 0.12450903922020923,
+    "GOOGL": 0.13797536047518977,
+    "AMZN": 0.10022825112668413,
+    "LLY": 0.09808360410449421,
+    "MA": 0.0792359837603519,
+    "JPM": 0.07580569627267579,
+    "ETN": 0.06649241214354996,
+    "CASH": 0.06916999027454383
   },
   "totals": {
     "dividends_usd": 0.9912,
@@ -1152,6 +1152,14 @@
       "benchmark": 102182.99,
       "shadow": 103287.07,
       "portfolio_usd": 3069.45
+    },
+    {
+      "date": "2026-10-07",
+      "fx": 33.70000076293945,
+      "portfolio": 102744.96,
+      "benchmark": 101713.26,
+      "shadow": 102744.53,
+      "portfolio_usd": 3048.81
     }
   ],
   "scorecard": {
@@ -1163,7 +1171,7 @@
     "measured": 0,
     "beat_voo_rate": null
   },
-  "api_spend_month_usd": 0.575,
+  "api_spend_month_usd": 0.875,
   "human_flags": [],
   "goals": {
     "day": 13,
@@ -1173,19 +1181,19 @@
       {
         "id": "beat_benchmark",
         "label": "ชนะ VOO (หลังค่าธรรมเนียม)",
-        "value": 0.01104074465724092,
+        "value": 0.010316995797645445,
         "status": "on_track"
       },
       {
         "id": "beat_shadow",
         "label": "ชนะพอร์ตเงา (การซื้อขายสร้างมูลค่า)",
-        "value": 0.0,
-        "status": "unknown"
+        "value": 4.3056205420999305e-06,
+        "status": "on_track"
       },
       {
         "id": "max_drawdown",
         "label": "ลงจากจุดสูงสุดไม่เกิน 15%",
-        "value": 0.0,
+        "value": -0.005248575644560383,
         "status": "on_track"
       },
       {
@@ -1199,34 +1207,34 @@
   },
   "risk": {
     "window_days": 126,
-    "beta_voo": 1.17,
-    "vol_annual": 0.1715,
-    "voo_vol_annual": 0.1253,
-    "bad_week_1_in_20": -0.0254,
-    "worst_week": -0.037,
-    "rate_move_per_25bp": -0.0213,
+    "beta_voo": 1.16,
+    "vol_annual": 0.1664,
+    "voo_vol_annual": 0.121,
+    "bad_week_1_in_20": -0.0255,
+    "worst_week": -0.0364,
+    "rate_move_per_25bp": -0.0199,
     "most_rate_sensitive": [
       [
         "GOOGL",
-        -0.0365
+        -0.0348
       ],
       [
         "TSM",
-        -0.0358
+        -0.0334
       ],
       [
         "ETN",
-        -0.0313
+        -0.0311
       ]
     ],
     "correlated_groups": [
       {
         "tickers": [
-          "TSM",
           "NVDA",
+          "TSM",
           "ETN"
         ],
-        "weight": 0.3186,
+        "weight": 0.315,
         "avg_corr": 0.55
       },
       {
@@ -1234,19 +1242,19 @@
           "GOOGL",
           "AMZN"
         ],
-        "weight": 0.2387,
-        "avg_corr": 0.62
+        "weight": 0.2382,
+        "avg_corr": 0.61
       }
     ],
     "theme_weights": {
-      "AI semiconductors": 0.2496,
-      "cloud & digital ads": 0.1385,
-      "cloud & AI software": 0.1243,
-      "cloud & e-commerce": 0.1001,
-      "healthcare": 0.0954,
-      "payments": 0.078,
-      "banking": 0.0763,
-      "AI power infrastructure": 0.069
+      "AI semiconductors": 0.2485,
+      "cloud & digital ads": 0.138,
+      "cloud & AI software": 0.1245,
+      "cloud & e-commerce": 0.1002,
+      "healthcare": 0.0981,
+      "payments": 0.0792,
+      "banking": 0.0758,
+      "AI power infrastructure": 0.0665
     }
   },
   "themes": {
@@ -1260,7 +1268,7 @@
     "JPM": "banking",
     "ETN": "AI power infrastructure"
   },
-  "credit_left_usd": 2.74,
+  "credit_left_usd": 2.44,
   "lessons_md": "",
   "scorecard_recent": [],
   "pending_orders": null,
@@ -1327,6 +1335,13 @@
       "portfolio": 103194.98,
       "benchmark": 102091.89,
       "shadow": 103194.98
+    },
+    {
+      "date": "2026-10-07",
+      "fx": 33.7,
+      "portfolio": 102745.72,
+      "benchmark": 101666.83,
+      "shadow": 102745.26
     }
   ]
 }

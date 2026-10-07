@@ -438,11 +438,11 @@
   ],
   "api_spend": {
     "2026-09": 0.6681,
-    "2026-10": 0.5747
+    "2026-10": 0.8746
   },
   "triggers_seen": [],
   "recent_triggers": [],
-  "api_spend_total": 1.2428,
+  "api_spend_total": 1.5427,
   "pending_orders": null,
   "last_weekly_ok": "2026-10-07",
   "outcome_refresh": null,
