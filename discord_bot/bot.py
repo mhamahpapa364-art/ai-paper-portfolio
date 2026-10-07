@@ -1,15 +1,17 @@
-"""Server-organizer bot: builds channels/roles from server_template.json, audits clutter, role-picker buttons.
+"""Server-organizer bot: builds/reorganizes roles, categories and channels from server_template.json.
 
-Run once from your own machine (it does not need to stay online for the portfolio alerts, which use a webhook):
+It does not need to stay online: run it, use the commands, stop it. (Self-service roles are handled by
+Discord's built-in Onboarding, see README.) Portfolio alerts are a separate webhook, not this bot.
+
     pip install -r discord_bot/requirements.txt
     DISCORD_BOT_TOKEN=... python -m discord_bot.bot
 
-Optional env: DISCORD_GUILD_ID (instant command sync for one server), SERVER_TEMPLATE (path),
-ENABLE_WELCOME=1 (welcome + default role; needs the "Server Members Intent" switched on in the Developer Portal).
-Never deletes or moves anything that already exists.
+Optional env: DISCORD_GUILD_ID (instant command sync for one server), SERVER_TEMPLATE (path).
+Channels are never deleted: leftovers are moved to the archive category.
 """
 from __future__ import annotations
 
+import io
 import json
 import logging
 import os
@@ -20,171 +22,174 @@ import discord
 from discord import app_commands
 
 from . import planner
+from .planner import Action
 
 log = logging.getLogger("organizer")
 TEMPLATE_PATH = Path(os.environ.get("SERVER_TEMPLATE") or Path(__file__).with_name("server_template.json"))
-# A self-assignable role must never carry any of these, otherwise a button press would be privilege escalation.
-DANGEROUS = ("administrator", "manage_guild", "manage_roles", "manage_channels", "manage_messages",
-             "manage_webhooks", "kick_members", "ban_members", "mention_everyone", "moderate_members")
+CONFIRM_WORD = "RESET"
 
 
 def load_template() -> dict:
     t = json.loads(TEMPLATE_PATH.read_text(encoding="utf-8"))
-    errors = planner.validate_template(t)
+    errors = planner.validate_template(t, set(discord.Permissions.VALID_FLAGS))
     if errors:
         raise SystemExit("server_template.json มีข้อผิดพลาด:\n- " + "\n- ".join(errors))
     return t
-
-
-def clip(text: str, limit: int = 1900) -> str:
-    return text if len(text) <= limit else text[: limit - 20] + "\n… (ตัดข้อความ)"
 
 
 def find_role(guild: discord.Guild, name: str) -> discord.Role | None:
     return discord.utils.find(lambda r: r.name.lower() == name.lower(), guild.roles)
 
 
-def guild_channels(guild: discord.Guild) -> dict[str, dict[str, str]]:
-    existing: dict[str, dict[str, str]] = {"": {}}
-    for cat in guild.categories:
-        existing.setdefault(cat.name, {})
-    for ch in guild.channels:
-        if isinstance(ch, discord.CategoryChannel):
-            continue
-        ty = "text" if isinstance(ch, discord.TextChannel) else "voice" if isinstance(ch, discord.VoiceChannel) else None
-        if ty:
-            existing.setdefault(ch.category.name if ch.category else "", {})[ch.name] = ty
-    return existing
+def read_state(guild: discord.Guild) -> planner.GuildState:
+    protected = {c.id for c in (guild.rules_channel, guild.public_updates_channel,
+                                getattr(guild, "safety_alerts_channel", None)) if c}
+    managed_types = (discord.TextChannel, discord.VoiceChannel)
+    roles = tuple(planner.RoleInfo(r.id, r.name, r.managed, r.is_default()) for r in guild.roles)
+    cats = tuple(planner.CategoryInfo(c.id, c.name, sum(1 for ch in c.channels if not isinstance(ch, managed_types)))
+                 for c in guild.categories)
+    chans = tuple(
+        planner.ChannelInfo(ch.id, ch.name, "text" if isinstance(ch, discord.TextChannel) else "voice",
+                            ch.category.name if ch.category else None, ch.id in protected)
+        for ch in guild.channels if isinstance(ch, managed_types))
+    return planner.GuildState(roles, cats, chans)
 
 
-class RoleButton(discord.ui.Button):
-    def __init__(self, role_name: str):
-        super().__init__(label=role_name, style=discord.ButtonStyle.secondary, custom_id=f"role:{role_name}"[:100])
-        self.role_name = role_name
-
-    async def callback(self, interaction: discord.Interaction) -> None:
-        role = find_role(interaction.guild, self.role_name)
-        if role is None:
-            return await interaction.response.send_message("ยังไม่มียศนี้ — ให้แอดมินรัน /setup ก่อน", ephemeral=True)
-        if any(getattr(role.permissions, p) for p in DANGEROUS):
-            return await interaction.response.send_message("ยศนี้มีสิทธิ์สูง รับเองไม่ได้", ephemeral=True)
-        member = interaction.user
-        try:
-            if role in member.roles:
-                await member.remove_roles(role, reason="role panel")
-                msg = f"เอายศ **{role.name}** ออกแล้ว"
-            else:
-                await member.add_roles(role, reason="role panel")
-                msg = f"ให้ยศ **{role.name}** แล้ว"
-        except discord.Forbidden:
-            msg = "บอทไม่มีสิทธิ์ให้ยศนี้ — ให้แอดมินย้ายยศของบอทให้อยู่สูงกว่า"
-        await interaction.response.send_message(msg, ephemeral=True)
+def overwrites_for(guild: discord.Guild, visible_to: list[str], read_only: bool = False) -> dict:
+    spec = planner.overwrite_spec(visible_to, read_only)
+    out: dict = {}
+    for who, perms in spec.items():
+        target = guild.default_role if who == planner.EVERYONE else find_role(guild, who)
+        if target is not None:
+            out[target] = discord.PermissionOverwrite(**perms)
+    if spec:  # the bot must keep seeing/posting where it hides things from @everyone
+        out[guild.me] = discord.PermissionOverwrite(view_channel=True, send_messages=True, embed_links=True,
+                                                    manage_channels=True)
+    return out
 
 
-class RolePanel(discord.ui.View):
-    def __init__(self, role_names: list[str]):
-        super().__init__(timeout=None)  # persistent: buttons keep working after a bot restart
-        for n in role_names[:25]:
-            self.add_item(RoleButton(n))
+def role_kwargs(cfg: dict) -> dict:
+    perms = discord.Permissions(**{p: True for p in cfg.get("permissions", [])})
+    color = discord.Colour(int(cfg["color"][1:], 16)) if "color" in cfg else discord.Colour.default()
+    return {"permissions": perms, "colour": color, "hoist": cfg.get("hoist", False), "mentionable": False}
 
 
-class Organizer(discord.Client):
-    def __init__(self, template: dict):
-        intents = discord.Intents.default()
-        self.welcome = os.environ.get("ENABLE_WELCOME") == "1"
-        intents.members = self.welcome
-        super().__init__(intents=intents)
-        self.template = template
-        self.tree = app_commands.CommandTree(self)
-        self.self_roles = [r["name"] for r in template.get("roles", []) if r.get("self_assignable")]
-
-    async def setup_hook(self) -> None:
-        self.add_view(RolePanel(self.self_roles))
-        gid = os.environ.get("DISCORD_GUILD_ID")
-        if gid:
-            guild = discord.Object(int(gid))
-            self.tree.copy_global_to(guild=guild)
-            await self.tree.sync(guild=guild)
-        else:
-            await self.tree.sync()
-
-    async def on_ready(self) -> None:
-        log.info("logged in as %s", self.user)
-
-    async def on_member_join(self, member: discord.Member) -> None:
-        t = self.template
-        if t.get("default_role"):
-            role = find_role(member.guild, t["default_role"])
-            if role:
-                try:
-                    await member.add_roles(role, reason="default role")
-                except discord.Forbidden:
-                    log.warning("cannot assign default role (bot role too low)")
-        ch = discord.utils.get(member.guild.text_channels, name=planner.channel_key(t.get("welcome_channel", ""), "text"))
-        if ch and t.get("welcome_message"):
-            text = t["welcome_message"].format(mention=member.mention, server=member.guild.name)
-            await ch.send(text, allowed_mentions=discord.AllowedMentions(users=[member]))
-
-
-async def apply(guild: discord.Guild, template: dict, actions: list[planner.Action]) -> list[str]:
-    roles_cfg = {r["name"].lower(): r for r in template.get("roles", [])}
-    chan_cfg = {(c["name"].lower(), ch["name"].lower()): ch
-                for c in template.get("categories", []) for ch in c.get("channels", [])}
+async def apply(guild: discord.Guild, template: dict, actions: list[Action], invoker: discord.abc.User) -> list[str]:
+    role_cfg = {r["name"].lower(): r for r in template.get("roles", [])}
+    cat_cfg = {c["name"].lower(): c for c in template.get("categories", [])}
+    arch = template.get("archive_category")
+    if arch:
+        cat_cfg[arch["name"].lower()] = {"visible_to": arch.get("visible_to", [])}
+    chan_cfg = planner.template_channels(template)
     cats = {c.name.lower(): c for c in guild.categories}
     done: list[str] = []
+
     for a in actions:
         try:
             if a.kind == "create_role":
-                cfg = roles_cfg[a.name.lower()]
-                color = discord.Colour(int(cfg["color"][1:], 16)) if "color" in cfg else discord.Colour.default()
-                await guild.create_role(name=a.name, colour=color, hoist=cfg.get("hoist", False),
-                                        mentionable=False, reason="organizer /setup")
-            elif a.kind == "create_category":
-                cats[a.name.lower()] = await guild.create_category(a.name, reason="organizer /setup")
-            else:
-                cfg = chan_cfg[(a.parent.lower(), a.name.lower())]
-                parent = cats.get(a.parent.lower())
-                if a.channel_type == "voice":
-                    await guild.create_voice_channel(a.name, category=parent, reason="organizer /setup")
+                await guild.create_role(name=a.name, reason="organizer", **role_kwargs(role_cfg[a.name.lower()]))
+            elif a.kind == "update_role":
+                await guild.get_role(a.ref).edit(reason="organizer", **role_kwargs(role_cfg[a.name.lower()]))
+            elif a.kind == "reorder_roles":
+                top = guild.me.top_role.position
+                positions = {r: max(1, top - 1 - i) for i, cfg in enumerate(template["roles"])
+                             if (r := find_role(guild, cfg["name"]))}
+                await guild.edit_role_positions(positions, reason="organizer")
+            elif a.kind == "assign_admin":
+                role = find_role(guild, a.name)
+                if role and isinstance(invoker, discord.Member):
+                    await invoker.add_roles(role, reason="organizer: keep the invoker an admin")
+            elif a.kind in ("create_category", "update_category"):
+                cfg = cat_cfg[a.name.lower()]
+                ov = overwrites_for(guild, cfg.get("visible_to", []))
+                if a.kind == "create_category":
+                    cats[a.name.lower()] = await guild.create_category(a.name, overwrites=ov, reason="organizer")
                 else:
-                    overwrites = {}
-                    if cfg.get("read_only"):
-                        overwrites = {
-                            guild.default_role: discord.PermissionOverwrite(send_messages=False, add_reactions=False,
-                                                                            create_public_threads=False),
-                            guild.me: discord.PermissionOverwrite(send_messages=True, embed_links=True),
-                        }
-                    await guild.create_text_channel(a.name, category=parent, topic=cfg.get("topic"),
-                                                    overwrites=overwrites, reason="organizer /setup")
+                    await guild.get_channel(a.ref).edit(overwrites=ov, reason="organizer")
+            elif a.kind in ("create_channel", "move_channel", "update_channel"):
+                cat, cfg = chan_cfg[(a.channel_type, planner.channel_key(a.name, a.channel_type))]
+                ov = overwrites_for(guild, cat.get("visible_to", []), cfg.get("read_only", False))
+                parent = cats.get(a.parent.lower())
+                if a.kind == "create_channel":
+                    if a.channel_type == "voice":
+                        await guild.create_voice_channel(a.name, category=parent, overwrites=ov, reason="organizer")
+                    else:
+                        await guild.create_text_channel(a.name, category=parent, topic=cfg.get("topic"),
+                                                        overwrites=ov, reason="organizer")
+                else:
+                    ch = guild.get_channel(a.ref)
+                    kw = {"topic": cfg["topic"]} if a.channel_type == "text" and cfg.get("topic") and not ch.topic else {}
+                    await ch.edit(category=parent, overwrites=ov, reason="organizer", **kw)
+            elif a.kind == "archive_channel":
+                ov = overwrites_for(guild, cat_cfg[a.parent.lower()].get("visible_to", []))
+                await guild.get_channel(a.ref).edit(category=cats.get(a.parent.lower()), overwrites=ov,
+                                                    reason="organizer: archive")
+            elif a.kind == "delete_category":
+                await guild.get_channel(a.ref).delete(reason="organizer: empty old category")
+            elif a.kind == "delete_role":
+                await guild.get_role(a.ref).delete(reason="organizer: reset roles")
             done.append("✅ " + a.describe())
         except discord.Forbidden:
-            done.append("❌ " + a.describe() + " — บอทไม่มีสิทธิ์ (ต้องมี Manage Roles / Manage Channels)")
+            done.append("❌ " + a.describe() + " — บอทไม่มีสิทธิ์ (ยศของบอทต้องอยู่สูงกว่า และมี Manage Roles/Channels)")
         except discord.HTTPException as e:
-            done.append(f"❌ {a.describe()} — {e.status}")
+            done.append(f"❌ {a.describe()} — {e.status} {e.text[:80]}")
+        except (AttributeError, KeyError) as e:  # object vanished between preview and apply
+            done.append(f"⚠️ {a.describe()} — ข้าม ({type(e).__name__})")
     return done
 
 
-def build_commands(client: Organizer) -> None:
+async def reply(interaction: discord.Interaction, text: str, followup: bool = False) -> None:
+    """Send text; if it would exceed Discord's 2000-char limit, send it as a file instead."""
+    send = interaction.followup.send if followup else interaction.response.send_message
+    if len(text) <= 1900:
+        await send(text, ephemeral=True)
+    else:
+        await send("ข้อความยาว แนบเป็นไฟล์", ephemeral=True,
+                   file=discord.File(io.BytesIO(text.encode("utf-8")), filename="organizer.txt"))
+
+
+def build_commands(client: "Organizer") -> None:
     admin_only = app_commands.checks.has_permissions(administrator=True)
 
-    @client.tree.command(name="setup", description="สร้างหมวด/ช่อง/ยศตามแม่แบบ (ไม่ลบหรือย้ายของเดิม)")
-    @app_commands.describe(preview="True = แค่ดูว่าจะสร้างอะไร (ค่าเริ่มต้น) / False = สร้างจริง")
+    @client.tree.command(name="setup", description="สร้างหมวด/ช่อง/ยศที่ขาดตามแม่แบบ (ไม่แตะของเดิม)")
+    @app_commands.describe(preview="True = แค่ดูตัวอย่าง (ค่าเริ่มต้น) / False = สร้างจริง")
     @app_commands.guild_only()
     @app_commands.default_permissions(administrator=True)
     @admin_only
     async def setup(interaction: discord.Interaction, preview: bool = True) -> None:
         guild = interaction.guild
-        actions = planner.plan(client.template, [r.name for r in guild.roles], guild_channels(guild))
+        actions = planner.plan(client.template, read_state(guild), full=False)
         if not actions:
-            return await interaction.response.send_message("✨ server ตรงกับแม่แบบอยู่แล้ว ไม่มีอะไรต้องสร้าง", ephemeral=True)
+            return await reply(interaction, "✨ server มีครบตามแม่แบบแล้ว ไม่มีอะไรต้องสร้าง")
         if preview:
             lines = "\n".join(a.describe() for a in actions)
-            return await interaction.response.send_message(
-                clip(f"**ตัวอย่าง ({len(actions)} รายการ)** — ยังไม่ได้สร้างจริง\n{lines}\n\nรัน `/setup preview:False` เพื่อสร้าง"),
-                ephemeral=True)
+            return await reply(interaction, f"**ตัวอย่าง ({len(actions)} รายการ)** — ยังไม่ได้ทำจริง\n{lines}\n\nรัน `/setup preview:False` เพื่อสร้าง")
         await interaction.response.defer(ephemeral=True, thinking=True)
-        results = await apply(guild, client.template, actions)
-        await interaction.followup.send(clip("\n".join(results)), ephemeral=True)
+        await reply(interaction, "\n".join(await apply(guild, client.template, actions, interaction.user)), followup=True)
+
+    @client.tree.command(name="reorganize", description="จัด server ใหม่ทั้งหมดตามแม่แบบ (ลบยศเดิม ย้ายห้องเดิมไป Archive)")
+    @app_commands.describe(preview="True = แค่ดูตัวอย่าง (ค่าเริ่มต้น)",
+                           confirm=f"ต้องพิมพ์ {CONFIRM_WORD} ถึงจะทำจริง")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(administrator=True)
+    @admin_only
+    async def reorganize(interaction: discord.Interaction, preview: bool = True, confirm: str = "") -> None:
+        guild = interaction.guild
+        actions = planner.plan(client.template, read_state(guild), full=True)
+        deletes = sum(a.kind == "delete_role" for a in actions)
+        warn = (f"⚠️ จะ **ลบยศเดิม {deletes} ยศ** — สมาชิกทุกคนจะเสียยศเหล่านั้นทันที (ย้อนคืนไม่ได้) "
+                f"และต้องรับยศ Member ใหม่ผ่าน Onboarding\n"
+                f"ผู้ที่เป็นแอดมินผ่านยศเดิม (ไม่ใช่เจ้าของ server) จะเสียสิทธิ์ ยกเว้นคุณที่จะได้ยศ Admin ใหม่\n"
+                f"ช่องเดิมที่ไม่อยู่ในแม่แบบ **ไม่ถูกลบ** จะถูกย้ายไป Archive")
+        if preview or confirm != CONFIRM_WORD:
+            lines = "\n".join(a.describe() for a in actions) or "ไม่มีอะไรต้องทำ"
+            hint = (f"\n\nรันจริง: `/reorganize preview:False confirm:{CONFIRM_WORD}`" if preview
+                    else f"\n\n❌ ยังไม่ได้ทำอะไร — ต้องใส่ confirm เป็น `{CONFIRM_WORD}` (ตัวพิมพ์ใหญ่)")
+            return await reply(interaction, f"**ตัวอย่าง ({len(actions)} รายการ)**\n{warn}\n\n{lines}{hint}")
+        await interaction.response.defer(ephemeral=True, thinking=True)
+        results = await apply(guild, client.template, actions, interaction.user)
+        failed = sum(r.startswith("❌") for r in results)
+        await reply(interaction, f"เสร็จแล้ว — สำเร็จ {len(results) - failed}, ผิดพลาด {failed}\n" + "\n".join(results), followup=True)
 
     @client.tree.command(name="audit", description="ตรวจความรกของ server (หมวดว่าง ช่องเงียบ ช่องไม่มี topic)")
     @app_commands.describe(days="ช่องที่เงียบเกินกี่วันถือว่าไม่ได้ใช้")
@@ -206,20 +211,7 @@ def build_commands(client: Organizer) -> None:
                                       if is_text and ch.last_message_id else None),
                 })
         findings = planner.audit(rows, inactive_days=days)
-        text = "\n".join(findings) if findings else "✨ ไม่พบความรก server เรียบร้อยดี"
-        await interaction.response.send_message(clip(f"**ผลตรวจ server**\n{text}"), ephemeral=True)
-
-    @client.tree.command(name="rolepanel", description="โพสต์แผงปุ่มให้สมาชิกกดรับ/เอายศ")
-    @app_commands.describe(channel="ช่องที่จะโพสต์ (ค่าเริ่มต้น: ช่องนี้)")
-    @app_commands.guild_only()
-    @app_commands.default_permissions(administrator=True)
-    @admin_only
-    async def rolepanel(interaction: discord.Interaction, channel: discord.TextChannel | None = None) -> None:
-        if not client.self_roles:
-            return await interaction.response.send_message("แม่แบบไม่มียศที่ตั้ง self_assignable ไว้", ephemeral=True)
-        target = channel or interaction.channel
-        await target.send("**เลือกยศของคุณ** — กดปุ่มเพื่อรับ กดซ้ำเพื่อเอาออก", view=RolePanel(client.self_roles))
-        await interaction.response.send_message(f"โพสต์แผงยศใน {target.mention} แล้ว", ephemeral=True)
+        await reply(interaction, "**ผลตรวจ server**\n" + ("\n".join(findings) if findings else "✨ ไม่พบความรก server เรียบร้อยดี"))
 
     @client.tree.error
     async def on_error(interaction: discord.Interaction, error: app_commands.AppCommandError) -> None:
@@ -232,6 +224,25 @@ def build_commands(client: Organizer) -> None:
             await interaction.followup.send(msg, ephemeral=True)
         else:
             await interaction.response.send_message(msg, ephemeral=True)
+
+
+class Organizer(discord.Client):
+    def __init__(self, template: dict):
+        super().__init__(intents=discord.Intents.default())  # no privileged intents needed
+        self.template = template
+        self.tree = app_commands.CommandTree(self)
+
+    async def setup_hook(self) -> None:
+        gid = os.environ.get("DISCORD_GUILD_ID")
+        if gid:
+            guild = discord.Object(int(gid))
+            self.tree.copy_global_to(guild=guild)
+            await self.tree.sync(guild=guild)
+        else:
+            await self.tree.sync()
+
+    async def on_ready(self) -> None:
+        log.info("logged in as %s", self.user)
 
 
 def main() -> int:

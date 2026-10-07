@@ -1,39 +1,94 @@
 {
-  "default_role": "Member",
-  "welcome_channel": "welcome",
-  "welcome_message": "ยินดีต้อนรับ {mention} สู่ {server}! อ่านกติกาที่ #rules แล้วเลือกยศของคุณที่ #get-roles",
+  "admin_role": "Admin",
   "roles": [
-    {"name": "Admin", "color": "#e74c3c", "hoist": true},
-    {"name": "Mod", "color": "#e67e22", "hoist": true},
-    {"name": "Member", "color": "#3498db"},
-    {"name": "Investor", "color": "#2ecc71", "self_assignable": true},
-    {"name": "Dev", "color": "#9b59b6", "self_assignable": true},
-    {"name": "Gamer", "color": "#f1c40f", "self_assignable": true}
+    {
+      "name": "Admin", "color": "#e74c3c", "hoist": true,
+      "permissions": ["administrator"]
+    },
+    {
+      "name": "Mod", "color": "#e67e22", "hoist": true,
+      "permissions": ["manage_messages", "moderate_members", "kick_members", "mute_members",
+                      "deafen_members", "move_members", "manage_nicknames", "view_audit_log"]
+    },
+    {
+      "name": "Member", "color": "#3498db",
+      "permissions": ["view_channel", "send_messages", "send_messages_in_threads", "create_public_threads",
+                      "embed_links", "attach_files", "add_reactions", "use_external_emojis",
+                      "read_message_history", "connect", "speak", "stream", "use_voice_activation",
+                      "change_nickname"]
+    },
+    {"name": "Investor", "color": "#2ecc71", "permissions": []},
+    {"name": "Gamer", "color": "#f1c40f", "permissions": []}
   ],
   "categories": [
     {
-      "name": "📢 ข้อมูล",
+      "name": "👋 เริ่มต้นที่นี่",
       "channels": [
-        {"name": "welcome", "type": "text", "topic": "ยินดีต้อนรับสมาชิกใหม่", "read_only": true},
-        {"name": "rules", "type": "text", "topic": "กติกาของเซิร์ฟเวอร์", "read_only": true},
-        {"name": "announcements", "type": "text", "topic": "ประกาศสำคัญ", "read_only": true},
-        {"name": "get-roles", "type": "text", "topic": "กดปุ่มเพื่อรับ/เอายศออก", "read_only": true}
+        {"name": "welcome", "type": "text", "topic": "ยินดีต้อนรับ — เลือกยศของคุณผ่าน Onboarding เพื่อเข้าห้องอื่น", "read_only": true},
+        {"name": "rules", "type": "text", "topic": "กติกาของเซิร์ฟเวอร์", "read_only": true}
+      ]
+    },
+    {
+      "name": "📣 ประกาศ",
+      "visible_to": ["Member"],
+      "channels": [
+        {"name": "announcements", "type": "text", "topic": "ประกาศสำคัญ", "read_only": true}
       ]
     },
     {
       "name": "💬 ทั่วไป",
+      "visible_to": ["Member"],
       "channels": [
         {"name": "general", "type": "text", "topic": "คุยเล่นทั่วไป"},
-        {"name": "help", "type": "text", "topic": "ถามคำถาม ขอความช่วยเหลือ"},
-        {"name": "General Voice", "type": "voice"}
+        {"name": "help", "type": "text", "topic": "ถามคำถาม ขอความช่วยเหลือ"}
       ]
     },
     {
       "name": "📈 AI Portfolio",
+      "visible_to": ["Investor"],
       "channels": [
         {"name": "portfolio-alerts", "type": "text", "topic": "แจ้งเตือนจากระบบ AI Paper Portfolio (webhook)", "read_only": true},
         {"name": "portfolio-discussion", "type": "text", "topic": "คุยเรื่องพอร์ตและหุ้น"}
       ]
+    },
+    {
+      "name": "🔊 ห้องคุย",
+      "visible_to": ["Member"],
+      "channels": [
+        {"name": "General 1", "type": "voice"},
+        {"name": "General 2", "type": "voice"}
+      ]
+    },
+    {
+      "name": "💼 ห้องทำงาน/เรียน",
+      "visible_to": ["Member"],
+      "channels": [
+        {"name": "Focus 1", "type": "voice"},
+        {"name": "Focus 2", "type": "voice"}
+      ]
+    },
+    {
+      "name": "🎮 ห้องเกม",
+      "visible_to": ["Member"],
+      "channels": [
+        {"name": "Game 1", "type": "voice"},
+        {"name": "Game 2", "type": "voice"}
+      ]
+    },
+    {
+      "name": "💤 AFK",
+      "visible_to": ["Member"],
+      "channels": [
+        {"name": "AFK", "type": "voice"}
+      ]
+    },
+    {
+      "name": "🛡️ ทีมงาน",
+      "visible_to": ["Mod"],
+      "channels": [
+        {"name": "mod-chat", "type": "text", "topic": "คุยกันเองของทีมงาน"}
+      ]
     }
-  ]
+  ],
+  "archive_category": {"name": "📦 Archive", "visible_to": ["Mod"]}
 }
