@@ -90,11 +90,14 @@ Weights are fractions of total portfolio value; cash = 1 - sum(weights)."""
 
 
 def _cost(usage: dict, model: str, cfg: dict) -> float:
-    pin, pout = cfg["pricing_usd_per_mtok"].get(model, [5, 25])
-    tin = (usage.get("input_tokens", 0) + 1.25 * usage.get("cache_creation_input_tokens", 0)
-           + 0.1 * usage.get("cache_read_input_tokens", 0))
+    """USD for one response. pricing_usd_per_mtok is [input, output] or [input, output, cache_read];
+    cache writes are billed at 1.25x input (5-minute TTL), cache reads at the third value (default 0.1x input)."""
+    pin, pout, *rest = cfg["pricing_usd_per_mtok"].get(model, [5, 25])
+    pread = rest[0] if rest else 0.1 * pin
     ws = (usage.get("server_tool_use") or {}).get("web_search_requests", 0)
-    return tin / 1e6 * pin + usage.get("output_tokens", 0) / 1e6 * pout + ws * cfg["web_search_usd_each"]
+    return ((usage.get("input_tokens", 0) + 1.25 * usage.get("cache_creation_input_tokens", 0)) / 1e6 * pin
+            + usage.get("cache_read_input_tokens", 0) / 1e6 * pread
+            + usage.get("output_tokens", 0) / 1e6 * pout + ws * cfg["web_search_usd_each"])
 
 
 def add_spend(state: dict, month: str, usd: float) -> None:
@@ -120,10 +123,13 @@ def call_claude(system: str, user: str, cfg: dict, tools: StockTools | None, war
         tool_defs.append({"type": "web_search_20250305", "name": "web_search", "max_uses": cfg["web_search_max_uses"]})
     messages = [{"role": "user", "content": user}]
     cost, tool_log = 0.0, []
+    use_cache = True   # each tool round re-sends the whole conversation; caching makes the repeats ~20x cheaper
     headers = {"x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json"}
-    for _ in range(MAX_ROUNDS):
+    for rnd in range(1, MAX_ROUNDS + 1):
         body = {"model": model, "max_tokens": max_tokens or cfg["decision_max_tokens"], "system": system,
                 "messages": messages}
+        if use_cache:
+            body["cache_control"] = {"type": "ephemeral"}
         if tool_defs:
             body["tools"] = tool_defs
         try:
@@ -133,6 +139,10 @@ def call_claude(system: str, user: str, cfg: dict, tools: StockTools | None, war
             return None, cost, tool_log
         if r.status_code != 200:
             txt = r.text[:300]
+            if use_cache and r.status_code == 400 and "cache_control" in txt:
+                warnings.append("prompt caching ใช้ไม่ได้ — เรียกต่อโดยไม่แคช (ค่าใช้จ่ายสูงขึ้น)")
+                use_cache = False
+                continue
             if web_search and "web_search" in txt and tools:
                 warnings.append("web search ใช้ไม่ได้ (อาจต้องเปิดใน Console) — ตัดสินใจโดยไม่ใช้ web search")
                 return call_claude(system, user, cfg, tools, warnings, max_tokens, web_search=False)
@@ -140,6 +150,9 @@ def call_claude(system: str, user: str, cfg: dict, tools: StockTools | None, war
             return None, cost, tool_log
         j = r.json()
         cost += _cost(j.get("usage", {}), model, cfg)
+        u = j.get("usage", {})
+        log(f"round {rnd}: input {u.get('input_tokens', 0)} · cache write {u.get('cache_creation_input_tokens', 0)} · "
+            f"cache read {u.get('cache_read_input_tokens', 0)} · output {u.get('output_tokens', 0)} · running ${cost:.4f}")
         content = j.get("content", [])
         stop = j.get("stop_reason")
         for b in content:
