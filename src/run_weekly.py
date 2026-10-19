@@ -159,7 +159,9 @@ def main(argv=None) -> int:
     # 6) Monthly self-review ---------------------------------------------------
     monthly = None
     if not dry and mg.monthly_due(state, market_date):
-        monthly = mg.monthly_review(state, cfg, history_log, market_date, warnings)
+        monthly = mg.monthly_review(state, cfg, history_log, market_date, warnings, performance=perf and {
+            "value_thb": perf["portfolio"]["value_thb"], "returns": perf["returns"],
+            "drawdown_from_peak": perf["drawdown_from_peak"], "max_drawdown": perf.get("max_drawdown")})
         if monthly:
             add_spend(state, month, monthly.get("cost", 0))
 

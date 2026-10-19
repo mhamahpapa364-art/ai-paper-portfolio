@@ -14,6 +14,7 @@ DEFAULTS = {
     "max_drawdown": 0.15,
     "min_hit_rate": 0.5,
     "min_graded_reviews": 4,
+    "shadow_tolerance": 0.0005,
 }
 
 
@@ -36,9 +37,9 @@ def evaluate(cfg: dict, returns: dict | None, drawdown: float | None, hit_rate: 
                      "status": _status(None if v is None else v > 0)})
     if g["beat_shadow"]:
         v = returns.get("vs_shadow")
-        # exactly 0 means "never traded" - no evidence either way, so don't claim success
+        # a gap inside the tolerance (rounding noise, or a portfolio that has never traded) is no evidence either way
         rows.append({"id": "beat_shadow", "label": "ชนะพอร์ตเงา (การซื้อขายสร้างมูลค่า)", "value": v,
-                     "status": _status(None if v is None or v == 0 else v > 0)})
+                     "status": _status(None if v is None or abs(v) < g["shadow_tolerance"] else v > 0)})
     if drawdown is not None:
         rows.append({"id": "max_drawdown", "label": f"ลงจากจุดสูงสุดไม่เกิน {g['max_drawdown']:.0%}", "value": drawdown,
                      "status": _status(drawdown > -g["max_drawdown"])})

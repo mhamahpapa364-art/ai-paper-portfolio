@@ -7,7 +7,8 @@
     "beat_shadow": true,
     "max_drawdown": 0.15,
     "min_hit_rate": 0.5,
-    "min_graded_reviews": 4
+    "min_graded_reviews": 4,
+    "shadow_tolerance": 0.0005
   },
   "benchmark": "VOO",
   "fx_ticker": "USDTHB=X",

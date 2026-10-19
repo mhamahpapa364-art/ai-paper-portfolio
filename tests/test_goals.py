@@ -25,6 +25,13 @@ class GoalsTest(unittest.TestCase):
     def test_never_traded_is_not_credited_as_beating_shadow(self):
         self.assertEqual(row(ev(), "beat_shadow")["status"], "unknown")
 
+    def test_tiny_shadow_gap_is_noise_not_behind(self):
+        # -0.0013% (a few baht on 100k) is rounding noise for a portfolio that has never traded
+        self.assertEqual(row(ev(returns={"vs_benchmark": 0.01, "vs_shadow": -1.3e-5}), "beat_shadow")["status"], "unknown")
+        self.assertEqual(row(ev(returns={"vs_benchmark": 0.01, "vs_shadow": 0.0004}), "beat_shadow")["status"], "unknown")
+        self.assertEqual(row(ev(returns={"vs_benchmark": 0.01, "vs_shadow": -0.002}), "beat_shadow")["status"], "behind")
+        self.assertEqual(row(ev(returns={"vs_benchmark": 0.01, "vs_shadow": 0.002}), "beat_shadow")["status"], "on_track")
+
     def test_beat_and_behind(self):
         rep = ev(returns={"vs_benchmark": -0.02, "vs_shadow": 0.01})
         self.assertEqual(row(rep, "beat_benchmark")["status"], "behind")
@@ -54,6 +61,27 @@ class GoalsTest(unittest.TestCase):
     def test_defaults_when_config_missing(self):
         rep = ev(cfg={})
         self.assertEqual(rep["horizon_days"], 365)
+
+
+class MonthlyReviewContextTest(unittest.TestCase):
+    def test_review_gets_precomputed_performance(self):
+        from unittest import mock
+
+        from src import manager
+        seen = {}
+
+        def fake_call(system, user, cfg, tools, warnings, max_tokens=None):
+            seen["system"], seen["ctx"] = system, __import__("json").loads(user)
+            return '{"lessons_md": ""}', 0.01, []
+
+        perf = {"value_thb": 99752.72, "returns": {"portfolio_thb": -0.00247}, "drawdown_from_peak": -0.034,
+                "max_drawdown": -0.034}
+        with mock.patch.object(manager, "call_claude", fake_call):
+            out = manager.monthly_review({"status": "live", "inception_date": "2026-09-24"}, {}, [], "2026-10-17", [],
+                                         performance=perf)
+        self.assertEqual(seen["ctx"]["performance_now"], perf)
+        self.assertIn("performance_now", seen["system"])
+        self.assertEqual(out["cost"], 0.01)
 
 
 if __name__ == "__main__":
