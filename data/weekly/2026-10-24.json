@@ -1,0 +1,849 @@
+{
+  "run_date": "2026-10-24",
+  "market_date": "2026-10-23",
+  "status": "live",
+  "fx": 33.7400016784668,
+  "prices": {
+    "AMZN": {
+      "price": 248.0,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.008
+    },
+    "ETN": {
+      "price": 366.1099853515625,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.0643
+    },
+    "GOOGL": {
+      "price": 320.2099914550781,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.0598
+    },
+    "JPM": {
+      "price": 331.5799865722656,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.024
+    },
+    "LLY": {
+      "price": 1273.4599609375,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": 0.0131
+    },
+    "MA": {
+      "price": 623.5999755859375,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": 0.01
+    },
+    "MSFT": {
+      "price": 524.510009765625,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.0086
+    },
+    "NVDA": {
+      "price": 210.9600067138672,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.0148
+    },
+    "TSM": {
+      "price": 418.510009765625,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": 0.0143
+    },
+    "VOO": {
+      "price": 698.5800170898438,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": -0.0043
+    },
+    "USDTHB=X": {
+      "price": 33.7400016784668,
+      "date": "2026-10-23",
+      "source": "yfinance",
+      "chg_1w": 0.0082
+    }
+  },
+  "performance": {
+    "fx": 33.7400016784668,
+    "portfolio": {
+      "value_usd": 2942.91,
+      "value_thb": 99293.63
+    },
+    "benchmark": {
+      "value_usd": 2961.93,
+      "value_thb": 99935.66
+    },
+    "shadow": {
+      "value_usd": 2942.92,
+      "value_thb": 99294.28
+    },
+    "returns": {
+      "portfolio_thb": -0.007063712961062674,
+      "portfolio_usd": -0.01854113780966471,
+      "fx_effect": 0.011694249540920909,
+      "benchmark_thb": -0.0006434389102040194,
+      "shadow_thb": -0.007057241195928543,
+      "vs_benchmark": -0.006420274050858654,
+      "vs_shadow": -6.471765134130614e-06
+    },
+    "drawdown_from_peak": -0.03866350357309978,
+    "max_drawdown": -0.03866350357309978
+  },
+  "events": [],
+  "regime": {
+    "signals": {
+      "market_vs_200dma": 0.045,
+      "sma50_above_sma200": true,
+      "market_4w": -0.017178015046563133,
+      "vix": 19.45,
+      "us10y": 4.988,
+      "us10y_4w_change_pts": -0.196,
+      "defensives_leading": true
+    },
+    "score": 1,
+    "label": "neutral",
+    "notes": [],
+    "sectors_4w": [
+      {
+        "etf": "XLE",
+        "name": "Energy",
+        "ret_4w": 0.1175
+      },
+      {
+        "etf": "XLU",
+        "name": "Utilities",
+        "ret_4w": 0.0772
+      },
+      {
+        "etf": "XLP",
+        "name": "Consumer Staples",
+        "ret_4w": 0.0756
+      },
+      {
+        "etf": "XLV",
+        "name": "Health Care",
+        "ret_4w": 0.0503
+      },
+      {
+        "etf": "XLB",
+        "name": "Materials",
+        "ret_4w": 0.0303
+      },
+      {
+        "etf": "XLRE",
+        "name": "Real Estate",
+        "ret_4w": 0.0243
+      },
+      {
+        "etf": "XLY",
+        "name": "Consumer Disc.",
+        "ret_4w": 0.023
+      },
+      {
+        "etf": "XLF",
+        "name": "Financials",
+        "ret_4w": 0.0193
+      },
+      {
+        "etf": "XLI",
+        "name": "Industrials",
+        "ret_4w": -0.0341
+      },
+      {
+        "etf": "XLC",
+        "name": "Communication",
+        "ret_4w": -0.066
+      },
+      {
+        "etf": "XLK",
+        "name": "Technology",
+        "ret_4w": -0.0664
+      }
+    ]
+  },
+  "news": {
+    "AMZN": [
+      {
+        "headline": "Amazon Stock And Other Mega Cap Tech Names For The AI Infrastructure Reset",
+        "summary": "AI infrastructure stocks have just been hit hard, even where earnings and backlogs looked solid, and that kind of indiscriminate selling often creates openings for patient investors watching Microsoft, Alphabet or Amazon. When builders and suppliers suddenly look risky, attention can swing back to mega-cap platforms with stronger balance sheets and flexible cloud budgets. This article walks throug",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=5d9cfa3db05e84304826567e2a3eb67c61a31aa6f37b389438a18388db476246",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Why 3M’s Amazon Deal Could Be a Big Game Changer for MMM Stock",
+        "summary": "Amazon is purchasing 3M's products for its data centers, and other operators may follow its lead.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=a32d02413c97e6bf08d6954759efbc6292d0fc8576a1f630a4b2abd90c8d4b46",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Dow Jones Futures: Microsoft, Google, Amazon Lead Earnings Wave; What To Do In Mixed Market",
+        "summary": "Dow Jones futures: The S&P 500 and Nasdaq are below key levels, but many non-AI stocks are flashing buy signals. Microsoft, Google, Amazon loom.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=4d9ac0f0ede03f93ff45478ef4561b47f6f4dc5c9377770d6f6ddb9145f9c10a",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Will AI Fiber Demand Change Corning (GLW) Narrative",
+        "summary": "Corning recently presented at the OCP Global Summit 2026 in San Jose, highlighting its optical fiber and high density connectivity solutions for AI led data center infrastructure. Long duration supply agreements with Amazon, NVIDIA, Meta and Verizon anchor demand for Corning's Optical Communications products, linking AI infrastructure buildouts directly to the company’s manufacturing footprint and",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=1f11ccf007456c6a5ce3b5a7b327f31205036d46e5589bbbe80663c94d8adf0d",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Post-it Notes maker 3M eyes AI gold rush in major Amazon deal",
+        "summary": "The Scotch tape giant just picked up its second major AI cloud customer in three months.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=bda1f3e7e7e0d3eedc776f170bf5c181bc393017908c4d1feab41a24a755ce28",
+        "date": "2026-10-23"
+      }
+    ],
+    "ETN": [
+      {
+        "headline": "Eaton Powers Sustainable Profits With Electrical Equipment",
+        "summary": "Eaton's energy-efficient electrical products help it top IBD's list of Most Sustainable Companies for a second year in a row.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=b0a0828b594b75c818c580ce5e8fbe6eb3fafb19a2e8f77e6391f564128576ed",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Eaton Stock Gets Fresh Earnings Upgrades As Analysts Turn More Bullish",
+        "summary": "Eaton has recently attracted a cluster of favorable analyst views and upward earnings estimate revisions, reflecting confidence in its power management and data center focused operations rather than sentiment driven enthusiasm. An important angle is how these estimate upgrades intersect with Eaton's commitment to electrical capacity, data center infrastructure, and portfolio reshaping toward highe",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=50a444ba4419bcf756f89c9631f412cdf34fc7fdfd6bbf22a6746a47e5b5d0f5",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Eaton (ETN) Sees a More Significant Dip Than Broader Market: Some Facts to Know",
+        "summary": "Eaton (ETN) closed at $368.99 in the latest trading session, marking a -6.33% move from the prior day.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=45b39ef63b1de3b2be9dbe96e90218b1c3d719daf5e2350d0f3e2223593074e9",
+        "date": "2026-10-22"
+      },
+      {
+        "headline": "Honeywell International Inc. (HON) vs. ETN and EMR: Can a More Focused Industrial Platform Turn Into the Next Growth Phase?",
+        "summary": "Is HON a good stock to buy? We came across a bullish thesis on Honeywell International Inc. on Astute Optics – US’s Substack. In this article, we will summarize the bulls’ thesis on HON. Honeywell International Inc.’s share was trading at $214.73 as of October 21st 2026. HON’s trailing and forward P/E were 8.17 and 22.22 respectively […]",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=196b716361742561b9bdc19ba4235b7a1c606c36ca0f5903efd2d77a8c9ad0be",
+        "date": "2026-10-22"
+      },
+      {
+        "headline": "GE Vernova Slumps 11% as Meta’s Spending Outlook Stokes AI Financing Worries; Vertiv Holdings Drops 7%, Eaton Slides 6%",
+        "summary": "Meta's latest earnings call left a key question unanswered about how the next wave of AI infrastructure gets paid for, and power-equipment suppliers are taking the hit while investors wait for an answer.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=25ff6ac0db9451ddb385916b421d330e512ea445530eb263ac90f7f2edd2963a",
+        "date": "2026-10-22"
+      }
+    ],
+    "GOOGL": [
+      {
+        "headline": "The Bet Alphabet Holders Made",
+        "summary": "If Alphabet sat on your watchlist instead of in your portfolio, the past year may feel like a missed shot. For Alphabet shareholders, the return over the past year was 23.5%, including dividends. That outcome did not arrive in a vacuum. Back on 23 October 2025, analysts were already arguing over how far AI powered cloud services and infrastructure spending might reshape Alphabet’s earnings mix. Th",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=5d50513ee9ab80d4a6558f84928b40123746ae6d0d5bfe14f5bbf6ad8db0f66e",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Amazon Stock And Other Mega Cap Tech Names For The AI Infrastructure Reset",
+        "summary": "AI infrastructure stocks have just been hit hard, even where earnings and backlogs looked solid, and that kind of indiscriminate selling often creates openings for patient investors watching Microsoft, Alphabet or Amazon. When builders and suppliers suddenly look risky, attention can swing back to mega-cap platforms with stronger balance sheets and flexible cloud budgets. This article walks throug",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=5d9cfa3db05e84304826567e2a3eb67c61a31aa6f37b389438a18388db476246",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Eric Schmidt Rejects AI Bubble Fears, Says Anthropic Is Growing Twice as Fast as Google Did",
+        "summary": "Former Google CEO Eric Schmidt says artificial intelligence “is not a bubble,” pointing to Anthropic‘s explosive revenue growth as evidence that customers are paying for technology they find useful. “When I was CEO at Google, we set the revenue growth...",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=a4cba0ca5727f124afe114b9cf4239d871c58308bdc98e3ae255f129bbac3683",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Dow Jones Futures: Microsoft, Google, Amazon Lead Earnings Wave; What To Do In Mixed Market",
+        "summary": "Dow Jones futures: The S&P 500 and Nasdaq are below key levels, but many non-AI stocks are flashing buy signals. Microsoft, Google, Amazon loom.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=4d9ac0f0ede03f93ff45478ef4561b47f6f4dc5c9377770d6f6ddb9145f9c10a",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Meta and Google About to Run the Old Playbook Again, Will “Sell Space Inside Their Models.”",
+        "summary": "Key TakeawaysFormer Stability AI CEO Emad Mostaque says Meta and Google will “sell space inside their models,” so that asking for a beer gets you a Bud Light. Ad money lets Meta and Alphabet give AI away, while rivals that depend on paying developers have to charge for theirs.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=006108de9ca7b93824a59dc68475a3ca1f86aa6f316a9c78015981777e777727",
+        "date": "2026-10-23"
+      }
+    ],
+    "JPM": [
+      {
+        "headline": "Norwegian Cruise Line Holdings (NCLH) Could Be 20% Undervalued As JPMorgan Flags Yield Risk",
+        "summary": "JPMorgan’s downgrade of Norwegian Cruise Line Holdings (NCLH) to Underweight ahead of the Q3 report puts the focus squarely on one issue: the bank is worried about potential pressure on net yield estimates for the second half of 2027. Norwegian Cruise Line Holdings has seen its share price fall 31.78% year to date and its 1 year total shareholder return decline 33.82%. This has occurred even after",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=f98b08d72f26fbd58de5673a9277a9aec4e23ff0ef7f8f46b8cad25a877b15d2",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "XRP News: Ripple Joined DTCC’s Tokenization Push This Week. Can It Pull XRP Out of Its October Slide?",
+        "summary": "Ripple Prime just joined DTCC's push to tokenize Wall Street securities alongside BlackRock and JPMorgan, yet XRP keeps sliding deeper into October losses. The question is whether Ripple's growing institutional footprint will ever translate into real demand for the token.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=2faca97527639578977855331c94a62baeeb7e832fbc95baf74abf8b98bba311",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Week’s Best: JPMorgan Chase Teams Overseeing $18 Billion Go Indie",
+        "summary": "Here’s our weekly roundup of the most-read articles at Barron’s Advisor.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=f1cf447c71e1ca24ea7351a84f8e23fa21301cb715707acbe631f0ad9f4bf8fe",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "JPMorgan Solana Push Brings MONY and JLTXX Into Tokenized Finance",
+        "summary": "JPMorgan Asset Management brings two Solana tokenized money market funds, MONY and JLTXX, to the blockchain, opening another route for institutional investors to access onchain cash management products. Announced last night, the expansion makes both funds available to qualified U.S. investors through Morgan Money, the firm’s liquidity management and trading ...",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=6adf5946ac1633db229582937f4f312bb46964655aabb477eab0d17015665ea6",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Should JPMorgan BetaBuilders U.S. Small Cap Equity ETF (BBSC) Be on Your Investing Radar?",
+        "summary": "Style Box ETF report for BBSC",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=09f9733805d85b4c627a07e7df2370286fa137cdf2d0697d0935ff3e0534df88",
+        "date": "2026-10-23"
+      }
+    ],
+    "LLY": [
+      {
+        "headline": "Q2 earnings highs and lows: Eli Lilly (NYSE:LLY) vs the rest of the branded pharmaceuticals stocks",
+        "summary": "Quarterly earnings results are a good time to check in on a company’s progress, especially compared to its peers in the same sector. Today we are looking at Eli Lilly (NYSE:LLY) and the best and worst performers in the branded pharmaceuticals industry.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=3acf4aef796e3be6e0ea055f11f802e111f779931f2a68497b5649002e9154dd",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "3 Portfolio-Worthy Stocks Hitting 52-Week Highs: AAPL, LLY & KO",
+        "summary": "With market volatility and economic uncertainty keeping investors on edge, these established large-cap companies are demonstrating impressive relative strength.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=f04a55b6b65dc12f321f20143f46b49e8a787cce7587a12230c7a35976fc91f9",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Goldman Sachs resets Eli Lilly 12-month stock price target before earnings",
+        "summary": "Wall Street expects strong numbers from LLY, but Goldman says one figure will decide the reaction.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=4f1b5d95f2ee88b88aee283e08e64a125f4879672bedaca6e351dff2fcbd2155",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Eli Lilly (LLY) Builds In Richmond As Fair Value Still Sits Higher",
+        "summary": "Eli Lilly (LLY) just put a shovel in the ground on a new US$5b manufacturing hub near Richmond, Virginia, a fully integrated site for active ingredients and finished antibody drug conjugate medicines. Eli Lilly shares have been on a strong run, with a 30 day share price return of 11.67% and a year to date share price gain of 20.95%. The 1 year total shareholder return of 60.15% and 5 year total sh",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=a28a078e4cd99123e52de4afded678bc0e7a937ac80ad877b326287e05daac65",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "JP Morgan Expects Emerging Market Weight Loss Drug Sales To Reach $22 Billion",
+        "summary": "Key Stats for Eli Lilly StockPrice change for Eli Lilly stock in last 6 months: 42%$LLY Stock Price as of Oct. 22: $130752-Week High: $1321$LLY Stock Price Target: $1332__Now Live: Discover how much upside your favorite stocks could have using TIKR’s new Valuation Model (It’s free)__>>> What Happened?J.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=dbd0d477e93f3b3b0b9fb6ef8b746a1f87422d3360a2ae332fd63d82c49c4484",
+        "date": "2026-10-23"
+      }
+    ],
+    "MA": [
+      {
+        "headline": "Money 20/20 USA: Extend CEO Andrew Jamison on Mastercard, Banks + Card Software",
+        "summary": "What if businesses could get modern spend tools without ripping out the bank and card program they already trust? Extend CEO and Co-Founder Andrew Jamison sits down with JD Durkin at Money 20/20 USA in Las Vegas to talk about Mastercard’s selection of Extend as its spend and expense management platform for issuing banks. Jamison explains how Extend adds a software layer to existing commercial card",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=7514206e05f4df24327c8035712ac5bf06421b5a377cdfb7ef5fe1f635157b72",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Dashen Bank and ShebaMiles Launch Platinum Co-Branded Mastercard Debit Card to Unlock Premium Travel Benefits for Customers in Ethiopia",
+        "summary": "ADDIS ABABA, Ethiopia, October 23, 2026--Dashen Bank and ShebaMiles Launch Platinum co-branded Mastercard Debit card to unlock premium travel benefits for customers in Ethiopia",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=3878573522fb0aed68cc3f02d7818dc293ef8fd4fb227af721334543ca76e358",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "American Express Falls 3% Despite Q3 Beat and Higher Profit Floor; Visa and Mastercard Slip",
+        "summary": "A higher profit floor isn’t protecting American Express (NYSE:AXP) from a skeptical response to its Q3 2026 report. American Express shares are at $316.65, down 3% in morning trading, a sharp drop for a card company that just lifted its full-year earnings forecast. That reaction cuts against a report that delivered on adjusted earnings, guidance […]",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=e3792073a51c407869cac71a10ee20357ae035e4b80ce1e60e151cb3c38c2ddc",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Mastercard to expand First-Party Trust across EMEA",
+        "summary": "The programme addresses first-party fraud, also known as “friendly” fraud.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=75427a5c0c81db8b73af14ce43bc72d4ccdc27944af578f1b549de5aa2dbc1d7",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Mastercard (MA) Introduced A Stablecoin Security API",
+        "summary": "Mastercard (NYSE:MA) has introduced a Stablecoin Security API aimed at risk scoring fiat-to-stablecoin transactions in real time. The tool combines Mastercard payment intelligence, blockchain analytics, and third-party datasets to assess counterparties and transaction flows. Financial institutions and enterprises can plug the API into existing systems as a platform-agnostic layer for pre-flight ch",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=b8d5798cf4504b03bbf4950aac0dc41875160f544889f30831e39895f894e491",
+        "date": "2026-10-22"
+      }
+    ],
+    "MSFT": [
+      {
+        "headline": "Amazon Stock And Other Mega Cap Tech Names For The AI Infrastructure Reset",
+        "summary": "AI infrastructure stocks have just been hit hard, even where earnings and backlogs looked solid, and that kind of indiscriminate selling often creates openings for patient investors watching Microsoft, Alphabet or Amazon. When builders and suppliers suddenly look risky, attention can swing back to mega-cap platforms with stronger balance sheets and flexible cloud budgets. This article walks throug",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=5d9cfa3db05e84304826567e2a3eb67c61a31aa6f37b389438a18388db476246",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Dow Jones Futures: Microsoft, Google, Amazon Lead Earnings Wave; What To Do In Mixed Market",
+        "summary": "Dow Jones futures: The S&P 500 and Nasdaq are below key levels, but many non-AI stocks are flashing buy signals. Microsoft, Google, Amazon loom.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=4d9ac0f0ede03f93ff45478ef4561b47f6f4dc5c9377770d6f6ddb9145f9c10a",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Microsoft Poised for Largely In-Line Quarterly Earnings Amid Azure Strength, BofA Says",
+        "summary": "Microsoft's (MSFT) fiscal first-quarter earnings are expected to largely match Wall Street's estimat",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=9afab7c3e8988da9e58d396f59af4f3c2f2551373d360efead2eaa7a86582061",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Apple Is Up 28% This Year: Take Profits, or Hold On for the Ride?",
+        "summary": "Apple has matched the entire technology sector this year while leaving Microsoft and Alphabet well behind, and that record run is forcing shareholders to make a choice that could define their returns through the holiday quarter.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=f679afade98b1b481cd4eef606cf94d0bc9749abd42071bfae07349f3f1d5683",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Strong Azure Growth and Cash Flow Discipline Strengthen Microsoft Corporation (MSFT)",
+        "summary": "Broyhill Asset Management, a Charlotte-based firm, issued its third-quarter 2026 investor letter. The letter can be downloaded here. The Broyhill Equity Composite decreased by 0.3% in Q3, underperforming the MSCI All Country World Index, which gained 1.7%. For the first nine months of the year, the Composite returned 1.9%, compared to 13.4% for the Index. The […]",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=26b87f5dfebdeb01319dabe65f0f3cb5285ca39e62743da7f0d0dbac0c515f01",
+        "date": "2026-10-23"
+      }
+    ],
+    "NVDA": [
+      {
+        "headline": "TSMC or Nvidia: If I Could Only Own 1 for the Next 5 Years, It Would Be This 1.",
+        "summary": "You can't go wrong with either, but one seems to have more runway.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=ad89f690c50c89b4e20fc0ddbef098ae4bd22de2dedc3344e9fa4879ebde00bb",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "How AI Power Board Launches At Navitas Semiconductor (NVTS) Has Changed Its Investment Story",
+        "summary": "Navitas Semiconductor recently announced an ultra high voltage 2,300 V SiC power module family and a 24 kW, 800 V to 12 V DC-DC power delivery board for AI data centers, grid infrastructure and high power energy systems. The pairing of new SiC modules with an NVIDIA backed 800 V DC architecture positions Navitas Semiconductor more directly inside AI power delivery designs, tying its product roadma",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=95e623ac70c9e2428925ed750bdf6b9dce41fa9820ce00522a8fcf730cffa832",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Memory Stocks Are Plummetting. Jensen Huang Says the Bears Have It Wrong.",
+        "summary": "Has the AI boom already peaked?",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=81e94f6362f7236c1f1602757a1707f95ac8f04f1d6a2f461d256c9d427d5b86",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Tesla (TSLA) Starts Semi Volume Output With $2.8 Billion AI Component Bet",
+        "summary": "Tesla (NasdaqGS:TSLA) has begun volume production of its Semi electric truck, moving beyond pilot runs into commercial scale output. Tesla and Nvidia announced a joint US$2.8b investment in Samsung Electro-Mechanics to expand AI chip substrate manufacturing capacity. The Samsung Electro-Mechanics funding targets substrates used in Tesla's autonomous driving systems and Optimus humanoid robot hardw",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=e3e0ad7ae6a9bbaedaa80e3a437cc0401075f210f16a7033e2257a8cb8c5a594",
+        "date": "2026-10-24"
+      },
+      {
+        "headline": "Jim Cramer's 5% to 8% rule puts Nvidia stock in focus",
+        "summary": "The arithmetic works. The uncertainty is bigger.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=ddf025d4c8460402003ee1e744ad46a45afa3445c5cea86fc4c3c4bfb15910c5",
+        "date": "2026-10-24"
+      }
+    ],
+    "TSM": [
+      {
+        "headline": "Taiwan Semiconductor (TSMC) Posted Record Profit and the Stock Still Fell. Here's What the Market Is Worried About.",
+        "summary": "The chipmaking giant is still firing on all cylinders, but investors are becoming more cautious.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=bbc49cb5517d4801b8399f740d13de056ad70ebea77ddefb967c8866f3281ab6",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Korea and Taiwan Built Economies on AI. One Failed IPO Shows Their Fragility.",
+        "summary": "Thetwo economies now risk entering a tech version of the “resource curse,” writes William Pesek.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=123f329cf60197ad33799ca8400761a171d33e7d4e850810c2767c54a711113d",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Taiwan Semiconductor Will Transition Into an Indispensible Utility of Global Computing Within 5 Years",
+        "summary": "Every AI chip, every smartphone processor, and every data center upgrade has to pass through the same tollbooth. Here is why one investor keeps buying that tollbooth without apology, and why the geopolitical risk around it changes the math less than you might expect.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=512871a23628f1859b7b1f40b847137828cc152d2c94711d4c18dce546770685",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "The Foundry Disconnect: Intel Nails the Transistor, But TSMC Holds the Keys to Yield and Scale.",
+        "summary": "Intel can now build a transistor that rivals anyone in the world, yet its foundry business is bleeding billions while TSMC signs hundreds of outside customers. The two latest earnings reports expose a gap that transistor specs alone cannot close.",
+        "source": "Yahoo",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=fbca34c34dde68eada86d9fca42fbd0932fd97b7b5a19e23c6f2ef800dafddee",
+        "date": "2026-10-23"
+      },
+      {
+        "headline": "Taiwan Semiconductor (NYSE:TSM) Delivers High Growth as Earnings Revisions and Margins Strengthen",
+        "summary": "Taiwan Semiconductor clears Navellier’s growth checklist with strong earnings, sales, margins and ROE, but valuation and chip cyclicality are key risks.",
+        "source": "ChartMill",
+        "tier": "aggregator",
+        "url": "https://finnhub.io/api/news?id=0df2a02cc0c3522810cdfa9264e2429ff2dc45087af38438989ff6492ab10c11",
+        "date": "2026-10-23"
+      }
+    ]
+  },
+  "filings": {
+    "JPM": [
+      {
+        "form": "8-K",
+        "date": "2026-10-20",
+        "items": "8.01,9.01",
+        "url": "https://www.sec.gov/Archives/edgar/data/19617/000119312526426704/d351999d8k.htm",
+        "label": "เหตุการณ์อื่น"
+      }
+    ],
+    "TSM": [
+      {
+        "form": "6-K",
+        "date": "2026-10-22",
+        "items": "",
+        "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000728/tsm-monthend6kx20261022.htm",
+        "label": ""
+      }
+    ]
+  },
+  "profiles": {
+    "AMZN": {
+      "name": "Amazon.com Inc",
+      "industry": "Retail",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AMZN.png"
+    },
+    "ETN": {
+      "name": "Eaton Corporation PLC",
+      "industry": "Electrical Equipment",
+      "country": "IE",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/ETN.png"
+    },
+    "GOOGL": {
+      "name": "Alphabet Inc",
+      "industry": "Media",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GOOG.png"
+    },
+    "JPM": {
+      "name": "JPMorgan Chase & Co",
+      "industry": "Banking",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/JPM.png"
+    },
+    "LLY": {
+      "name": "Eli Lilly and Co",
+      "industry": "Pharmaceuticals",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/LLY.png"
+    },
+    "MA": {
+      "name": "Mastercard Inc",
+      "industry": "Financial Services",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MA.png"
+    },
+    "MSFT": {
+      "name": "Microsoft Corp",
+      "industry": "Technology",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSFT.png"
+    },
+    "NVDA": {
+      "name": "NVIDIA Corp",
+      "industry": "Semiconductors",
+      "country": "US",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942959144056.png"
+    },
+    "TSM": {
+      "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+      "industry": "Semiconductors",
+      "country": "TW",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/2330.TW.png"
+    }
+  },
+  "earnings": [
+    {
+      "ticker": "GOOGL",
+      "date": "2026-10-28",
+      "hour": "amc"
+    },
+    {
+      "ticker": "MSFT",
+      "date": "2026-10-28",
+      "hour": "amc"
+    },
+    {
+      "ticker": "AMZN",
+      "date": "2026-10-29",
+      "hour": "amc"
+    },
+    {
+      "ticker": "LLY",
+      "date": "2026-10-29",
+      "hour": "bmo"
+    },
+    {
+      "ticker": "MA",
+      "date": "2026-10-29",
+      "hour": "bmo"
+    },
+    {
+      "ticker": "ETN",
+      "date": "2026-11-03",
+      "hour": "bmo"
+    },
+    {
+      "ticker": "NVDA",
+      "date": "2026-11-17",
+      "hour": "amc"
+    }
+  ],
+  "summary": {
+    "text": "ตลาดสัปดาห์นี้ผันผวน หุ้นโครงสร้างพื้นฐาน AI ถูกเทขาย เพราะกังวลเรื่องเงินทุนลงทุน AI ขณะที่นักลงทุนรอผลประกอบการบิ๊กเทค\n🟡 AMZN: 3M ขายสินค้าให้ data center ของ Amazon ส่วนหุ้นรอประกาศงบ\n🔴 ETN: หุ้นร่วง 6.33% เหลือ $368.99 หลังกังวลเรื่องเงินทุน AI ของ Meta แต่นักวิเคราะห์ปรับประมาณการกำไรขึ้น\n🟡 JPM: JPMorgan Asset Management นำกองทุนตลาดเงิน MONY และ JLTXX ขึ้น Solana แบบ tokenized\n🟢 LLY: เริ่มสร้างโรงงานใหม่ใกล้ Richmond มูลค่าราว $5b และหุ้นอยู่ใกล้ระดับสูงสุด 52 สัปดาห์\n🟡 MA: เปิด Stablecoin Security API และขยายโปรแกรมต้านการโกงใน EMEA แต่หุ้นอ่อนตามกลุ่มบัตร\n🟡 MSFT: BofA มองว่างวดนี้จะออกมาใกล้เคียงคาด โดย Azure ยังแข็งแกร่ง (ความเห็นนักวิเคราะห์)\n🟡 NVDA: Jensen Huang แย้งว่าฝ่ายมองลบหุ้นหน่วยความจำคิดผิด ขณะที่ Nvidia ร่วมลงทุนกับ Tesla ใน Samsung Electro-Mechanics $2.8b\n🟡 TSM: กำไรสูงสุดเป็นประวัติการณ์ แต่หุ้นยังปรับตัวลง เพราะนักลงทุนระวังมากขึ้น\nจับตา: ตลาดกังวลว่าการลงทุนโครงสร้างพื้นฐาน AI จะหาเงินทุนมาจากไหน กระทบกลุ่มอุปกรณ์ไฟฟ้าและ data center · ผลประกอบการบิ๊กเทคจะยืนยันหรือไม่ว่าการใช้จ่ายด้าน AI ยังสร้างรายได้จริง",
+    "structured": {
+      "overview": "ตลาดสัปดาห์นี้ผันผวน หุ้นโครงสร้างพื้นฐาน AI ถูกเทขาย เพราะกังวลเรื่องเงินทุนลงทุน AI ขณะที่นักลงทุนรอผลประกอบการบิ๊กเทค",
+      "tickers": [
+        {
+          "ticker": "AMZN",
+          "about": "อีคอมเมิร์ซและคลาวด์ AWS",
+          "sentiment": "neu",
+          "line": "3M ขายสินค้าให้ data center ของ Amazon ส่วนหุ้นรอประกาศงบ"
+        },
+        {
+          "ticker": "ETN",
+          "about": "อุปกรณ์ไฟฟ้าและบริหารพลังงาน",
+          "sentiment": "neg",
+          "line": "หุ้นร่วง 6.33% เหลือ $368.99 หลังกังวลเรื่องเงินทุน AI ของ Meta แต่นักวิเคราะห์ปรับประมาณการกำไรขึ้น"
+        },
+        {
+          "ticker": "GOOGL",
+          "about": "Google, โฆษณาออนไลน์และ AI",
+          "sentiment": "neu",
+          "line": "ไม่มีข่าวสำคัญ"
+        },
+        {
+          "ticker": "JPM",
+          "about": "ธนาคารขนาดใหญ่ของสหรัฐฯ",
+          "sentiment": "neu",
+          "line": "JPMorgan Asset Management นำกองทุนตลาดเงิน MONY และ JLTXX ขึ้น Solana แบบ tokenized"
+        },
+        {
+          "ticker": "LLY",
+          "about": "ยารักษาเบาหวานและลดน้ำหนัก",
+          "sentiment": "pos",
+          "line": "เริ่มสร้างโรงงานใหม่ใกล้ Richmond มูลค่าราว $5b และหุ้นอยู่ใกล้ระดับสูงสุด 52 สัปดาห์"
+        },
+        {
+          "ticker": "MA",
+          "about": "เครือข่ายบัตรและระบบชำระเงิน",
+          "sentiment": "neu",
+          "line": "เปิด Stablecoin Security API และขยายโปรแกรมต้านการโกงใน EMEA แต่หุ้นอ่อนตามกลุ่มบัตร"
+        },
+        {
+          "ticker": "MSFT",
+          "about": "ซอฟต์แวร์ คลาวด์ Azure และ AI",
+          "sentiment": "neu",
+          "line": "BofA มองว่างวดนี้จะออกมาใกล้เคียงคาด โดย Azure ยังแข็งแกร่ง (ความเห็นนักวิเคราะห์)"
+        },
+        {
+          "ticker": "NVDA",
+          "about": "ชิป GPU สำหรับ AI",
+          "sentiment": "neu",
+          "line": "Jensen Huang แย้งว่าฝ่ายมองลบหุ้นหน่วยความจำคิดผิด ขณะที่ Nvidia ร่วมลงทุนกับ Tesla ใน Samsung Electro-Mechanics $2.8b"
+        },
+        {
+          "ticker": "TSM",
+          "about": "ผู้รับจ้างผลิตชิประดับโลก",
+          "sentiment": "neu",
+          "line": "กำไรสูงสุดเป็นประวัติการณ์ แต่หุ้นยังปรับตัวลง เพราะนักลงทุนระวังมากขึ้น"
+        }
+      ],
+      "watch": [
+        "ตลาดกังวลว่าการลงทุนโครงสร้างพื้นฐาน AI จะหาเงินทุนมาจากไหน กระทบกลุ่มอุปกรณ์ไฟฟ้าและ data center",
+        "ผลประกอบการบิ๊กเทคจะยืนยันหรือไม่ว่าการใช้จ่ายด้าน AI ยังสร้างรายได้จริง"
+      ],
+      "flags": []
+    },
+    "model": "claude-sonnet-5-5",
+    "usage": {
+      "input_tokens": 9252,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1304,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    }
+  },
+  "decision": {
+    "mode": "weekly",
+    "cost_usd": 0.3111,
+    "tools_used": 6,
+    "status": "hold",
+    "market_view": "ตลาดยังอยู่ในโหมด neutral ดัชนีอยู่เหนือเส้น 200 วัน 4.5% VIX อยู่ที่ราว 19.5 และกลุ่มหุ้นป้องกันตัว (พลังงาน สาธารณูปโภค สินค้าจำเป็น) ยังนำตลาด ส่วนกลุ่มเทคโนโลยีและสื่อสารอ่อนที่สุด (-6.6%) เพราะตลาดกังวลว่าการลงทุน AI จะหาเงินมาจากไหน หลังการประชุมนักลงทุนของ Meta ผลตอบแทนพันธบัตร 10 ปีลดลงมาอยู่ที่ 4.99% จึงลดแรงกดดันเรื่องดอกเบี้ย",
+    "action": "hold",
+    "summary_th": "ถือพอร์ตเดิมทั้งหมด เพราะข่าวที่ตรวจไม่มีข่าวไหนทำให้ thesis เสีย และสัปดาห์หน้ามีงบของ MSFT, GOOGL, AMZN, LLY และ MA ซึ่งจะให้ข้อมูลจริงมาตัดสิน",
+    "journal": "ได้ตรวจข่าวของทุกตัวที่จะประกาศงบภายใน 14 วัน ไม่พบข่าวเฉพาะบริษัทที่เข้าเงื่อนไขขาย ETN ที่ลง 6% มาจากความกังวลเรื่องเงินทุน AI หลังงบ Meta ไม่ใช่ปัญหาของบริษัทเอง ตอนนี้พอร์ตแพ้ VOO 0.64% และเท่ากับ shadow สาเหตุหลักคือธีม AI ถูกขายทั้งกลุ่ม ส่วน thesis ที่วัดผลได้แล้ว 2 ตัว (JPM, TSM) ผ่านเกณฑ์ทั้งคู่ ธีม AI (NVDA, TSM, MSFT, GOOGL, AMZN, ETN) รวมราว 65% ซึ่งเกิน 50% ขอยอมรับต่อด้วยเหตุผลใหม่ ไม่ใช่เหตุผลเดิมเรื่องอยู่คนละช่วงของห่วงโซ่ (ซึ่งบทเรียนพบว่าใช้ไม่ได้ตอนตลาดตึงเครียด) เหตุผลคืออีก 3-5 วันจะมีงบของ hyperscaler 3 ตัวที่บอกได้โดยตรงว่าความต้องการ AI และแผน capex ยังแข็งแรงหรือไม่ การลดน้ำหนักก่อนงบจึงเป็นการเดาจังหวะตลาดและเสียค่าธรรมเนียมโดยไม่มีข้อมูลใหม่ เงื่อนไขที่จะทำให้เปลี่ยนใจหลังงบ: ถ้า MSFT, GOOGL หรือ AMZN ตัวใดลดแผน capex ลงชัดเจน หรือไม่ผ่านเงื่อนไขขาย จะลดธีม AI ให้ต่ำกว่า 55% และถ้างบ ETN วันที่ 3 พ.ย. แสดงว่า backlog ของ Electrical Americas ไม่โต จะขาย ETN",
+    "targets": [],
+    "sells": [],
+    "checked": [
+      {
+        "ticker": "ETN",
+        "what": "ข่าวที่ราคาลง 6% และข่าวก่อนงบวันที่ 3 พ.ย.",
+        "finding": "ราคาลงพร้อม GEV และ VRT จากความกังวลเรื่องเงินทุน AI หลังงบ Meta ไม่ใช่ข่าวของบริษัทเอง นักวิเคราะห์ยังปรับประมาณการกำไรขึ้น และมีรายงาน (aggregator) ว่า backlog โต 43% ซึ่งต้องรอยืนยันในงบ"
+      },
+      {
+        "ticker": "GOOGL",
+        "what": "ข่าวก่อนงบวันที่ 28 ต.ค. และราคาที่ลง 6% ในสัปดาห์นี้",
+        "finding": "ไม่มีข่าวลบเฉพาะบริษัท ราคาลงตามการขายทั้งกลุ่ม AI และไม่มีข่าวใดเข้าเงื่อนไขขาย (Search หดตัว/คำสั่งแยกธุรกิจ)"
+      },
+      {
+        "ticker": "MSFT",
+        "what": "ข่าวก่อนงบวันที่ 28 ต.ค.",
+        "finding": "BofA คาดว่างบจะออกมาใกล้เคียงที่ตลาดคาดและ Azure ยังแข็งแรง ราคาทรงตัวใกล้จุดสูงสุด"
+      },
+      {
+        "ticker": "AMZN",
+        "what": "ข่าวก่อนงบวันที่ 29 ต.ค.",
+        "finding": "Wells Fargo เลือกเป็นหุ้นเด่นก่อนงบ เพราะคาดว่าประมาณการรายได้ AWS จะถูกปรับขึ้น ไม่มีข่าวลบที่กระทบ thesis"
+      },
+      {
+        "ticker": "LLY",
+        "what": "ข่าวก่อนงบวันที่ 29 ต.ค.",
+        "finding": "ราคาทำจุดสูงสุดในรอบ 52 สัปดาห์ เริ่มสร้างโรงงานมูลค่า 5 พันล้านดอลลาร์ ไม่มีข่าวเรื่องความปลอดภัยของยาหรือการกดราคายา"
+      },
+      {
+        "ticker": "MA",
+        "what": "ข่าวก่อนงบวันที่ 29 ต.ค. และข่าว AXP/V ราคาลง",
+        "finding": "ราคาลงเล็กน้อยตามงบ AXP เท่านั้น ข่าวอื่นเป็นการเปิดตัวผลิตภัณฑ์ และ UBS มองว่าค่าธรรมเนียม tokenization จะช่วยหนุนรายได้"
+      }
+    ],
+    "risk": {
+      "window_days": 126,
+      "beta_voo": 1.11,
+      "vol_annual": 0.16,
+      "voo_vol_annual": 0.1201,
+      "bad_week_1_in_20": -0.0243,
+      "worst_week": -0.0331,
+      "rate_move_per_25bp": -0.0083,
+      "most_rate_sensitive": [
+        [
+          "LLY",
+          -0.028
+        ],
+        [
+          "GOOGL",
+          -0.0185
+        ],
+        [
+          "JPM",
+          -0.0156
+        ]
+      ],
+      "correlated_groups": [
+        {
+          "tickers": [
+            "NVDA",
+            "TSM",
+            "ETN"
+          ],
+          "weight": 0.2869,
+          "avg_corr": 0.59
+        },
+        {
+          "tickers": [
+            "GOOGL",
+            "AMZN"
+          ],
+          "weight": 0.2342,
+          "avg_corr": 0.62
+        }
+      ],
+      "theme_weights": {
+        "AI semiconductors": 0.2277,
+        "cloud & digital ads": 0.1331,
+        "cloud & AI software": 0.1285,
+        "healthcare": 0.1095,
+        "cloud & e-commerce": 0.1011,
+        "payments": 0.0896,
+        "banking": 0.0796,
+        "AI power infrastructure": 0.0592
+      }
+    },
+    "sectors": {}
+  },
+  "trades": [],
+  "monthly_review": null,
+  "warnings": []
+}
