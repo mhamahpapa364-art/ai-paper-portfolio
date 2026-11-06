@@ -5,7 +5,7 @@
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
   "last_run": "2026-10-31",
-  "last_events_processed": "2026-11-04",
+  "last_events_processed": "2026-11-05",
   "books": {
     "portfolio": {
       "cash_usd": 211.19887625429766,
@@ -338,13 +338,23 @@
   ],
   "api_spend": {
     "2026-09": 0.6681,
-    "2026-10": 3.1168
+    "2026-10": 3.1168,
+    "2026-11": 0.3408
   },
   "triggers_seen": [
-    "big_move|GOOGL|2026-10-29"
+    "big_move|GOOGL|2026-10-29",
+    "big_move|TSM|2026-11-05"
   ],
-  "recent_triggers": [],
-  "api_spend_total": 3.7849,
+  "recent_triggers": [
+    {
+      "type": "big_move",
+      "ticker": "TSM",
+      "date": "2026-11-05",
+      "change": -0.1078,
+      "detail": "ราคาลง -10.8% ในวันเดียว"
+    }
+  ],
+  "api_spend_total": 4.1257,
   "pending_orders": null,
   "last_weekly_ok": "2026-10-31",
   "outcome_refresh": null,
