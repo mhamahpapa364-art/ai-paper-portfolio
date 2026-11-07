@@ -4,7 +4,7 @@
   "fx_inception": 33.349998474121094,
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
-  "last_run": "2026-10-31",
+  "last_run": "2026-11-07",
   "last_events_processed": "2026-11-06",
   "books": {
     "portfolio": {
@@ -339,24 +339,16 @@
   "api_spend": {
     "2026-09": 0.6681,
     "2026-10": 3.1168,
-    "2026-11": 0.3408
+    "2026-11": 0.8169
   },
   "triggers_seen": [
     "big_move|TSM|2026-11-05",
     "big_move|GOOGL|2026-10-29"
   ],
-  "recent_triggers": [
-    {
-      "type": "big_move",
-      "ticker": "TSM",
-      "date": "2026-11-05",
-      "change": -0.1078,
-      "detail": "ราคาลง -10.8% ในวันเดียว"
-    }
-  ],
-  "api_spend_total": 4.1257,
+  "recent_triggers": [],
+  "api_spend_total": 4.6018,
   "pending_orders": null,
-  "last_weekly_ok": "2026-10-31",
+  "last_weekly_ok": "2026-11-07",
   "outcome_refresh": null,
   "themes": {
     "NVDA": "AI semiconductors",
@@ -370,5 +362,5 @@
     "ETN": "AI power infrastructure"
   },
   "valuation_recheck": null,
-  "last_monthly_review": "2026-10-16"
+  "last_monthly_review": "2026-11-06"
 }
