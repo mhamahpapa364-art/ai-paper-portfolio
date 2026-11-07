@@ -5,7 +5,7 @@
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
   "last_run": "2026-10-31",
-  "last_events_processed": "2026-11-05",
+  "last_events_processed": "2026-11-06",
   "books": {
     "portfolio": {
       "cash_usd": 211.19887625429766,
@@ -342,8 +342,8 @@
     "2026-11": 0.3408
   },
   "triggers_seen": [
-    "big_move|GOOGL|2026-10-29",
-    "big_move|TSM|2026-11-05"
+    "big_move|TSM|2026-11-05",
+    "big_move|GOOGL|2026-10-29"
   ],
   "recent_triggers": [
     {
