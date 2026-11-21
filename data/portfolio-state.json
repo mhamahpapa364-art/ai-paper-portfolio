@@ -5,7 +5,7 @@
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
   "last_run": "2026-11-14",
-  "last_events_processed": "2026-11-19",
+  "last_events_processed": "2026-11-20",
   "books": {
     "portfolio": {
       "cash_usd": 212.61637458610824,
@@ -343,9 +343,25 @@
   },
   "triggers_seen": [
     "big_move|GOOGL|2026-10-29",
-    "big_move|TSM|2026-11-05"
+    "big_move|TSM|2026-11-05",
+    "big_move|NVDA|2026-11-20",
+    "market_fear|^VIX|2026-11-20"
   ],
-  "recent_triggers": [],
+  "recent_triggers": [
+    {
+      "type": "big_move",
+      "ticker": "NVDA",
+      "date": "2026-11-20",
+      "change": -0.1401,
+      "detail": "ราคาลง -14.0% ในวันเดียว"
+    },
+    {
+      "type": "market_fear",
+      "ticker": "^VIX",
+      "date": "2026-11-20",
+      "detail": "VIX 35.9 — ตลาดตื่นตระหนก"
+    }
+  ],
   "api_spend_total": 4.936,
   "pending_orders": null,
   "last_weekly_ok": "2026-11-14",
