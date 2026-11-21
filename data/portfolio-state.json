@@ -4,7 +4,7 @@
   "fx_inception": 33.349998474121094,
   "start_capital_thb": 100000,
   "start_capital_usd": 2998.500886817069,
-  "last_run": "2026-11-14",
+  "last_run": "2026-11-21",
   "last_events_processed": "2026-11-20",
   "books": {
     "portfolio": {
@@ -339,7 +339,7 @@
   "api_spend": {
     "2026-09": 0.6681,
     "2026-10": 3.1168,
-    "2026-11": 1.1511
+    "2026-11": 1.6198
   },
   "triggers_seen": [
     "big_move|GOOGL|2026-10-29",
@@ -347,24 +347,88 @@
     "big_move|NVDA|2026-11-20",
     "market_fear|^VIX|2026-11-20"
   ],
-  "recent_triggers": [
-    {
-      "type": "big_move",
-      "ticker": "NVDA",
-      "date": "2026-11-20",
-      "change": -0.1401,
-      "detail": "ราคาลง -14.0% ในวันเดียว"
+  "recent_triggers": [],
+  "api_spend_total": 5.4047,
+  "pending_orders": {
+    "decided": "2026-11-20",
+    "mode": "weekly",
+    "plan": {
+      "TSM": 0.09716579101553038,
+      "MSFT": 0.13383881407100684,
+      "GOOGL": 0.12434357566947181,
+      "AMZN": 0.11344259525655638,
+      "LLY": 0.1306421784182675,
+      "MA": 0.10133498345114976,
+      "JPM": 0.0841037435914989,
+      "ETN": 0.05677063318562092
     },
-    {
-      "type": "market_fear",
-      "ticker": "^VIX",
-      "date": "2026-11-20",
-      "detail": "VIX 35.9 — ตลาดตื่นตระหนก"
-    }
-  ],
-  "api_spend_total": 4.936,
-  "pending_orders": null,
-  "last_weekly_ok": "2026-11-14",
+    "changes": {
+      "NVDA": -0.0769
+    },
+    "targets": [
+      {
+        "ticker": "TSM",
+        "weight": 0.0972,
+        "about": "โรงงานผลิตชิปขั้นสูงรายใหญ่ที่สุดในโลก",
+        "theme": "AI semiconductors"
+      },
+      {
+        "ticker": "MSFT",
+        "weight": 0.1338,
+        "about": "ซอฟต์แวร์องค์กรและคลาวด์ Azure",
+        "theme": "cloud & AI software"
+      },
+      {
+        "ticker": "GOOGL",
+        "weight": 0.1243,
+        "about": "Search, YouTube และ Google Cloud",
+        "theme": "cloud & digital ads"
+      },
+      {
+        "ticker": "AMZN",
+        "weight": 0.1134,
+        "about": "อีคอมเมิร์ซ, AWS และโฆษณา",
+        "theme": "cloud & e-commerce"
+      },
+      {
+        "ticker": "LLY",
+        "weight": 0.1306,
+        "about": "ยาลดน้ำหนักและยาเบาหวาน",
+        "theme": "healthcare"
+      },
+      {
+        "ticker": "MA",
+        "weight": 0.1013,
+        "about": "เครือข่ายชำระเงินด้วยบัตร",
+        "theme": "payments"
+      },
+      {
+        "ticker": "JPM",
+        "weight": 0.0841,
+        "about": "ธนาคารใหญ่ที่สุดในสหรัฐ",
+        "theme": "banking"
+      },
+      {
+        "ticker": "ETN",
+        "weight": 0.0568,
+        "about": "อุปกรณ์ระบบไฟฟ้าสำหรับดาต้าเซ็นเตอร์และโครงข่ายไฟฟ้า",
+        "theme": "AI power infrastructure"
+      }
+    ],
+    "sells": [
+      {
+        "ticker": "NVDA",
+        "reason": "ขายด้วยเหตุผลด้านความเสี่ยง ไม่ใช่เพราะ thesis เสีย ตัวเลขธุรกิจที่ thesis และการประเมินมูลค่าใช้อยู่ตอนนี้ถูก SEC สอบสวนเรื่องบัญชี ซ้อนกับที่ CEO ลาออกและการขายชิปให้จีนต้องหยุด ทำให้ใช้ตัวเลขชุดนี้ยืนยันมูลค่าไม่ได้ ซึ่งขัดกับบทเรียนเรื่องคุณภาพกำไร นอกจากนี้ตลาดอยู่ในโหมด risk-off ที่แนะนำเงินสด 15-30% และพอร์ต drawdown -14.2% ใกล้เป้า -15% แล้ว NVDA มี beta 2.2 สูงที่สุดในพอร์ต จึงเป็นตัวที่ควรลดก่อน",
+        "thesis_broken": false,
+        "evidence": [
+          "https://www.bloomberg.com/news/articles/2026-11-20/wall-street-regulator-probing-nvidia-s-accounting-reuters-says",
+          "https://live.euronext.com/en/financial-news/nvidias-accounting-focus-us-sec-investigation-sources-say"
+        ]
+      }
+    ],
+    "summary": "ขาย NVDA ทั้งหมดเพื่อลดความเสี่ยง เพราะงบดีแต่ถูก SEC สอบสวนเรื่องบัญชีจนเชื่อตัวเลขไม่ได้ เงินสดจึงเพิ่มเป็นราว 16% ตามโหมดตลาด risk-off ส่วนหุ้นตัวอื่นถือต่อ"
+  },
+  "last_weekly_ok": "2026-11-21",
   "outcome_refresh": null,
   "themes": {
     "NVDA": "AI semiconductors",
