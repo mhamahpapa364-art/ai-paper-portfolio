@@ -306,5 +306,12 @@
     "portfolio": 94211.92,
     "benchmark": 95330.54,
     "shadow": 93450.87
+  },
+  {
+    "date": "2026-11-25",
+    "fx": 33.96,
+    "portfolio": 93139.77,
+    "benchmark": 94869.5,
+    "shadow": 92039.53
   }
 ]
