@@ -432,11 +432,11 @@
     "2026-11": 1.7976
   },
   "triggers_seen": [
-    "big_move|GOOGL|2026-10-29",
     "big_move|TSM|2026-11-05",
     "market_fear|^VIX|2026-11-20",
     "big_move|NVDA|2026-11-20",
-    "big_move|TSM|2026-11-23"
+    "big_move|TSM|2026-11-23",
+    "big_move|GOOGL|2026-10-29"
   ],
   "recent_triggers": [
     {
